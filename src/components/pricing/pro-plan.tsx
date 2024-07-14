@@ -1,7 +1,7 @@
 import { ESubscriptionPeriod } from "@/types";
 import { Check, X } from "lucide-react";
 import { Button } from "../ui/button";
-import { APP_NAME } from "@/constants";
+import { APP_NAME, LOGO } from "@/config";
 import Image from "next/image";
 
 type TProPlanProps = {
@@ -24,9 +24,9 @@ export function ProPlan({
   floatBannerLabel = "Popular",
 }: TProPlanProps) {
   return (
-    <div className="relative flex flex-col p-6 bg-primary-foreground shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-purple-500">
+    <div className="relative flex flex-col p-6 bg-primary-foreground shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-lime-500">
       {showFloatBanner && (
-        <div className="px-3 py-1 text-sm text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-full inline-block absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="px-3 py-1 text-sm text-white bg-gradient-to-r from-emerald-500 to-lime-600 rounded-full inline-block absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           {floatBannerLabel}
         </div>
       )}
@@ -56,9 +56,8 @@ export function ProPlan({
         </ul>
       </div>
       <div className="mt-6">
-        <Button className="w-full flex gap-x-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-150 transition-all transform active:scale-110">
-          <Image src="/rocket.png" width={30} height={30} alt="icon" /> Get Get{" "}
-          {APP_NAME}
+        <Button className="w-full flex gap-x-2 bg-gradient-to-r from-emerald-500 to-lime-600 hover:brightness-150 transition-all transform active:scale-110">
+          <Image src={LOGO} width={30} height={30} alt="icon" /> Get {APP_NAME}
         </Button>
       </div>
     </div>

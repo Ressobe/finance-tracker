@@ -16,7 +16,7 @@ export function Header({ label, heading }: HeaderProps) {
     <div className="w-full flex flex-col gap-y-4 items-center">
       <h1
         className={cn(
-          "text-3xl font-semibold text-gradient bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500",
+          "text-3xl font-semibold text-gradient bg-gradient-to-r from-emerald-500 to-lime-600",
           font.className,
         )}
       >

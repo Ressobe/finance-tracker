@@ -9,7 +9,7 @@ import {
 import { Header } from "./header";
 import { Social } from "./social";
 import { BackButton } from "./back-button";
-import { APP_NAME } from "@/constants";
+import { APP_NAME } from "@/config";
 
 type CardWrapperProps = {
   children?: React.ReactNode;
