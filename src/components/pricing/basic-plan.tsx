@@ -31,7 +31,7 @@ export function BasicPlan({
           {benefits?.map((item) => {
             return (
               <li key={item} className="flex items-center gap-x-2">
-                <Check className="text-green-500 w-10 h-10" />
+                <Check className="text-green-500 w-6 h-6" />
                 <span>{item}</span>
               </li>
             );
@@ -39,7 +39,7 @@ export function BasicPlan({
           {missing?.map((item) => {
             return (
               <li key={item} className="flex items-center gap-x-2">
-                <X className="text-red-400 w-10 h-10" />
+                <X className="text-red-400 w-6 h-6" />
                 <span>{item}</span>
               </li>
             );
