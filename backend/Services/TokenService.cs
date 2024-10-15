@@ -19,7 +19,7 @@ namespace api.Services
       _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
     }
 
-    public string CreateToken(AppUser user)
+    public string CreateToken(User user)
     {
 
       var claims = new List<Claim>

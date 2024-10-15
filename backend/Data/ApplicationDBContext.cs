@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace api.Data
 {
 
-  public class ApplicationDBContext : IdentityDbContext<AppUser>
+  public class ApplicationDBContext : IdentityDbContext<User>
   {
     public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
     {
 
     }
 
-    public DbSet<Stock> Stocks { get; set; }
-    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public new DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

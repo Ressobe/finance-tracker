@@ -1,8 +1,8 @@
 using api.Data;
 using api.Interfaces;
-using api.Repositories;
 using api.Models;
 using api.Services;
+using api.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option =>
 {
-  option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+  option.SwaggerDoc("v1", new OpenApiInfo { Title = "Finance Tracker API", Version = "v1" });
   option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
   {
     In = ParameterLocation.Header,
@@ -50,7 +50,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.AddNpgsqlDbContext<ApplicationDBContext>("postgresdb");
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
   options.Password.RequireDigit = true;
   options.Password.RequireLowercase = true;
@@ -81,9 +82,8 @@ builder.Services.AddAuthentication(options =>
   };
 });
 
-builder.Services.AddScoped<IStockRepository, StockRepository>();
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

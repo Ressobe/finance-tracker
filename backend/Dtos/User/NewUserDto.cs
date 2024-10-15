@@ -1,5 +1,4 @@
-
-namespace api.Dtos.Account
+namespace api.Dtos.User
 {
   public class NewUserDto
   {

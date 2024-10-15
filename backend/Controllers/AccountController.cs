@@ -1,104 +1,59 @@
 using Microsoft.AspNetCore.Mvc;
-using api.Models;
-using Microsoft.AspNetCore.Identity;
 using api.Dtos.Account;
 using api.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
+using api.Mappers;
 
 namespace api.Controllers
 {
   [Route("api/account")]
   [ApiController]
-
   public class AccountController : ControllerBase
   {
 
-    private readonly UserManager<AppUser> _userManager;
-    private readonly ITokenService _tokenService;
-    private readonly SignInManager<AppUser> _signInManager;
+    private readonly IAccountRepository _accountRepository;
+    private readonly IUserRepository _userRepository;
 
-    public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+    public AccountController(IAccountRepository accountRepository, IUserRepository userRepository)
     {
-      _userManager = userManager;
-      _tokenService = tokenService;
-      _signInManager = signInManager;
+      _accountRepository = accountRepository;
+      _userRepository = userRepository;
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    [HttpGet("{accountId:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int accountId)
     {
-      try
+      var account = await _accountRepository.GetAsync(accountId);
+
+      if (account == null)
       {
-        if (!ModelState.IsValid)
-          return BadRequest(ModelState);
-
-        var user = await _userManager.Users.FirstOrDefaultAsync(item => item.Email == loginDto.Email);
-        if (user == null)
-        {
-          return Unauthorized("Invalid email!");
-        }
-
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-        if (!result.Succeeded)
-        {
-          return Unauthorized("Invalid credentials!");
-        }
-
-        return Ok(new NewUserDto
-        {
-          UserName = user.UserName,
-          Email = user.Email,
-          Token = _tokenService.CreateToken(user)
-        });
+        return NotFound();
       }
-      catch (Exception e)
-      {
-        return StatusCode(500, e);
-      }
+
+      return Ok(account);
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Create([FromBody] RegisterDto registerDto)
+    [HttpPost("{userId}")]
+    public async Task<IActionResult> Create([FromRoute] string userId, [FromBody] CreateAccountDto createAccountDto)
     {
-      // check if user with this email already exist
-      try
+      if (!ModelState.IsValid)
       {
-        if (!ModelState.IsValid)
-          return BadRequest(ModelState);
-
-        var appUser = new AppUser
-        {
-          UserName = registerDto.Username,
-          Email = registerDto.Email
-        };
-
-
-        var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
-
-        if (!createdUser.Succeeded)
-        {
-          return StatusCode(500, createdUser.Errors);
-        }
-
-        var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
-
-        if (!roleResult.Succeeded)
-        {
-          return StatusCode(500, roleResult.Errors);
-        }
-
-        return Ok(new NewUserDto
-        {
-          UserName = appUser.UserName,
-          Email = appUser.Email,
-          Token = _tokenService.CreateToken(appUser)
-        });
+        return BadRequest(ModelState);
       }
-      catch (Exception e)
+
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
       {
-        return StatusCode(500, e);
+        return BadRequest("User does not exist!");
       }
+
+      var accountModel = createAccountDto.CreateAccountDtoToAccountModel(userId);
+      var account = await _accountRepository.CreateAsync(accountModel);
+      if (account == null)
+      {
+        return BadRequest("Account was not created");
+      }
+
+      return Ok(account);
     }
   }
 }
