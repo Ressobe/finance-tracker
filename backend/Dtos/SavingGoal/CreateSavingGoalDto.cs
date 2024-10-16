@@ -1,16 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace api.Models
+namespace api.Dtos.SavingGoal
 {
-  [Table("SavingGoals")]
-  public class SavingGoal
+  public class CreateSavingGoalDto
   {
-    public int Id { get; set; }
     public String Name { get; set; } = String.Empty;
-
     public string UserId { get; set; } = String.Empty;
-    public User? User { get; set; }
-
 
     public int TargetAmount { get; set; }
     public int CurrentSaved { get; set; }
@@ -19,6 +12,5 @@ namespace api.Models
 
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
   }
 }

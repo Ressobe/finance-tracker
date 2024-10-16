@@ -11,12 +11,18 @@ namespace api.Controllers
   {
 
     private readonly IAccountRepository _accountRepository;
+    private readonly ITransactionRepository _transactionRepository;
     private readonly IUserRepository _userRepository;
 
-    public AccountController(IAccountRepository accountRepository, IUserRepository userRepository)
+    public AccountController(
+        IAccountRepository accountRepository,
+        IUserRepository userRepository,
+        ITransactionRepository transactionRepository
+    )
     {
       _accountRepository = accountRepository;
       _userRepository = userRepository;
+      _transactionRepository = transactionRepository;
     }
 
     [HttpGet("{accountId:int}")]
@@ -32,13 +38,19 @@ namespace api.Controllers
       return Ok(account);
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetUserAccounts([FromRoute] string userId)
-    {
-      var accounts = await _accountRepository.GetAllByUserId(userId);
-      return Ok(accounts);
-    }
 
+    [HttpGet("{accountId:int}/transactions")]
+    public async Task<IActionResult> GetAccountTransactions([FromRoute] int accountId)
+    {
+      var isAccountExist = await _accountRepository.IsAccountExist(accountId);
+      if (!isAccountExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var transactions = await _transactionRepository.GetAllByAccountId(accountId);
+      return Ok(transactions);
+    }
 
     [HttpPost("{userId}")]
     public async Task<IActionResult> Create([FromRoute] string userId, [FromBody] CreateAccountDto createAccountDto)
@@ -89,5 +101,6 @@ namespace api.Controllers
 
       return Ok(updatedAccount.ToAccountModel());
     }
+
   }
 }

@@ -32,13 +32,6 @@ namespace api.Controllers
     }
 
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetUserAccounts([FromRoute] string userId)
-    {
-      var categories = await _categoryRepository.GetAllByUserId(userId);
-      return Ok(categories);
-    }
-
     [HttpPost("{userId}")]
     public async Task<IActionResult> Create([FromRoute] string userId, [FromBody] CreateCategoryDto createCategoryDto)
     {

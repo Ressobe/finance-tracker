@@ -18,11 +18,28 @@ namespace api.Controllers
     private readonly ITokenService _tokenService;
     private readonly SignInManager<User> _signInManager;
 
-    public UserController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager)
+    private readonly IAccountRepository _accountRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly ISavingGoalRepository _savingGoalRepository;
+
+    public UserController(
+        UserManager<User> userManager,
+        ITokenService tokenService,
+        SignInManager<User> signInManager,
+        IAccountRepository accountRepository,
+        IUserRepository userRepository,
+        ICategoryRepository categoryRepository,
+        ISavingGoalRepository savingGoalRepository
+    )
     {
       _userManager = userManager;
       _tokenService = tokenService;
       _signInManager = signInManager;
+      _accountRepository = accountRepository;
+      _userRepository = userRepository;
+      _categoryRepository = categoryRepository;
+      _savingGoalRepository = savingGoalRepository;
     }
 
     [HttpPost("login")]
@@ -100,5 +117,39 @@ namespace api.Controllers
         return StatusCode(500, e);
       }
     }
+
+    [HttpGet("{userId}/accounts")]
+    public async Task<IActionResult> GetUserAccounts([FromRoute] string userId)
+    {
+      var accounts = await _accountRepository.GetAllByUserId(userId);
+      return Ok(accounts);
+    }
+
+    [HttpGet("{userId}/categories")]
+    public async Task<IActionResult> GetUserCategories([FromRoute] string userId)
+    {
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var categories = await _categoryRepository.GetAllByUserId(userId);
+      return Ok(categories);
+    }
+
+    [HttpGet("{userId}/saving-goals")]
+    public async Task<IActionResult> GetUserSavingGoals([FromRoute] string userId)
+    {
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var savingGoals = await _savingGoalRepository.GetAllByUserId(userId);
+      return Ok(savingGoals);
+    }
+
   }
 }

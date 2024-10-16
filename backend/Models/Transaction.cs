@@ -1,6 +1,7 @@
 public enum TransactionType
 {
-
+  Earning,
+  Expense
 }
 
 namespace api.Models

@@ -22,7 +22,7 @@ namespace api.Mappers
         Name = categoryDto.Name,
         UserId = categoryDto.UserId
       };
-
     }
+
   }
 }

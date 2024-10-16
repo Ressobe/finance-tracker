@@ -20,6 +20,7 @@ namespace api.Models
 
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+
     public DateTime CreatedAt { get; set; } = DateTime.Now;
   }
 }
