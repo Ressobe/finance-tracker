@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+// 595f2dfd-256f-4529-a3a0-a847a8d3f616
 
 var builder = WebApplication.CreateBuilder(args);
 

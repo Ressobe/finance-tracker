@@ -15,5 +15,17 @@ namespace api.Mappers
         UserId = userId,
       };
     }
+
+    public static Account ToAccountModel(this Account accountDto)
+    {
+      return new Account
+      {
+        Id = accountDto.Id,
+        Name = accountDto.Name,
+        CurrentBalance = accountDto.CurrentBalance,
+        CreatedAt = accountDto.CreatedAt,
+        UserId = accountDto.UserId
+      };
+    }
   }
 }

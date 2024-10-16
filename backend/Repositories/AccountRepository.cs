@@ -1,6 +1,7 @@
 using api.Interfaces;
 using api.Data;
 using api.Models;
+using api.Dtos.Account;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -19,12 +20,12 @@ namespace api.Repositories
       return await _context.Accounts.FindAsync(accountId);
 
     }
+
     public async Task<Account?> CreateAsync(Account accountModel)
     {
       await _context.Accounts.AddAsync(accountModel);
       await _context.SaveChangesAsync();
       return accountModel;
-
     }
 
     public async Task<Account?> DeleteAsync(int accountId)
@@ -40,9 +41,30 @@ namespace api.Repositories
       return accountModel;
     }
 
+    public async Task<List<Account>> GetAllByUserId(string userId)
+    {
+      var accounts = await _context.Accounts.Where(item => item.UserId == userId).ToListAsync();
+      return accounts;
+    }
+
     public async Task<bool> IsAccountExist(int accountId)
     {
       return await _context.Accounts.AnyAsync(item => item.Id == accountId);
+    }
+
+    public async Task<Account?> UpdateAsync(int accountId, UpdateAccountDto updateAccountDto)
+    {
+      var existingAccount = await this.GetAsync(accountId);
+      if (existingAccount == null)
+      {
+        return null;
+      }
+
+      existingAccount.Name = updateAccountDto.Name;
+      existingAccount.CurrentBalance = updateAccountDto.CurrentBalance;
+
+      await _context.SaveChangesAsync();
+      return existingAccount;
     }
   }
 }
