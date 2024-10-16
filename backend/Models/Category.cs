@@ -6,7 +6,7 @@ namespace api.Models
   public class Category
   {
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public string UserId { get; set; } = String.Empty;
     public User? User { get; set; }
     public string Name { get; set; } = String.Empty;
   }

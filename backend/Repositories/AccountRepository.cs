@@ -18,7 +18,6 @@ namespace api.Repositories
     public async Task<Account?> GetAsync(int accountId)
     {
       return await _context.Accounts.FindAsync(accountId);
-
     }
 
     public async Task<Account?> CreateAsync(Account accountModel)

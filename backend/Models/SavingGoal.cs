@@ -8,7 +8,7 @@ namespace api.Models
     public int Id { get; set; }
     public String Name { get; set; } = String.Empty;
 
-    public int UserId { get; set; }
+    public string UserId { get; set; } = String.Empty;
     public User? User { get; set; }
 
 
