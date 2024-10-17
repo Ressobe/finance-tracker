@@ -19,6 +19,8 @@ namespace api.Controllers
     }
 
     [HttpGet("{categoryId:int}")]
+    [ProducesResponseType(typeof(CategoryDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int categoryId)
     {
       var category = await _categoryRepository.GetAsync(categoryId);
@@ -28,7 +30,7 @@ namespace api.Controllers
         return NotFound();
       }
 
-      return Ok(category);
+      return Ok(category.ToCategoryModel());
     }
 
 
@@ -68,6 +70,8 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{categoryId:int}")]
+    [ProducesResponseType(typeof(CategoryDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> Update([FromRoute] int categoryId, [FromBody] UpdateCategoryDto updateCategoryDto)
     {
       if (!ModelState.IsValid)

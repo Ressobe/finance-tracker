@@ -15,6 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy("AllowSpecificOrigins", policy =>
+  {
+    policy.WithOrigins("http://localhost")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+  });
+});
 builder.Services.AddSwaggerGen(option =>
 {
   option.SwaggerDoc("v1", new OpenApiInfo { Title = "Finance Tracker API", Version = "v1" });

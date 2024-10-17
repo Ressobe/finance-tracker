@@ -1,26 +1,26 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-public enum Frequency
+namespace api.Dtos.Budget
 {
-  Monthly,
-  Quarterly,
-  Yearly
-}
-
-namespace api.Models
-{
-  [Table("Budgets")]
-  public class Budget
+  public class BudgetDto
   {
+    [Required]
     public int Id { get; set; }
+    [Required]
     public int CategoryId { get; set; }
-    public Category? Category { get; set; }
+
+    [Required]
     public int LimitAmount { get; set; }
+    [Required]
     public Frequency Frequency { get; set; }
 
+    [Required]
     public DateTime StartDate { get; set; }
+    [Required]
     public DateTime EndDate { get; set; }
 
+    [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+
   }
 }

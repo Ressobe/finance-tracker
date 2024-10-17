@@ -20,6 +20,8 @@ namespace api.Controllers
     }
 
     [HttpGet("{budgetId:int}")]
+    [ProducesResponseType(typeof(BudgetDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int budgetId)
     {
       var budget = await _budgetRepository.GetAsync(budgetId);
@@ -29,11 +31,12 @@ namespace api.Controllers
         return NotFound();
       }
 
-      return Ok(budget);
+      return Ok(budget.ToBudgetModel());
     }
 
 
     [HttpDelete("{budgetId:int}")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> Delete([FromRoute] int budgetId)
     {
       var deletedBudget = await _budgetRepository.DeleteAsync(budgetId);
@@ -47,6 +50,7 @@ namespace api.Controllers
 
 
     [HttpPost("{categoryId:int}")]
+    [ProducesResponseType(typeof(BudgetDto), 200)]
     public async Task<IActionResult> Create([FromRoute] int categoryId, [FromBody] CreateBudgetDto createBudgetDto)
     {
       if (!ModelState.IsValid)
@@ -71,6 +75,7 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{budgetId:int}")]
+    [ProducesResponseType(typeof(BudgetDto), 200)]
     public async Task<IActionResult> Update([FromRoute] int budgetId, [FromBody] UpdateBudgetDto updateBudgetDto)
     {
       if (!ModelState.IsValid)
@@ -84,7 +89,6 @@ namespace api.Controllers
 
       return Ok(updatedBudget.ToBudgetModel());
     }
-
 
   }
 }

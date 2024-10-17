@@ -20,6 +20,8 @@ namespace api.Controllers
 
 
     [HttpGet("{savingGoalId:int}")]
+    [ProducesResponseType(typeof(SavingGoalDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int savingGoalId)
     {
       var savingGoal = await _savingGoalRepository.GetAsync(savingGoalId);
@@ -27,10 +29,11 @@ namespace api.Controllers
       {
         return NotFound();
       }
-      return Ok(savingGoal);
+      return Ok(savingGoal.ToSavingGoalModel());
     }
 
     [HttpDelete("{savingGoalId:int}")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> Delete([FromRoute] int savingGoalId)
     {
       var deletedSavingGoal = await _savingGoalRepository.DeleteAsync(savingGoalId);
@@ -66,6 +69,8 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{savingGoalId:int}")]
+    [ProducesResponseType(typeof(SavingGoalDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> Update([FromRoute] int savingGoalId, [FromBody] UpdateSavingGoalDto updateSavingGoalDto)
     {
       if (!ModelState.IsValid)

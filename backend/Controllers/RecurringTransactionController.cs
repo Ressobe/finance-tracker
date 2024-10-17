@@ -22,6 +22,8 @@ namespace api.Controllers
     }
 
     [HttpGet("{recurringTransactionId:int}")]
+    [ProducesResponseType(typeof(RecurringTransactionDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int recurringTransactionId)
     {
       var recurringTransaction = await _recurringTransactionRepository.GetAsync(recurringTransactionId);
@@ -29,7 +31,7 @@ namespace api.Controllers
       {
         return NotFound();
       }
-      return Ok(recurringTransaction);
+      return Ok(recurringTransaction.ToRecurringTransactionModel());
     }
 
     [HttpDelete("{recurringTransactionId:int}")]
@@ -67,6 +69,8 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{recurringTransactionId:int}")]
+    [ProducesResponseType(typeof(RecurringTransactionDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> Update([FromRoute] int recurringTransactionId, [FromBody] UpdateRecurringTransactionDto updateRecurringTransactionDto)
     {
       if (!ModelState.IsValid)

@@ -26,6 +26,8 @@ namespace api.Controllers
     }
 
     [HttpGet("{accountId:int}")]
+    [ProducesResponseType(typeof(AccountDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int accountId)
     {
       var account = await _accountRepository.GetAsync(accountId);
@@ -35,7 +37,7 @@ namespace api.Controllers
         return NotFound();
       }
 
-      return Ok(account);
+      return Ok(account.ToAccountModel());
     }
 
 

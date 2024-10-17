@@ -22,6 +22,8 @@ namespace api.Controllers
     }
 
     [HttpGet("{savingTransactionId:int}")]
+    [ProducesResponseType(typeof(SavingTransactionDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int savingTransactionId)
     {
       var savingTransaction = await _savingTransactionRepository.GetAsync(savingTransactionId);
@@ -29,7 +31,7 @@ namespace api.Controllers
       {
         return NotFound();
       }
-      return Ok(savingTransaction);
+      return Ok(savingTransaction.ToSavingTransactionModel());
     }
 
     [HttpDelete("{savingTransactionId:int}")]
@@ -67,6 +69,8 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{savingGoalId:int}")]
+    [ProducesResponseType(typeof(SavingTransactionDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> Update([FromRoute] int savingGoalId, [FromBody] UpdateSavingTransactionDto updateSavingTransactionDto)
     {
       if (!ModelState.IsValid)
