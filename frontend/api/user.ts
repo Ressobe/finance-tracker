@@ -1,4 +1,4 @@
-import apiClient from "@/server/api";
+import apiClient from "@/api/client";
 import { Login, Register } from "@/types/auth";
 
 export async function login(loginValues: Login) {

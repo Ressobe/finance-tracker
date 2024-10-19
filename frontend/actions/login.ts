@@ -1,6 +1,6 @@
 "use server";
 
-import { login } from "@/server/user";
+import { login } from "@/api/user";
 import { Login } from "@/types/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

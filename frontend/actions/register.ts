@@ -1,6 +1,6 @@
 "use server";
 
-import { register } from "@/server/user";
+import { register } from "@/api/user";
 import { Register } from "@/types/auth";
 
 export async function registerAction(values: Register) {

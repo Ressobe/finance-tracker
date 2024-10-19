@@ -1,7 +1,7 @@
 "use client";
 
-import { logoutAction } from "@/app/_actions/logut";
-import { Button } from "@/_components/ui/button";
+import { logoutAction } from "@/actions/logut";
+import { Button } from "@/components/ui/button";
 
 export function LogoutButton() {
   const handleClick = async () => {

@@ -1,4 +1,4 @@
-import apiClient from "@/server/api";
+import apiClient from "@/api/client";
 
 export async function getCategory(categoryId: number) {
   return await apiClient.GET("/api/account/{accountId}", {

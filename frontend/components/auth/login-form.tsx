@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -12,24 +11,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/_components/ui/form";
-import { Card, CardContent } from "@/_components/ui/card";
-import { Input } from "@/_components/ui/input";
-import { Button } from "@/_components/ui/button";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { loginSchema } from "@/types/auth";
-import { loginAction } from "@/app/_actions/login";
+import { loginAction } from "@/actions/login";
+import { CardWrapper } from "./card-wrapper";
+import { FormError } from "./form-error";
+import { FormSucess } from "./form-sucess";
 
 export function LoginForm() {
   const [error, setError] = useState<string | undefined>("");
   const [sucess, setSucess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
-
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with diffrent provider"
-      : "";
-  const callbackUrl = searchParams.get("callbackUrl");
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -55,59 +49,63 @@ export function LoginForm() {
   };
 
   return (
-    <Card>
-      <CardContent className="p-8">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="text-sm md:text-lg">
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="john@gmail.com"
-                        type="email"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="text-sm md:text-lg">
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        type="password"
-                        placeholder="********"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button
-              variant="secondary"
-              type="submit"
-              className="w-full relative"
-              disabled={isPending}
-            >
-              {isPending ? <>Login</> : <>Login</>}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+    <CardWrapper
+      headerLabel="Welcome back"
+      backButtonLabel="Don't have an account?"
+      backButtonHref="/auth/register"
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="text-sm md:text-lg">
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="john@gmail.com"
+                      type="email"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="text-sm md:text-lg">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      type="password"
+                      placeholder="********"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormError message={error} />
+          <FormSucess message={sucess} />
+          <Button
+            variant="secondary"
+            type="submit"
+            className="w-full relative"
+            disabled={isPending}
+          >
+            {isPending ? <>Login</> : <>Login</>}
+          </Button>
+        </form>
+      </Form>
+    </CardWrapper>
   );
 }

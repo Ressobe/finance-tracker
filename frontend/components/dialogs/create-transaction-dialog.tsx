@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/_components/ui/dialog";
-import { TransactionForm } from "@/_components/forms/transaction-form";
+} from "@/components/ui/dialog";
+import { TransactionForm } from "@/components/forms/transaction-form";
 
 type CreateTransactionDialogProps = {
   type: "income" | "expense";

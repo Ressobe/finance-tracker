@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/_components/ui/dialog";
+} from "@/components/ui/dialog";
 
 export function CreateCategoryDialog() {
   return (

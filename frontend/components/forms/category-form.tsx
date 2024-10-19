@@ -9,10 +9,10 @@ import {
   FormMessage,
   FormDescription,
   FormLabel,
-} from "@/_components/ui/form";
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/_components/ui/input";
-import { Button } from "@/_components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { NewCategory, newCategorySchema } from "@/types/category";
 
 export function CategoryForm() {

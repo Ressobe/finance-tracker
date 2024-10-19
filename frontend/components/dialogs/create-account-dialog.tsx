@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/_components/ui/dialog";
+} from "@/components/ui/dialog";
 import { NewAccount, newAccountSchema } from "@/types/account";
 import { useForm } from "react-hook-form";
 import {
@@ -18,10 +18,10 @@ import {
   FormMessage,
   FormDescription,
   FormLabel,
-} from "@/_components/ui/form";
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/_components/ui/input";
-import { Button } from "@/_components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export function CreateAccountDialog() {
   return (

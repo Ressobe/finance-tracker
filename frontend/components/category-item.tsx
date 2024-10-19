@@ -21,7 +21,9 @@ export function CategoryItem({
       <div className="w-full flex justify-between">
         <div className="text-lg space-x-2">
           <span>{name} </span>
-          <span className="text-muted-foreground">{percentageShare}%</span>
+          <span className="text-muted-foreground text-sm">
+            ({percentageShare}%)
+          </span>
         </div>
         <span className="text-lg">{amount.toLocaleString()} PLN</span>
       </div>
