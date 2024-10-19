@@ -1,8 +1,9 @@
-import { getCategory } from "@/server/category";
+import { LogoutButton } from "./_components/logout-button";
 
 export default async function Home() {
-  const { data, error } = await getCategory(7);
-  if (error) return <div>djdj</div>;
-
-  return <div>home page {data.currentBalance}</div>;
+  return (
+    <div className="flex flex-col gap-2">
+      home page <LogoutButton />{" "}
+    </div>
+  );
 }
