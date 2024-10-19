@@ -46,7 +46,6 @@ namespace api.Data
     {
       if (!optionsBuilder.IsConfigured)
       {
-        // Załaduj konfigurację z pliku appsettings.json
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")

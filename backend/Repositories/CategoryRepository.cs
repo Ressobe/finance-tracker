@@ -15,6 +15,12 @@ namespace api.Repositories
       _context = context;
     }
 
+    public async Task<bool> IsOwnerAsync(int categoryId, string userId)
+    {
+      var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+      return category != null && category.UserId == userId;
+    }
+
 
     public async Task<Category?> GetAsync(int categoryId)
     {

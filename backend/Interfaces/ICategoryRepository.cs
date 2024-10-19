@@ -3,7 +3,7 @@ using api.Dtos.Category;
 
 namespace api.Interfaces
 {
-  public interface ICategoryRepository
+  public interface ICategoryRepository : IOwnableResourceRepository
   {
     Task<Category?> GetAsync(int categoryId);
     Task<Category?> CreateAsync(Category categoryModel);
@@ -11,5 +11,6 @@ namespace api.Interfaces
     Task<bool> IsCategoryExist(int categoryId);
     Task<List<Category>> GetAllByUserId(string userId);
     Task<Category?> UpdateAsync(int categoryId, UpdateCategoryDto updateCategoryDto);
+    Task<bool> IsOwnerAsync(int resourceId, string userId);
   }
 }

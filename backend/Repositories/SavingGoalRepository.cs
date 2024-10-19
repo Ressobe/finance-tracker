@@ -15,6 +15,12 @@ namespace api.Repositories
       _context = context;
     }
 
+    public async Task<bool> IsOwnerAsync(int savingGoalId, string userId)
+    {
+      var savingGoal = await _context.SavingGoals.FirstOrDefaultAsync(c => c.Id == savingGoalId);
+      return savingGoal != null && savingGoal.UserId == userId;
+    }
+
     public async Task<List<SavingGoal>> GetAllByUserId(string userId)
     {
       return await _context.SavingGoals.Where(item => item.UserId == userId).ToListAsync();

@@ -8,11 +8,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-// 595f2dfd-256f-4529-a3a0-a847a8d3f616
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddLogging(config =>
+{
+  config.AddConsole();
+  config.AddDebug();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -64,32 +68,49 @@ builder.AddNpgsqlDbContext<ApplicationDBContext>("postgresdb");
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
-  options.Password.RequireDigit = true;
-  options.Password.RequireLowercase = true;
-  options.Password.RequireUppercase = true;
+  options.Password.RequireDigit = false;
+  options.Password.RequireLowercase = false;
+  options.Password.RequireUppercase = false;
+  options.Password.RequireNonAlphanumeric = false;
   options.Password.RequiredLength = 6;
 }).AddEntityFrameworkStores<ApplicationDBContext>();
 
 builder.Services.AddAuthentication(options =>
 {
-  // options.DefaultAuthenticateScheme =
-  // options.DefaultChallengeScheme =
-  // options.DefaultForbidScheme =
-  // options.DefaultScheme =
-  // options.DefaultSignInScheme =
+  options.DefaultAuthenticateScheme =
+  options.DefaultChallengeScheme =
+  options.DefaultForbidScheme =
+  options.DefaultScheme =
+  options.DefaultSignInScheme =
   options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
   options.TokenValidationParameters = new TokenValidationParameters
   {
-    ValidateIssuer = true,
-    ValidIssuer = builder.Configuration["JWT:Issuer"],
-    ValidateAudience = true,
-    ValidAudience = builder.Configuration["JWT:Audience"],
     ValidateIssuerSigningKey = true,
+    ValidateIssuer = false,
+    ValidIssuer = builder.Configuration["JWT:Issuer"],
+    ValidateAudience = false,
+    ValidAudience = builder.Configuration["JWT:Audience"],
     IssuerSigningKey = new SymmetricSecurityKey(
         System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
     ),
+    ValidateLifetime = true,
+  };
+
+  options.Events = new JwtBearerEvents
+  {
+    OnAuthenticationFailed = context =>
+    {
+      context.NoResult();
+      context.Response.StatusCode = 401;
+      context.Response.ContentType = "text/plain";
+      return context.Response.WriteAsync("Unauthorized: " + context.Exception.Message);
+    },
+    OnTokenValidated = context =>
+    {
+      return Task.CompletedTask;
+    }
   };
 });
 
@@ -112,7 +133,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 
 app.MapControllers();
 app.Run();

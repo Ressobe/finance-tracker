@@ -3,7 +3,7 @@ using api.Dtos.Account;
 
 namespace api.Interfaces
 {
-  public interface IAccountRepository
+  public interface IAccountRepository : IOwnableResourceRepository
   {
     Task<Account?> GetAsync(int accountId);
     Task<Account?> CreateAsync(Account accountModel);

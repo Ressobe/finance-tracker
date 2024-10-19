@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Dtos.Category;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using api.Helpers;
 
 namespace api.Controllers
 {
   [Route("api/category")]
   [ApiController]
+  [Authorize]
   public class CategoryController : ControllerBase
   {
     private readonly ICategoryRepository _categoryRepository;
@@ -20,6 +24,7 @@ namespace api.Controllers
 
     [HttpGet("{categoryId:int}")]
     [ProducesResponseType(typeof(CategoryDto), 200)]
+    [ResourceOwner(typeof(ICategoryRepository), "categoryId")]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int categoryId)
     {
@@ -34,9 +39,15 @@ namespace api.Controllers
     }
 
 
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> Create([FromRoute] string userId, [FromBody] CreateCategoryDto createCategoryDto)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto createCategoryDto)
     {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -57,6 +68,7 @@ namespace api.Controllers
     }
 
     [HttpDelete("{categoryId:int}")]
+    [ResourceOwner(typeof(ICategoryRepository), "categoryId")]
     public async Task<IActionResult> Delete([FromRoute] int categoryId)
     {
       var deletedCategory = await _categoryRepository.DeleteAsync(categoryId);
@@ -70,6 +82,7 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{categoryId:int}")]
+    [ResourceOwner(typeof(ICategoryRepository), "categoryId")]
     [ProducesResponseType(typeof(CategoryDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Update([FromRoute] int categoryId, [FromBody] UpdateCategoryDto updateCategoryDto)
@@ -85,6 +98,5 @@ namespace api.Controllers
 
       return Ok(updatedCategory.ToCategoryModel());
     }
-
   }
 }

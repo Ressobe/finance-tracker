@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using api.Dtos.User;
 using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace api.Controllers
@@ -13,7 +15,6 @@ namespace api.Controllers
 
   public class UserController : ControllerBase
   {
-
     private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
     private readonly SignInManager<User> _signInManager;
@@ -42,7 +43,9 @@ namespace api.Controllers
       _savingGoalRepository = savingGoalRepository;
     }
 
+
     [HttpPost("login")]
+    [ProducesResponseType(typeof(NewUserDto), 200)]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
       try
@@ -64,8 +67,8 @@ namespace api.Controllers
 
         return Ok(new NewUserDto
         {
-          UserName = user.UserName,
-          Email = user.Email,
+          UserName = user.UserName!,
+          Email = user.Email!,
           Token = _tokenService.CreateToken(user)
         });
       }
@@ -78,7 +81,6 @@ namespace api.Controllers
     [HttpPost("register")]
     public async Task<IActionResult> Create([FromBody] RegisterDto registerDto)
     {
-      // check if user with this email already exist
       try
       {
         if (!ModelState.IsValid)
@@ -118,16 +120,30 @@ namespace api.Controllers
       }
     }
 
-    [HttpGet("{userId}/accounts")]
-    public async Task<IActionResult> GetUserAccounts([FromRoute] string userId)
+    [HttpGet("/accounts")]
+    [Authorize]
+    public async Task<IActionResult> GetUserAccounts()
     {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
       var accounts = await _accountRepository.GetAllByUserId(userId);
       return Ok(accounts);
     }
 
-    [HttpGet("{userId}/categories")]
-    public async Task<IActionResult> GetUserCategories([FromRoute] string userId)
+    [HttpGet("/categories")]
+    [Authorize]
+    public async Task<IActionResult> GetUserCategories()
     {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
@@ -138,9 +154,16 @@ namespace api.Controllers
       return Ok(categories);
     }
 
-    [HttpGet("{userId}/saving-goals")]
-    public async Task<IActionResult> GetUserSavingGoals([FromRoute] string userId)
+    [HttpGet("saving-goals")]
+    [Authorize]
+    public async Task<IActionResult> GetUserSavingGoals()
     {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {

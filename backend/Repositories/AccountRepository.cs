@@ -15,6 +15,12 @@ namespace api.Repositories
       _context = context;
     }
 
+    public async Task<bool> IsOwnerAsync(int accountId, string userId)
+    {
+      var account = await _context.Accounts.FirstOrDefaultAsync(c => c.Id == accountId);
+      return account != null && account.UserId == userId;
+    }
+
     public async Task<Account?> GetAsync(int accountId)
     {
       return await _context.Accounts.FindAsync(accountId);

@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Account;
 using api.Interfaces;
 using api.Mappers;
+using api.Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
   [Route("api/account")]
   [ApiController]
+  [Authorize]
   public class AccountController : ControllerBase
   {
 
@@ -26,6 +30,7 @@ namespace api.Controllers
     }
 
     [HttpGet("{accountId:int}")]
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
     [ProducesResponseType(typeof(AccountDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int accountId)
@@ -42,6 +47,7 @@ namespace api.Controllers
 
 
     [HttpGet("{accountId:int}/transactions")]
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
     public async Task<IActionResult> GetAccountTransactions([FromRoute] int accountId)
     {
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
@@ -54,9 +60,15 @@ namespace api.Controllers
       return Ok(transactions);
     }
 
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> Create([FromRoute] string userId, [FromBody] CreateAccountDto createAccountDto)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateAccountDto createAccountDto)
     {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -77,6 +89,7 @@ namespace api.Controllers
     }
 
     [HttpDelete("{accountId:int}")]
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
     public async Task<IActionResult> Delete([FromRoute] int accountId)
     {
       var deletedAccount = await _accountRepository.DeleteAsync(accountId);
@@ -90,6 +103,7 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{accountId:int}")]
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
     public async Task<IActionResult> Update([FromRoute] int accountId, [FromBody] UpdateAccountDto updateAccountDto)
     {
       if (!ModelState.IsValid)

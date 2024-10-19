@@ -15,7 +15,6 @@ namespace api.Repositories
       _context = context;
     }
 
-
     public async Task<RecurringTransaction?> GetAsync(int recurringTransactionId)
     {
       return await _context.RecurringTransactions.FindAsync(recurringTransactionId);
