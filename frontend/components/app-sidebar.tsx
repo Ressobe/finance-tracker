@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChevronDown,
   CircleDollarSign,
   HandCoins,
   PiggyBank,
@@ -15,26 +16,30 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { LogoutButton } from "./logout-button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { AccountsMenu } from "./accounts-menu";
 
 const items = [
   {
     title: "Dashboard",
     url: "/",
     icon: SquareKanban,
-  },
-  {
-    title: "Accounts",
-    url: "/accounts",
-    icon: Wallet,
   },
   {
     title: "Transactions",
@@ -65,8 +70,8 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
+            <AccountsMenu />
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>

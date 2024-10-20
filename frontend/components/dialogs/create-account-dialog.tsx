@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { NewAccount, newAccountSchema } from "@/types/account";
+import { Account, accountSchema } from "@/types/account";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -22,30 +22,66 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
-export function CreateAccountDialog() {
+type AccountDialogProps = {
+  children: React.ReactNode;
+  defaultValues?: Account;
+};
+
+export function AccountDialog({ children, defaultValues }: AccountDialogProps) {
+  const formType = defaultValues === undefined ? "create" : "update";
+  const [open, setOpen] = useState(false);
+
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger>Create a new account</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger className="w-full">{children}</DialogTrigger>
       <DialogContent className="p-8">
         <DialogHeader>
-          <DialogTitle>Create your new account</DialogTitle>
+          <DialogTitle>
+            {formType === "create" ? (
+              <>
+                Create your new <span className="text-violet-500">account</span>
+              </>
+            ) : (
+              <>
+                Update your
+                <span className="text-violet-500"> {defaultValues?.name} </span>
+                account
+              </>
+            )}
+          </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <AccountForm />
+        <AccountForm closeDialog={closeDialog} defaultValues={defaultValues} />
       </DialogContent>
     </Dialog>
   );
 }
 
-function AccountForm() {
-  const form = useForm<NewAccount>({
-    resolver: zodResolver(newAccountSchema),
+type AccountFormProps = {
+  closeDialog?: () => void;
+  defaultValues?: Account;
+};
+
+function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
+  const formType = defaultValues === undefined ? "create" : "update";
+
+  const form = useForm<Account>({
+    resolver: zodResolver(accountSchema),
     defaultValues: {
-      name: "",
-      currentBalance: 0,
+      name: defaultValues?.name,
+      currentBalance: defaultValues?.currentBalance,
     },
   });
+
+  const onCancel = () => {
+    if (closeDialog) closeDialog();
+  };
 
   const onSubmit = async () => {};
 
@@ -88,10 +124,12 @@ function AccountForm() {
             />
           </div>
           <div className="w-full flex justify-end gap-2">
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="submit">New account</Button>
+            <Button type="submit">
+              {formType === "create" ? "Create" : "Update"} account
+            </Button>
           </div>
         </form>
       </Form>

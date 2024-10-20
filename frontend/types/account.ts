@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const newAccountSchema = z.object({
+export const accountSchema = z.object({
   name: z.string(),
   currentBalance: z.number(),
 });
 
-export type NewAccount = z.infer<typeof newAccountSchema>;
+export type Account = z.infer<typeof accountSchema>;
