@@ -1,4 +1,4 @@
-import { CategoryItem } from "./category-item";
+import { CategoryItem } from "@/features/category/components/category-item";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
 type ExpenseByCategoriesProps = {

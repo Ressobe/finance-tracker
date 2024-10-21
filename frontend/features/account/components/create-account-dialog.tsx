@@ -56,7 +56,7 @@ export function AccountDialog({ children, defaultValues }: AccountDialogProps) {
         >
           {children}
         </DialogTrigger>
-        <DialogContent onClick={(e) => e.stopPropagation()} className="p-8">
+        <DialogContent onClick={(e) => e.stopPropagation()}>
           <DialogHeader>
             <DialogTitle>
               {formType === "create" ? (
@@ -110,6 +110,12 @@ function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
     if (closeDialog) closeDialog();
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === " ") {
+      event.stopPropagation();
+    }
+  };
+
   const onSubmit = async (values: Account) => {
     if (formType === "create") {
       const response = await createAccountAction(values);
@@ -146,7 +152,7 @@ function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
                 <FormItem className="text-sm md:text-lg">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" />
+                    <Input {...field} type="text" onKeyDown={handleKeyDown} />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>
@@ -162,7 +168,7 @@ function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
                 <FormItem className="text-sm md:text-lg">
                   <FormLabel>Balance</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input {...field} type="number" onKeyDown={handleKeyDown} />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>

@@ -17,15 +17,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../../components/ui/select";
 import { cn, formatDate } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 
@@ -34,7 +34,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "../../../components/ui/calendar";
 
 type TransactionFormProps = {
   type: TransactionType;

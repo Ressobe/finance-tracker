@@ -19,9 +19,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AccountDialog } from "@/components/dialogs/create-account-dialog";
-import { DeleteAccountAlertDialog } from "./dialogs/delete-account-alert-dialog";
 import { Account } from "@/types/account";
+import { AccountDialog } from "@/features/account/components/create-account-dialog";
+import { DeleteAccountAlertDialog } from "@/features/account/components/delete-account-alert-dialog";
+
 // FIX: spacja zamyka dialog
 export function AccountsMenu() {
   return (
