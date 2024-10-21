@@ -22,7 +22,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type AccountDialogProps = {
   children: React.ReactNode;
@@ -33,33 +33,52 @@ export function AccountDialog({ children, defaultValues }: AccountDialogProps) {
   const formType = defaultValues === undefined ? "create" : "update";
   const [open, setOpen] = useState(false);
 
+  const divRef = useRef<HTMLDivElement | null>(null);
+
   const closeDialog = () => {
     setOpen(false);
+    if (divRef.current) {
+      divRef.current.click();
+    }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="w-full">{children}</DialogTrigger>
-      <DialogContent className="p-8">
-        <DialogHeader>
-          <DialogTitle>
-            {formType === "create" ? (
-              <>
-                Create your new <span className="text-violet-500">account</span>
-              </>
-            ) : (
-              <>
-                Update your
-                <span className="text-violet-500"> {defaultValues?.name} </span>
-                account
-              </>
-            )}
-          </DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
-        <AccountForm closeDialog={closeDialog} defaultValues={defaultValues} />
-      </DialogContent>
-    </Dialog>
+    <div ref={divRef}>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger
+          onClick={(e) => e.stopPropagation()}
+          className="text-left w-full"
+        >
+          {children}
+        </DialogTrigger>
+        <DialogContent onClick={(e) => e.stopPropagation()} className="p-8">
+          <DialogHeader>
+            <DialogTitle>
+              {formType === "create" ? (
+                <>
+                  Create your new{" "}
+                  <span className="text-violet-500">account</span>
+                </>
+              ) : (
+                <>
+                  Update your
+                  <span className="text-violet-500">
+                    {" "}
+                    {defaultValues?.name}{" "}
+                  </span>
+                  account
+                </>
+              )}
+            </DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+          <AccountForm
+            closeDialog={closeDialog}
+            defaultValues={defaultValues}
+          />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
 

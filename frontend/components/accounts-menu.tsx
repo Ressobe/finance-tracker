@@ -20,6 +20,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AccountDialog } from "@/components/dialogs/create-account-dialog";
+import { DeleteAccountAlertDialog } from "./dialogs/delete-account-alert-dialog";
+import { Account } from "@/types/account";
 
 export function AccountsMenu() {
   return (
@@ -44,12 +46,9 @@ export function AccountsMenu() {
                         <MoreHorizontal />
                       </SidebarMenuAction>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent side="right" align="start">
-                      <DropdownMenuItem></DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <span>Delete Account</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
+                    <DropdownMenuContentAccount
+                      account={{ name: "Savings", currentBalance: 39933 }}
+                    />
                   </DropdownMenu>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -62,11 +61,9 @@ export function AccountsMenu() {
                         <MoreHorizontal />
                       </SidebarMenuAction>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent side="right" align="start">
-                      <DropdownMenuItem>
-                        <span>Delete Account</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
+                    <DropdownMenuContentAccount
+                      account={{ name: "Checking", currentBalance: 69669 }}
+                    />
                   </DropdownMenu>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -80,12 +77,12 @@ export function AccountsMenu() {
                       </SidebarMenuAction>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent side="right" align="start">
-                      <DropdownMenuItem>
-                        <span>Edit Account</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <span>Delete Account</span>
-                      </DropdownMenuItem>
+                      <EditAccountDropdownMenuItem
+                        account={{ name: "Investments", currentBalance: 33321 }}
+                      />
+                      <DeleteAccountDropdownMenuItem
+                        account={{ name: "Investments", currentBalance: 33321 }}
+                      />
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </SidebarMenuSubButton>
@@ -95,6 +92,21 @@ export function AccountsMenu() {
         </SidebarMenuItem>
       </Collapsible>
     </SidebarMenu>
+  );
+}
+
+type DropdownMenuContentAccountProps = {
+  account: Account;
+};
+
+function DropdownMenuContentAccount({
+  account,
+}: DropdownMenuContentAccountProps) {
+  return (
+    <DropdownMenuContent side="right" align="start">
+      <EditAccountDropdownMenuItem account={account} />
+      <DeleteAccountDropdownMenuItem account={account} />
+    </DropdownMenuContent>
   );
 }
 
@@ -110,10 +122,37 @@ function CreateAccountMenuSubItem() {
   );
 }
 
-function EditAccount() {
+type DeleteAccountDropdownMenuItemProps = {
+  account: Account;
+};
+
+function DeleteAccountDropdownMenuItem({
+  account,
+}: DeleteAccountDropdownMenuItemProps) {
   return (
-    <AccountDialog>
-      <span>Edit Account</span>
-    </AccountDialog>
+    <DropdownMenuItem onSelect={(e) => e.stopPropagation()}>
+      <DeleteAccountAlertDialog account={account}>
+        <span>Delete Account</span>
+      </DeleteAccountAlertDialog>
+    </DropdownMenuItem>
+  );
+}
+
+type EditAccountDropdownMenuItemProps = {
+  account: Account;
+};
+
+function EditAccountDropdownMenuItem({
+  account,
+}: EditAccountDropdownMenuItemProps) {
+  return (
+    <DropdownMenuItem
+      className="text-left"
+      onSelect={(e) => e.stopPropagation()}
+    >
+      <AccountDialog defaultValues={account}>
+        <span>Edit Account</span>
+      </AccountDialog>
+    </DropdownMenuItem>
   );
 }
