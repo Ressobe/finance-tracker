@@ -134,7 +134,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/account/{userId}": {
+    "/api/account": {
         parameters: {
             query?: never;
             header?: never;
@@ -147,9 +147,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    userId: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: {
@@ -166,7 +164,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["AccountDto"];
+                        "application/json": components["schemas"]["AccountDto"];
+                        "text/json": components["schemas"]["AccountDto"];
+                    };
                 };
             };
         };
@@ -435,7 +437,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/category/{userId}": {
+    "/api/category": {
         parameters: {
             query?: never;
             header?: never;
@@ -448,9 +450,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    userId: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: {
@@ -1089,39 +1089,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/user/info": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/user/login": {
         parameters: {
             query?: never;
@@ -1206,7 +1173,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/user/{userId}/accounts": {
+    "/accounts": {
         parameters: {
             query?: never;
             header?: never;
@@ -1217,9 +1184,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    userId: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;
@@ -1241,7 +1206,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/user/{userId}/categories": {
+    "/categories": {
         parameters: {
             query?: never;
             header?: never;
@@ -1252,9 +1217,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    userId: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;
@@ -1276,7 +1239,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/user/{userId}/saving-goals": {
+    "/api/user/saving-goals": {
         parameters: {
             query?: never;
             header?: never;
@@ -1287,9 +1250,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    userId: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;

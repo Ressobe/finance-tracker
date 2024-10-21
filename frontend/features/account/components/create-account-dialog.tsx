@@ -23,6 +23,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
+import { createAccountAction } from "@/features/account/actions/create-account";
+import { useToast } from "@/hooks/use-toast";
+import { CircleCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { updateAccountAction } from "@/features/account/actions/update-account";
 
 type AccountDialogProps = {
   children: React.ReactNode;
@@ -90,6 +95,9 @@ type AccountFormProps = {
 function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
   const formType = defaultValues === undefined ? "create" : "update";
 
+  const { toast } = useToast();
+  const router = useRouter();
+
   const form = useForm<Account>({
     resolver: zodResolver(accountSchema),
     defaultValues: {
@@ -102,7 +110,29 @@ function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
     if (closeDialog) closeDialog();
   };
 
-  const onSubmit = async () => {};
+  const onSubmit = async (values: Account) => {
+    if (formType === "create") {
+      const response = await createAccountAction(values);
+      if (response.sucess) {
+        toast({
+          description: (
+            <div className="flex items-center">
+              <CircleCheck className="mr-2 text-green-500" />
+              New account created!
+            </div>
+          ),
+          className: "bg-secondary opacity-90",
+          duration: 1000,
+        });
+        if (closeDialog) closeDialog();
+        router.push(`/accounts/${response.accountId}`);
+      }
+    }
+
+    if (formType === "update") {
+      await updateAccountAction(4, values);
+    }
+  };
 
   return (
     <div>

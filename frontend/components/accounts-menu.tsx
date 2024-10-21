@@ -22,7 +22,7 @@ import {
 import { AccountDialog } from "@/components/dialogs/create-account-dialog";
 import { DeleteAccountAlertDialog } from "./dialogs/delete-account-alert-dialog";
 import { Account } from "@/types/account";
-
+// FIX: spacja zamyka dialog
 export function AccountsMenu() {
   return (
     <SidebarMenu>
