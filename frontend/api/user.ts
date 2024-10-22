@@ -20,6 +20,10 @@ export async function register(registerValues: Register) {
   });
 }
 
-export async function getUserInfo() {
-  console.log(await apiClient.GET("/api/user/info"));
+export async function getOverview() {
+  return await apiClient.GET("/api/user/overview");
+}
+
+export async function getUserAccounts() {
+  return await apiClient.GET("/api/user/accounts");
 }

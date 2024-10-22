@@ -1173,7 +1173,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/accounts": {
+    "/api/user/accounts": {
         parameters: {
             query?: never;
             header?: never;
@@ -1194,7 +1194,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["AccountDto"][];
+                        "application/json": components["schemas"]["AccountDto"][];
+                        "text/json": components["schemas"]["AccountDto"][];
+                    };
                 };
             };
         };
@@ -1206,7 +1210,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/categories": {
+    "/api/user/categories": {
         parameters: {
             query?: never;
             header?: never;
@@ -1261,6 +1265,43 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/user/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["OverviewDto"];
+                        "application/json": components["schemas"]["OverviewDto"];
+                        "text/json": components["schemas"]["OverviewDto"];
+                    };
                 };
             };
         };
@@ -1362,8 +1403,6 @@ export interface components {
         };
         CreateTransactionDto: {
             /** Format: int32 */
-            accountId: number;
-            /** Format: int32 */
             amount: number;
             transactionType: components["schemas"]["TransactionType"];
             /** Format: int32 */
@@ -1384,6 +1423,14 @@ export interface components {
             userName?: string | null;
             email?: string | null;
             token?: string | null;
+        };
+        OverviewDto: {
+            /** Format: int32 */
+            totalBalance: number;
+            /** Format: int32 */
+            totalIncome: number;
+            /** Format: int32 */
+            totalExpense: number;
         };
         ProblemDetails: {
             type?: string | null;

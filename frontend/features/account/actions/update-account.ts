@@ -4,7 +4,7 @@ import apiClient from "@/api/client";
 import { Account } from "@/types/account";
 
 export async function updateAccountAction(accountId: number, values: Account) {
-  await apiClient.PUT("/api/account/{accountId}", {
+  const { error } = await apiClient.PUT("/api/account/{accountId}", {
     params: {
       path: {
         accountId: accountId,
@@ -15,4 +15,8 @@ export async function updateAccountAction(accountId: number, values: Account) {
       currentBalance: Number(values.currentBalance),
     },
   });
+  if (error) {
+    return { error: "Something went wrong!" };
+  }
+  return { sucess: "Account updated!" };
 }

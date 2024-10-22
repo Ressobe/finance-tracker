@@ -6,7 +6,6 @@ export const authMiddleware: Middleware = {
   async onRequest({ request }) {
     const token = cookies().get("token");
 
-    console.log(token);
     if (token) {
       request.headers.set("Authorization", `Bearer ${token.value}`);
     }

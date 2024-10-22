@@ -1,13 +1,12 @@
 "use client";
 
 import {
-  ChevronDown,
   CircleDollarSign,
   HandCoins,
+  LucideProps,
   PiggyBank,
   Settings,
   SquareKanban,
-  Wallet,
 } from "lucide-react";
 
 import {
@@ -16,24 +15,18 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { LogoutButton } from "./logout-button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { AccountsMenu } from "./accounts-menu";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { AccountModel } from "@/types/account";
 
 const items = [
   {
@@ -58,7 +51,11 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+type AppSidebarProps = {
+  accounts: AccountModel[] | undefined;
+};
+
+export function AppSidebar({ accounts }: AppSidebarProps) {
   const pathname = usePathname();
   return (
     <Sidebar>
@@ -71,23 +68,15 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <AccountsMenu />
+            <AppSidebarMenuItem item={items[0]} pathname={pathname} />
+            <AccountsMenu accounts={accounts} />
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      href={item.url}
-                      className={cn(
-                        item.url === pathname &&
-                          "bg-secondary-foreground/10 transition-all",
-                      )}
-                    >
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+              {items.slice(1).map((item) => (
+                <AppSidebarMenuItem
+                  key={item.url}
+                  item={item}
+                  pathname={pathname}
+                />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -97,5 +86,35 @@ export function AppSidebar() {
         <LogoutButton />
       </SidebarFooter>
     </Sidebar>
+  );
+}
+
+type AppSidebarMenuItemProps = {
+  item: {
+    title: string;
+    url: string;
+    icon: ForwardRefExoticComponent<
+      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+    >;
+  };
+  pathname: string;
+};
+
+function AppSidebarMenuItem({ item, pathname }: AppSidebarMenuItemProps) {
+  return (
+    <SidebarMenuItem key={item.title}>
+      <SidebarMenuButton asChild>
+        <Link
+          href={item.url}
+          className={cn(
+            item.url === pathname &&
+              "bg-secondary-foreground/10 transition-all",
+          )}
+        >
+          <item.icon />
+          <span>{item.title}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   );
 }

@@ -7,7 +7,7 @@ export async function createAccountAction(values: Account) {
   const { data, error } = await apiClient.POST("/api/account", {
     body: {
       name: values.name,
-      currentBalance: Number(values.currentBalance),
+      currentBalance: values.currentBalance,
     },
   });
 

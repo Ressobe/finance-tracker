@@ -1,4 +1,4 @@
-import { CirclePlus, MoreHorizontal, Wallet } from "lucide-react";
+import { MoreHorizontal, Wallet } from "lucide-react";
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -16,18 +16,26 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Account } from "@/types/account";
-import { AccountDialog } from "@/features/account/components/create-account-dialog";
-import { DeleteAccountAlertDialog } from "@/features/account/components/delete-account-alert-dialog";
+import { DropdownMenuContentAccount } from "@/features/account/components/dropdown-menu-content-account";
+import { CreateAccountMenuSubItem } from "@/features/account/components/create-account-menu-sub-item";
+import { AccountModel } from "@/types/account";
+import Link from "next/link";
+import { useState } from "react";
+import { EditAccountDropdownMenuItem } from "@/features/account/components/edit-account-dropdown-menu-item";
+import { DeleteAccountDropdownMenuItem } from "@/features/account/components/delete-account-dropdown-menu-item";
 
-// FIX: spacja zamyka dialog
-export function AccountsMenu() {
+type AccountsMenuProps = {
+  accounts: AccountModel[] | undefined;
+};
+
+export function AccountsMenu({ accounts }: AccountsMenuProps) {
+  if (accounts === undefined) return null;
+
   return (
     <SidebarMenu>
-      <Collapsible defaultOpen className="group/collapsible">
+      <Collapsible className="group/collapsible">
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton>
@@ -38,56 +46,18 @@ export function AccountsMenu() {
           <CollapsibleContent>
             <SidebarMenuSub>
               <CreateAccountMenuSubItem />
-              <SidebarMenuSubItem>
-                <SidebarMenuSubButton>
-                  Savings
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuAction>
-                        <MoreHorizontal />
-                      </SidebarMenuAction>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContentAccount
-                      account={{ name: "Savings", currentBalance: 39933 }}
-                    />
-                  </DropdownMenu>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
-              <SidebarMenuSubItem>
-                <SidebarMenuSubButton>
-                  Checking
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuAction>
-                        <MoreHorizontal />
-                      </SidebarMenuAction>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContentAccount
-                      account={{ name: "Checking", currentBalance: 69669 }}
-                    />
-                  </DropdownMenu>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
-              <SidebarMenuSubItem>
-                <SidebarMenuSubButton>
-                  Investments
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuAction>
-                        <MoreHorizontal />
-                      </SidebarMenuAction>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="right" align="start">
-                      <EditAccountDropdownMenuItem
-                        account={{ name: "Investments", currentBalance: 33321 }}
-                      />
-                      <DeleteAccountDropdownMenuItem
-                        account={{ name: "Investments", currentBalance: 33321 }}
-                      />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
+              {accounts.map((item) => {
+                return (
+                  <Link key={item.id} href={`/accounts/${item.id}`}>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton>
+                        {item.name}
+                        <AccountDropdownMenu account={item} />
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  </Link>
+                );
+              })}
             </SidebarMenuSub>
           </CollapsibleContent>
         </SidebarMenuItem>
@@ -96,64 +66,34 @@ export function AccountsMenu() {
   );
 }
 
-type DropdownMenuContentAccountProps = {
-  account: Account;
+type AccountDropdownMenuProps = {
+  account: AccountModel;
 };
 
-function DropdownMenuContentAccount({
-  account,
-}: DropdownMenuContentAccountProps) {
+function AccountDropdownMenu({ account }: AccountDropdownMenuProps) {
+  const [open, setOpen] = useState(false);
+
+  const closeDropdownMenu = () => {
+    setOpen(false);
+  };
+
   return (
-    <DropdownMenuContent side="right" align="start">
-      <EditAccountDropdownMenuItem account={account} />
-      <DeleteAccountDropdownMenuItem account={account} />
-    </DropdownMenuContent>
-  );
-}
-
-function CreateAccountMenuSubItem() {
-  return (
-    <SidebarMenuSubItem className="w-full">
-      <AccountDialog>
-        <SidebarMenuSubButton className="flex justify-between">
-          Create account <CirclePlus />
-        </SidebarMenuSubButton>
-      </AccountDialog>
-    </SidebarMenuSubItem>
-  );
-}
-
-type DeleteAccountDropdownMenuItemProps = {
-  account: Account;
-};
-
-function DeleteAccountDropdownMenuItem({
-  account,
-}: DeleteAccountDropdownMenuItemProps) {
-  return (
-    <DropdownMenuItem onSelect={(e) => e.stopPropagation()}>
-      <DeleteAccountAlertDialog account={account}>
-        <span>Delete Account</span>
-      </DeleteAccountAlertDialog>
-    </DropdownMenuItem>
-  );
-}
-
-type EditAccountDropdownMenuItemProps = {
-  account: Account;
-};
-
-function EditAccountDropdownMenuItem({
-  account,
-}: EditAccountDropdownMenuItemProps) {
-  return (
-    <DropdownMenuItem
-      className="text-left"
-      onSelect={(e) => e.stopPropagation()}
-    >
-      <AccountDialog defaultValues={account}>
-        <span>Edit Account</span>
-      </AccountDialog>
-    </DropdownMenuItem>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
+        <SidebarMenuAction>
+          <MoreHorizontal />
+        </SidebarMenuAction>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="right" align="start">
+        <EditAccountDropdownMenuItem
+          closeDropdownMenu={closeDropdownMenu}
+          account={account}
+        />
+        <DeleteAccountDropdownMenuItem
+          closeDropdownMenu={closeDropdownMenu}
+          account={account}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

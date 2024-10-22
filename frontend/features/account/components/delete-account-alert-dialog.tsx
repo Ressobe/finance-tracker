@@ -11,12 +11,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Account } from "@/types/account";
-import { useRef, useState } from "react";
+import { AccountModel } from "@/types/account";
+import { useRef, useState, useTransition } from "react";
+import { deleteAccountAction } from "../actions/delete-account";
+import { useToast } from "@/hooks/use-toast";
+import { CircleCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type DeleteAccountAlertDialogProps = {
   children: React.ReactNode;
-  account: Account;
+  account: AccountModel;
   defaultOpen?: boolean;
 };
 
@@ -27,9 +31,29 @@ export function DeleteAccountAlertDialog({
 }: DeleteAccountAlertDialogProps) {
   const [open, setOpen] = useState(defaultOpen ?? false);
   const divRef = useRef<HTMLDivElement | null>(null);
+  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleContinue = () => {
-    console.log(account);
+    startTransition(async () => {
+      const response = await deleteAccountAction(account.id);
+      if (response.sucess) {
+        router.replace("/");
+        router.refresh();
+
+        toast({
+          description: (
+            <div className="flex items-center gap-4 text-xl">
+              <CircleCheck className="text-green-500 w-12 h-12" />
+              <span>Account {account.name} deleted!</span>
+            </div>
+          ),
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+    });
   };
 
   const handleCancel = () => {
@@ -57,8 +81,10 @@ export function DeleteAccountAlertDialog({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleContinue}>
+            <AlertDialogCancel onClick={handleCancel} disabled={isPending}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleContinue} disabled={isPending}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -3,9 +3,17 @@ import { z } from "zod";
 export const accountSchema = z.object({
   name: z.string(),
   currentBalance: z
-    .string()
-    .transform((val) => parseFloat(val)) // Konwersja stringa na liczbę
-    .refine((val) => !isNaN(val), { message: "Must be a number" }),
+    .union([z.string(), z.number()])
+    .transform((val) => (typeof val === "string" ? parseFloat(val) : val))
+    .refine((val) => !isNaN(val), { message: "Must be a valid number" }),
 });
+
+export const accountModelSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  currentBalance: z.number(),
+});
+
+export type AccountModel = z.infer<typeof accountModelSchema>;
 
 export type Account = z.infer<typeof accountSchema>;
