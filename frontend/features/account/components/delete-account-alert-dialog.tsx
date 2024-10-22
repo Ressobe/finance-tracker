@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { AccountModel } from "@/types/account";
-import { useRef, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { deleteAccountAction } from "../actions/delete-account";
 import { useToast } from "@/hooks/use-toast";
 import { CircleCheck } from "lucide-react";
@@ -22,15 +22,16 @@ type DeleteAccountAlertDialogProps = {
   children: React.ReactNode;
   account: AccountModel;
   defaultOpen?: boolean;
+  closeDropdownMenu?: () => void;
 };
 
 export function DeleteAccountAlertDialog({
   children,
   account,
   defaultOpen,
+  closeDropdownMenu,
 }: DeleteAccountAlertDialogProps) {
   const [open, setOpen] = useState(defaultOpen ?? false);
-  const divRef = useRef<HTMLDivElement | null>(null);
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -57,39 +58,32 @@ export function DeleteAccountAlertDialog({
   };
 
   const handleCancel = () => {
-    if (divRef.current) {
-      divRef.current.click();
-    }
+    if (closeDropdownMenu) closeDropdownMenu();
   };
 
   return (
-    <div ref={divRef}>
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogTrigger
-          className="text-left"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {children}
-        </AlertDialogTrigger>
-        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your{" "}
-              <span className="text-violet-500 font-bold">{account.name} </span>
-              account and remove your data from our servers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancel} disabled={isPending}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleContinue} disabled={isPending}>
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger className="text-left w-full">
+        {children}
+      </AlertDialogTrigger>
+      <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your{" "}
+            <span className="text-violet-500 font-bold">{account.name} </span>
+            account and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleCancel} disabled={isPending}>
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={handleContinue} disabled={isPending}>
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

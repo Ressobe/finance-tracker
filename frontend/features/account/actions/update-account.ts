@@ -2,6 +2,7 @@
 
 import apiClient from "@/api/client";
 import { Account } from "@/types/account";
+import { revalidatePath } from "next/cache";
 
 export async function updateAccountAction(accountId: number, values: Account) {
   const { error } = await apiClient.PUT("/api/account/{accountId}", {
@@ -12,11 +13,15 @@ export async function updateAccountAction(accountId: number, values: Account) {
     },
     body: {
       name: values.name,
-      currentBalance: Number(values.currentBalance),
+      currentBalance: values.currentBalance,
     },
   });
+
   if (error) {
     return { error: "Something went wrong!" };
   }
+
+  revalidatePath(`/accounts/${accountId}`);
+
   return { sucess: "Account updated!" };
 }
