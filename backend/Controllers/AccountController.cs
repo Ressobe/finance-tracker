@@ -61,6 +61,7 @@ namespace api.Controllers
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(AccountDto), 200)]
     public async Task<IActionResult> Create([FromBody] CreateAccountDto createAccountDto)
     {
       var userId = User.FindFirstValue("UserId");

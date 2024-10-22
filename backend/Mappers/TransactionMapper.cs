@@ -14,6 +14,7 @@ namespace api.Mappers
         CategoryId = createTransactionDto.CategoryId,
         Description = createTransactionDto.Description,
         TransactionType = createTransactionDto.TransactionType,
+        CreatedAt = DateTime.UtcNow,
       };
     }
 

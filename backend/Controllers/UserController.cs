@@ -23,6 +23,7 @@ namespace api.Controllers
     private readonly IUserRepository _userRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly ISavingGoalRepository _savingGoalRepository;
+    private readonly ITransactionRepository _transactionRepository;
 
     public UserController(
         UserManager<User> userManager,
@@ -31,7 +32,8 @@ namespace api.Controllers
         IAccountRepository accountRepository,
         IUserRepository userRepository,
         ICategoryRepository categoryRepository,
-        ISavingGoalRepository savingGoalRepository
+        ISavingGoalRepository savingGoalRepository,
+        ITransactionRepository transactionRepository
     )
     {
       _userManager = userManager;
@@ -41,6 +43,7 @@ namespace api.Controllers
       _userRepository = userRepository;
       _categoryRepository = categoryRepository;
       _savingGoalRepository = savingGoalRepository;
+      _transactionRepository = transactionRepository;
     }
 
 
@@ -120,7 +123,7 @@ namespace api.Controllers
       }
     }
 
-    [HttpGet("/accounts")]
+    [HttpGet("accounts")]
     [Authorize]
     public async Task<IActionResult> GetUserAccounts()
     {
@@ -134,7 +137,7 @@ namespace api.Controllers
       return Ok(accounts);
     }
 
-    [HttpGet("/categories")]
+    [HttpGet("categories")]
     [Authorize]
     public async Task<IActionResult> GetUserCategories()
     {
@@ -174,5 +177,55 @@ namespace api.Controllers
       return Ok(savingGoals);
     }
 
+    [Authorize]
+    [HttpGet("overview")]
+    [ProducesResponseType(typeof(OverviewDto), 200)]
+    public async Task<IActionResult> GetUserOverview()
+    {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var accounts = await _accountRepository.GetAllByUserId(userId);
+
+      long totalBalance = 0;
+      long totalIncome = 0;
+      long totalExpense = 0;
+
+      foreach (var account in accounts)
+      {
+        totalBalance += account.CurrentBalance;
+
+        var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
+        foreach (var transaction in transactions)
+        {
+          if (transaction.TransactionType == TransactionType.Earning)
+          {
+            totalIncome += transaction.Amount;
+          }
+          else if (transaction.TransactionType == TransactionType.Expense)
+          {
+            totalExpense += transaction.Amount;
+          }
+        }
+      }
+
+      var overview = new
+      {
+        TotalBalance = totalBalance,
+        TotalIncome = totalIncome,
+        TotalExpense = totalExpense
+      };
+
+      return Ok(overview);
+    }
   }
 }
