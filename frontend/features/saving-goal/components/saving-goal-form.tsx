@@ -12,7 +12,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { NewSavingGoal, newSavingGoalSchema } from "@/types/saving-goal";
+import {
+  NewSavingGoal,
+  newSavingGoalSchema,
+  SavingGoalModel,
+} from "@/types/saving-goal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useTransition } from "react";
@@ -23,6 +27,7 @@ import { ErrorToastMessage } from "@/components/error-toast-message";
 
 type SavingGoalFormProps = {
   closeDialog?: () => void;
+  defaultValues?: SavingGoalModel;
 };
 
 export function SavingGoalForm({ closeDialog }: SavingGoalFormProps) {

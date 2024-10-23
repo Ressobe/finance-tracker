@@ -10,16 +10,24 @@ import {
 } from "@/components/ui/dialog";
 import { SavingGoalForm } from "./saving-goal-form";
 import { useState } from "react";
+import { SavingGoalModel } from "@/types/saving-goal";
 
 type SavingGoalDialogProps = {
   children: React.ReactNode;
-  // defaultValues?: SavingGoal
+  closeDropdownMenu?: () => void;
+  defaultValues?: SavingGoalModel;
 };
 
-export function SavingGoalDialog({ children }: SavingGoalDialogProps) {
+export function SavingGoalDialog({
+  children,
+  defaultValues,
+  closeDropdownMenu,
+}: SavingGoalDialogProps) {
   const [open, setOpen] = useState(false);
+  const type = defaultValues === undefined ? "create" : "update";
 
   const closeDialog = () => {
+    if (closeDropdownMenu) closeDropdownMenu();
     setOpen(false);
   };
 
@@ -29,13 +37,31 @@ export function SavingGoalDialog({ children }: SavingGoalDialogProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Create your new <span className="text-violet-500">saving goal</span>
+            {type === "create" ? (
+              <span>
+                Create your new{" "}
+                <span className="text-violet-500">saving goal</span>
+              </span>
+            ) : (
+              <span>
+                Update your{" "}
+                <span className="text-violet-500">{defaultValues?.name}</span>{" "}
+                saving goal
+              </span>
+            )}
           </DialogTitle>
           <DialogDescription>
-            Create your new goal to track progress
+            {type === "create" ? (
+              <span>Create your new goal to track progress</span>
+            ) : (
+              <span>Update your saving goal</span>
+            )}
           </DialogDescription>
         </DialogHeader>
-        <SavingGoalForm closeDialog={closeDialog} />
+        <SavingGoalForm
+          closeDialog={closeDialog}
+          defaultValues={defaultValues}
+        />
       </DialogContent>
     </Dialog>
   );
