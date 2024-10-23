@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using api.Dtos.User;
+using api.Dtos.Account;
+using api.Dtos.Category;
+using api.Dtos.SavingGoal;
+using api.Mappers;
 using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
@@ -124,6 +128,7 @@ namespace api.Controllers
     }
 
     [HttpGet("accounts")]
+    [ProducesResponseType(typeof(List<AccountDto>), 200)]
     [Authorize]
     public async Task<IActionResult> GetUserAccounts()
     {
@@ -134,10 +139,13 @@ namespace api.Controllers
       }
 
       var accounts = await _accountRepository.GetAllByUserId(userId);
+      var accountDtos = accounts.Select(account => account.ToAccountModel()).ToList();
+
       return Ok(accounts);
     }
 
     [HttpGet("categories")]
+    [ProducesResponseType(typeof(List<CategoryDto>), 200)]
     [Authorize]
     public async Task<IActionResult> GetUserCategories()
     {
@@ -158,6 +166,7 @@ namespace api.Controllers
     }
 
     [HttpGet("saving-goals")]
+    [ProducesResponseType(typeof(List<SavingGoalDto>), 200)]
     [Authorize]
     public async Task<IActionResult> GetUserSavingGoals()
     {

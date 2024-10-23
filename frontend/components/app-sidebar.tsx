@@ -1,14 +1,13 @@
 "use client";
 
 import {
+  ArrowRightLeft,
   CircleDollarSign,
-  HandCoins,
   LucideProps,
   PiggyBank,
   Settings,
   SquareKanban,
 } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -24,9 +23,9 @@ import { LogoutButton } from "./logout-button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { AccountsMenu } from "./accounts-menu";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { AccountModel } from "@/types/account";
+import { AccountsMenu } from "@/features/account/components/accounts-menu";
 
 const items = [
   {
@@ -37,7 +36,7 @@ const items = [
   {
     title: "Transactions",
     url: "/transactions",
-    icon: HandCoins,
+    icon: ArrowRightLeft,
   },
   {
     title: "Saving goals",

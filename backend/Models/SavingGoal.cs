@@ -14,11 +14,6 @@ namespace api.Models
 
     public int TargetAmount { get; set; }
     public int CurrentSaved { get; set; }
-
-    public int Prority { get; set; }
-
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
   }
 }

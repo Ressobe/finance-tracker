@@ -13,8 +13,8 @@ export function CategoryItem({
   percentageShare,
   amount,
 }: CategoryItemProps) {
-  const indicatorColor = type === "income" ? "bg-green-500" : "bg-red-500";
-  const trackColor = type === "income" ? "bg-green-500/20" : "bg-red-500/20";
+  const indicatorColor = type === "income" ? "#22c55e" : "#ef4444";
+  const trackColor = type === "income" ? "#bbf7d0" : "#fecaca";
 
   return (
     <li className="space-y-1">
@@ -29,7 +29,7 @@ export function CategoryItem({
       </div>
       <Progress
         value={percentageShare}
-        className="w-full"
+        className="w-full h-2"
         indicatorColor={indicatorColor}
         trackColor={trackColor}
       />

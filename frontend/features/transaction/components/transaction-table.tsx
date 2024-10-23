@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BadgeDollarSign, TrendingDown } from "lucide-react";
+import { ArrowRightLeft, BadgeDollarSign, TrendingDown } from "lucide-react";
 
 const invoices = [
   {
@@ -20,7 +20,14 @@ const invoices = [
   {
     category: "Healthcare",
     amount: 330,
-    transactionType: "expense",
+    transactionType: "income",
+    description: "To były zakupy w lidlu",
+    createdAt: new Date(),
+  },
+  {
+    category: "Healthcare",
+    amount: 330,
+    transactionType: "income",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
   },
@@ -34,30 +41,23 @@ const invoices = [
   {
     category: "Healthcare",
     amount: 330,
-    transactionType: "expense",
-    description: "To były zakupy w lidlu",
-    createdAt: new Date(),
-  },
-  {
-    category: "Healthcare",
-    amount: 330,
-    transactionType: "expense",
+    transactionType: "transfer",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
   },
 ];
 
-export function ExampleTable() {
+export function TransactionTable() {
   return (
     <Table className="w-full">
       <TableCaption>A list of your transactions on {}.</TableCaption>
       <TableHeader>
-        <TableRow>
-          <TableHead>Category</TableHead>
-          <TableHead className="w-[200px]">Description</TableHead>
-          <TableHead className="text-left">Amount</TableHead>
-          <TableHead>Type</TableHead>
+        <TableRow className="w-full">
+          <TableHead className="w-1/5">Category</TableHead>
+          <TableHead className="w-1/6">Description</TableHead>
           <TableHead>Date</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead>Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -65,15 +65,19 @@ export function ExampleTable() {
           <TableRow key={item.amount}>
             <TableCell className="font-medium">{item.category}</TableCell>
             <TableCell>{item.description}</TableCell>
-            <TableCell className="text-left">{item.amount}</TableCell>
+            <TableCell>{item.createdAt.toLocaleDateString()}</TableCell>
             <TableCell>
-              {item.transactionType === "income" ? (
+              {item.transactionType === "income" && (
                 <BadgeDollarSign className="text-green-500" />
-              ) : (
+              )}
+              {item.transactionType === "expense" && (
                 <TrendingDown className="text-red-500" />
-              )}{" "}
+              )}
+              {item.transactionType === "transfer" && (
+                <ArrowRightLeft className="text-violet-500" />
+              )}
             </TableCell>
-            <TableCell>{item.createdAt.getDate()}</TableCell>
+            <TableCell className="text-left">{item.amount} PLN</TableCell>
           </TableRow>
         ))}
       </TableBody>

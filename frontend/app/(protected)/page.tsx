@@ -51,8 +51,13 @@ export default async function Dashboard() {
 
   return (
     <section className="space-y-12">
-      <h1 className="text-3xl font-bold">Overiew</h1>
-      <div className="flex gap-4">
+      <div>
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <span className="text-muted-foreground">
+          Summary of your all accounts
+        </span>
+      </div>
+      <div className="flex flex-col xl:flex-row gap-4">
         <Income amount={totalIncome} currencySymbol="PLN" />
         <Expense amount={totalExpense} currencySymbol="PLN" />
         <Balance amount={totalBalance} currencySymbol="PLN" />

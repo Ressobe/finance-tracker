@@ -13,10 +13,7 @@ namespace api.Mappers
         UserId = userId,
         Name = savingGoalDto.Name,
         TargetAmount = savingGoalDto.TargetAmount,
-        CurrentSaved = savingGoalDto.CurrentSaved,
-        Prority = savingGoalDto.Prority,
-        StartDate = savingGoalDto.StartDate,
-        EndDate = savingGoalDto.EndDate
+        CreatedAt = DateTime.UtcNow,
       };
     }
 
@@ -29,9 +26,6 @@ namespace api.Mappers
         Name = savingGoal.Name,
         TargetAmount = savingGoal.TargetAmount,
         CurrentSaved = savingGoal.CurrentSaved,
-        Prority = savingGoal.Prority,
-        StartDate = savingGoal.StartDate,
-        EndDate = savingGoal.EndDate
       };
     }
   }

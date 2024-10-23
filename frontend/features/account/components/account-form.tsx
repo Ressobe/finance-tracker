@@ -50,7 +50,7 @@ export function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
         if (response.sucess) {
           toast({
             description: (
-              <div className="flex items-center gap-4 text-xl">
+              <div className="flex items-center gap-4 text-lg">
                 <CircleCheck className="text-green-500 w-12 h-12" />
                 <span>Account {values.name} created!</span>
               </div>

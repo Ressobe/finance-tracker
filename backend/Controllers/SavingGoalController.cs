@@ -2,11 +2,14 @@ using api.Interfaces;
 using api.Dtos.SavingGoal;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
   [Route("api/saving-goal")]
   [ApiController]
+  [Authorize]
   public class SavingGoalController : ControllerBase
   {
     private readonly ISavingGoalRepository _savingGoalRepository;
@@ -45,11 +48,17 @@ namespace api.Controllers
       return NoContent();
     }
 
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> Create([FromRoute] string userId, [FromBody] CreateSavingGoalDto createSavingGoalDto)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateSavingGoalDto createSavingGoalDto)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
+
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
 
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)

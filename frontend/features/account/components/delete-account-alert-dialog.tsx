@@ -45,7 +45,7 @@ export function DeleteAccountAlertDialog({
 
         toast({
           description: (
-            <div className="flex items-center gap-4 text-xl">
+            <div className="flex items-center gap-4 text-lg">
               <CircleCheck className="text-green-500 w-12 h-12" />
               <span>Account {account.name} deleted!</span>
             </div>
@@ -63,7 +63,10 @@ export function DeleteAccountAlertDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger className="text-left w-full">
+      <AlertDialogTrigger
+        className="text-left w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </AlertDialogTrigger>
       <AlertDialogContent onClick={(e) => e.stopPropagation()}>

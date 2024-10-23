@@ -743,7 +743,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/saving-goal/{userId}": {
+    "/api/saving-goal": {
         parameters: {
             query?: never;
             header?: never;
@@ -756,9 +756,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    userId: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: {
@@ -1231,7 +1229,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["CategoryDto"][];
+                        "application/json": components["schemas"]["CategoryDto"][];
+                        "text/json": components["schemas"]["CategoryDto"][];
+                    };
                 };
             };
         };
@@ -1264,7 +1266,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SavingGoalDto"][];
+                        "application/json": components["schemas"]["SavingGoalDto"][];
+                        "text/json": components["schemas"]["SavingGoalDto"][];
+                    };
                 };
             };
         };
@@ -1382,18 +1388,9 @@ export interface components {
             isActive?: boolean;
         };
         CreateSavingGoalDto: {
-            name?: string | null;
-            userId?: string | null;
+            name: string;
             /** Format: int32 */
-            targetAmount?: number;
-            /** Format: int32 */
-            currentSaved?: number;
-            /** Format: int32 */
-            prority?: number;
-            /** Format: date-time */
-            startDate?: string;
-            /** Format: date-time */
-            endDate?: string;
+            targetAmount: number;
         };
         CreateSavingTransactionDto: {
             /** Format: int32 */
@@ -1477,12 +1474,6 @@ export interface components {
             targetAmount: number;
             /** Format: int32 */
             currentSaved: number;
-            /** Format: int32 */
-            prority: number;
-            /** Format: date-time */
-            startDate: string;
-            /** Format: date-time */
-            endDate: string;
             /** Format: date-time */
             createdAt: string;
         };
