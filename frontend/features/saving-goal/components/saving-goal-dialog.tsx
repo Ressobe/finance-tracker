@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -7,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SavingGoalForm } from "./saving-goal-form";
+import { useState } from "react";
 
 type SavingGoalDialogProps = {
   children: React.ReactNode;
@@ -14,8 +17,14 @@ type SavingGoalDialogProps = {
 };
 
 export function SavingGoalDialog({ children }: SavingGoalDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -26,7 +35,7 @@ export function SavingGoalDialog({ children }: SavingGoalDialogProps) {
             Create your new goal to track progress
           </DialogDescription>
         </DialogHeader>
-        <SavingGoalForm />
+        <SavingGoalForm closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>
   );

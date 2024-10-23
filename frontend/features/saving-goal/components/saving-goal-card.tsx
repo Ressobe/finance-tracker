@@ -14,11 +14,15 @@ import { HandCoins } from "lucide-react";
 type SavingGoalCardProps = {
   id: number;
   name: string;
-  target: number;
-  current: number;
+  targetAmount: number;
+  currentSaved: number;
 };
 
-export function SavingGoalCard({ name, target, current }: SavingGoalCardProps) {
+export function SavingGoalCard({
+  name,
+  targetAmount,
+  currentSaved,
+}: SavingGoalCardProps) {
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
@@ -27,12 +31,12 @@ export function SavingGoalCard({ name, target, current }: SavingGoalCardProps) {
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>
-          ${current.toLocaleString()} of ${target.toLocaleString()}
+          ${currentSaved.toLocaleString()} of ${targetAmount.toLocaleString()}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Progress
-          value={(current / target) * 100}
+          value={(currentSaved / targetAmount) * 100}
           className="w-full h-2"
           indicatorColor={indicatorColor}
           trackColor={trackColor}
@@ -40,7 +44,7 @@ export function SavingGoalCard({ name, target, current }: SavingGoalCardProps) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="text-sm text-muted-foreground">
-          {((current / target) * 100).toFixed(1)}% Complete
+          {((currentSaved / targetAmount) * 100).toFixed(1)}% Complete
         </p>
         <Button size="icon" variant="ghost">
           <HandCoins />
