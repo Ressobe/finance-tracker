@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 
 import { Progress } from "@/components/ui/progress";
-import { Trash2 } from "lucide-react";
+import { HandCoins } from "lucide-react";
 
 type SavingGoalCardProps = {
   id: number;
@@ -19,6 +19,9 @@ type SavingGoalCardProps = {
 };
 
 export function SavingGoalCard({ name, target, current }: SavingGoalCardProps) {
+  const indicatorColor = "#8b5cf6";
+  const trackColor = "#ddd6fe";
+
   return (
     <Card>
       <CardHeader>
@@ -28,14 +31,19 @@ export function SavingGoalCard({ name, target, current }: SavingGoalCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Progress value={(current / target) * 100} className="w-full" />
+        <Progress
+          value={(current / target) * 100}
+          className="w-full h-2"
+          indicatorColor={indicatorColor}
+          trackColor={trackColor}
+        />
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="text-sm text-muted-foreground">
           {((current / target) * 100).toFixed(1)}% Complete
         </p>
-        <Button variant="destructive" size="icon">
-          <Trash2 className="h-4 w-4" />
+        <Button size="icon" variant="ghost">
+          <HandCoins />
         </Button>
       </CardFooter>
     </Card>

@@ -1,41 +1,79 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+  Form,
+  FormItem,
+  FormField,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { NewSavingGoal, newSavingGoalSchema } from "@/types/saving-goal";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
+// import { useTransition } from "react";
+import { useForm } from "react-hook-form";
 
-export async function SavingGoalForm() {
+export function SavingGoalForm() {
+  // const [isPending, startTransition] = useTransition();
+
+  const form = useForm<NewSavingGoal>({
+    resolver: zodResolver(newSavingGoalSchema),
+    defaultValues: {
+      name: "",
+      targetAmount: 0,
+    },
+  });
+
+  const onSubmit = async (values: NewSavingGoal) => {};
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Add New Saving Goal</CardTitle>
-        <CardDescription>
-          Set a new financial goal to track your savings progress.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="goalName">Goal Name</Label>
-              <Input id="goalName" placeholder="e.g., Vacation Fund" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="targetAmount">Target Amount</Label>
-              <Input id="targetAmount" type="number" placeholder="e.g., 5000" />
-            </div>
-          </div>
-          <Button type="submit" className="w-full sm:w-auto">
-            <PlusCircle className="mr-2 h-4 w-4" /> Add Goal
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="text-sm md:text-lg">
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" />
+                </FormControl>
+                <FormMessage />
+                <FormDescription>
+                  Name of your new saving goal (required)
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="targetAmount"
+            render={({ field }) => (
+              <FormItem className="text-sm md:text-lg">
+                <FormLabel>Balance</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" />
+                </FormControl>
+                <FormMessage />
+                <FormDescription>
+                  Target amount that you want to save (required)
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="w-full flex justify-end">
+          <Button type="submit" className="space-x-2">
+            <PlusCircle /> <span>Add Goal</span>
           </Button>
-        </form>
-      </CardContent>
-    </Card>
+        </div>
+      </form>
+    </Form>
   );
 }

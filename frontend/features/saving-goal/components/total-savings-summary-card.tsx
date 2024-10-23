@@ -10,6 +10,9 @@ export function TotalSavingsSummaryCard({
   totalSavings,
   totalTarget,
 }: TotalSavingsSummaryCardProps) {
+  const indicatorColor = "#8b5cf6";
+  const trackColor = "#ddd6fe";
+
   return (
     <Card>
       <CardHeader>
@@ -30,6 +33,8 @@ export function TotalSavingsSummaryCard({
           <Progress
             value={(totalSavings / totalTarget) * 100}
             className="w-full"
+            indicatorColor={indicatorColor}
+            trackColor={trackColor}
           />
           <p className="text-center mt-2 text-sm text-muted-foreground">
             {((totalSavings / totalTarget) * 100).toFixed(1)}% of total goals
