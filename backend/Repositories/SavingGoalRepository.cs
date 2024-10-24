@@ -68,7 +68,6 @@ namespace api.Repositories
 
       existingSavingGoal.Name = updateSavingGoalDto.Name;
       existingSavingGoal.TargetAmount = updateSavingGoalDto.TargetAmount;
-      existingSavingGoal.CurrentSaved = updateSavingGoalDto.CurrentSaved;
 
       await _context.SaveChangesAsync();
       return existingSavingGoal;
