@@ -13,7 +13,6 @@ export const savingGoalModelSchema = z.object({
   name: z.string(),
   currentSaved: z.number(),
   targetAmount: z.number(),
-  createdAt: z.date(),
 });
 
 export type SavingGoalModel = z.infer<typeof savingGoalModelSchema>;

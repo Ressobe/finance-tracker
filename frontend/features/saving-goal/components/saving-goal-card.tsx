@@ -17,7 +17,7 @@ type SavingGoalCardProps = {
   name: string;
   targetAmount: number;
   currentSaved: number;
-  createdAt: Date;
+  createdAt: string;
 };
 
 export function SavingGoalCard({
@@ -25,7 +25,6 @@ export function SavingGoalCard({
   name,
   targetAmount,
   currentSaved,
-  createdAt,
 }: SavingGoalCardProps) {
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
@@ -40,7 +39,7 @@ export function SavingGoalCard({
           </CardDescription>
         </div>
         <SavingGoalDropdownMenu
-          savingGoal={{ id, name, targetAmount, currentSaved, createdAt }}
+          savingGoal={{ id, name, targetAmount, currentSaved }}
         />
       </CardHeader>
       <CardContent>
