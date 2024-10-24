@@ -12,7 +12,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { NewSavingGoal, newSavingGoalSchema } from "@/types/saving-goal";
+import {
+  NewSavingGoal,
+  newSavingGoalSchema,
+  SavingGoalModel,
+} from "@/types/saving-goal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useTransition } from "react";
@@ -20,30 +24,55 @@ import { useForm } from "react-hook-form";
 import { createSavingGoalAction } from "../actions/create-saving-goal";
 import { SucessToastMessage } from "@/components/sucess-toast-message";
 import { ErrorToastMessage } from "@/components/error-toast-message";
+import { updateSavingGoalAction } from "../actions/update-saving-goal";
 
 type SavingGoalFormProps = {
   closeDialog?: () => void;
+  defaultValues?: SavingGoalModel;
 };
 
-export function SavingGoalForm({ closeDialog }: SavingGoalFormProps) {
+export function SavingGoalForm({
+  closeDialog,
+  defaultValues,
+}: SavingGoalFormProps) {
+  const type = defaultValues === undefined ? "create" : "update";
+
   const [isPending, startTransition] = useTransition();
 
   const { toast } = useToast();
   const form = useForm<NewSavingGoal>({
     resolver: zodResolver(newSavingGoalSchema),
     defaultValues: {
-      name: "",
-      targetAmount: 0,
+      name: defaultValues?.name ?? "",
+      targetAmount: defaultValues?.targetAmount ?? 0,
     },
   });
 
   const onSubmit = async (values: NewSavingGoal) => {
     startTransition(async () => {
-      const response = await createSavingGoalAction(values);
-      if (response.sucess) {
+      let response = null;
+      if (type === "create") {
+        response = await createSavingGoalAction(values);
+      }
+      if (type === "update" && defaultValues) {
+        response = await updateSavingGoalAction({
+          id: defaultValues.id,
+          name: values.name,
+          targetAmount: values.targetAmount,
+          currentSaved: defaultValues.currentSaved,
+        });
+      }
+
+      if (response?.sucess) {
         toast({
           description: (
-            <SucessToastMessage message="New saving goal created!" />
+            <SucessToastMessage
+              message={
+                type === "create"
+                  ? "New saving goal created!"
+                  : "Saving goal upated!"
+              }
+            />
           ),
           className: "bg-secondary opacity-90",
           duration: 2000,
@@ -51,7 +80,7 @@ export function SavingGoalForm({ closeDialog }: SavingGoalFormProps) {
         if (closeDialog) closeDialog();
       }
 
-      if (response.error) {
+      if (response?.error) {
         toast({
           description: <ErrorToastMessage message="Someting went wrong!" />,
           className: "bg-secondary opacity-90",
@@ -76,7 +105,11 @@ export function SavingGoalForm({ closeDialog }: SavingGoalFormProps) {
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
-                  Name of your new saving goal (required)
+                  {type === "create" ? (
+                    <>Name of your new saving goal (required)</>
+                  ) : (
+                    <>Update your name of saving goal</>
+                  )}
                 </FormDescription>
               </FormItem>
             )}
@@ -93,7 +126,11 @@ export function SavingGoalForm({ closeDialog }: SavingGoalFormProps) {
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
-                  Target amount that you want to save (required)
+                  {type === "create" ? (
+                    <>Target amount that you want to save (required)</>
+                  ) : (
+                    <>Update your target amount</>
+                  )}
                 </FormDescription>
               </FormItem>
             )}
@@ -106,7 +143,8 @@ export function SavingGoalForm({ closeDialog }: SavingGoalFormProps) {
             className="space-x-2 transition-all active:scale-110"
             disabled={isPending}
           >
-            <PlusCircle /> <span>Add Goal</span>
+            <PlusCircle />{" "}
+            <span> {type === "create" ? "Add" : "Update"} Goal</span>
           </Button>
         </div>
       </form>

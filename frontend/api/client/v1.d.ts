@@ -1549,14 +1549,6 @@ export interface components {
             name?: string | null;
             /** Format: int32 */
             targetAmount?: number;
-            /** Format: int32 */
-            currentSaved?: number;
-            /** Format: int32 */
-            prority?: number;
-            /** Format: date-time */
-            startDate?: string;
-            /** Format: date-time */
-            endDate?: string;
         };
         UpdateSavingTransactionDto: {
             /** Format: int32 */

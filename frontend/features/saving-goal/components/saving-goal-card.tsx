@@ -10,15 +10,18 @@ import {
 
 import { Progress } from "@/components/ui/progress";
 import { HandCoins } from "lucide-react";
+import { SavingGoalDropdownMenu } from "./saving-goal-dropdown-menu";
 
 type SavingGoalCardProps = {
   id: number;
   name: string;
   targetAmount: number;
   currentSaved: number;
+  createdAt: string;
 };
 
 export function SavingGoalCard({
+  id,
   name,
   targetAmount,
   currentSaved,
@@ -28,11 +31,16 @@ export function SavingGoalCard({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <CardDescription>
-          ${currentSaved.toLocaleString()} of ${targetAmount.toLocaleString()}
-        </CardDescription>
+      <CardHeader className="flex flex-row justify-between">
+        <div className="space-y-2">
+          <CardTitle>{name}</CardTitle>
+          <CardDescription>
+            ${currentSaved.toLocaleString()} of ${targetAmount.toLocaleString()}
+          </CardDescription>
+        </div>
+        <SavingGoalDropdownMenu
+          savingGoal={{ id, name, targetAmount, currentSaved }}
+        />
       </CardHeader>
       <CardContent>
         <Progress
