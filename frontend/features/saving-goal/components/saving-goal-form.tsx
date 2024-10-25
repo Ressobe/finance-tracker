@@ -136,10 +136,13 @@ export function SavingGoalForm({
             )}
           />
         </div>
-        <div className="w-full flex justify-end">
+        <div className="w-full flex gap-4 justify-end">
+          <Button onClick={closeDialog} type="button" variant="outline">
+            Cancel
+          </Button>
           <Button
             type="submit"
-            variant="secondary"
+            variant="default"
             className="space-x-2 transition-all active:scale-110"
             disabled={isPending}
           >

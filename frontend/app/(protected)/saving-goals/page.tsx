@@ -1,15 +1,10 @@
 import { getSavingGoals } from "@/api/saving-goal";
+import { CounterStoreExample } from "@/components/counter-store-example";
 import { Button } from "@/components/ui/button";
 import { SavingGoalCard } from "@/features/saving-goal/components/saving-goal-card";
 import { SavingGoalDialog } from "@/features/saving-goal/components/saving-goal-dialog";
 import { TotalSavingsSummaryCard } from "@/features/saving-goal/components/total-savings-summary-card";
 import { PiggyBank } from "lucide-react";
-
-const goals = [
-  { id: 1, name: "Emergency Fund", target: 10000, current: 5000 },
-  { id: 2, name: "Vacation", target: 5000, current: 2000 },
-  { id: 3, name: "New Car", target: 20000, current: 4000 },
-];
 
 export default async function SavingGoalsPage() {
   const { data, error } = await getSavingGoals();
@@ -51,7 +46,7 @@ export default async function SavingGoalsPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.map((item) => {
-          return <SavingGoalCard key={item.id} {...item} />;
+          return <SavingGoalCard key={item.id} savingGoal={item} />;
         })}
       </div>
     </section>
