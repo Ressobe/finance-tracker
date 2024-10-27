@@ -16,6 +16,7 @@ const invoices = [
     transactionType: "expense",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
+    id: 1,
   },
   {
     category: "Healthcare",
@@ -23,6 +24,7 @@ const invoices = [
     transactionType: "income",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
+    id: 2,
   },
   {
     category: "Healthcare",
@@ -30,6 +32,7 @@ const invoices = [
     transactionType: "income",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
+    id: 3,
   },
   {
     category: "Healthcare",
@@ -37,6 +40,7 @@ const invoices = [
     transactionType: "expense",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
+    id: 4,
   },
   {
     category: "Healthcare",
@@ -44,6 +48,7 @@ const invoices = [
     transactionType: "transfer",
     description: "To były zakupy w lidlu",
     createdAt: new Date(),
+    id: 5,
   },
 ];
 
@@ -62,7 +67,7 @@ export function TransactionTable() {
       </TableHeader>
       <TableBody>
         {invoices.map((item) => (
-          <TableRow key={item.amount}>
+          <TableRow key={item.id}>
             <TableCell className="font-medium">{item.category}</TableCell>
             <TableCell>{item.description}</TableCell>
             <TableCell>{item.createdAt.toLocaleDateString()}</TableCell>

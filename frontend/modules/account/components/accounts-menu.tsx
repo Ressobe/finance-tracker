@@ -14,10 +14,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { CreateAccountMenuSubItem } from "@/features/account/components/create-account-menu-sub-item";
+import { CreateAccountMenuSubItem } from "@/modules/account/components/create-account-menu-sub-item";
 import { AccountModel } from "@/types/account";
 import Link from "next/link";
-import { AccountDropdownMenu } from "@/features/account/components/account-dropdown-menu";
+import { AccountDropdownMenu } from "@/modules/account/components/account-dropdown-menu";
 import { useState } from "react";
 
 type AccountsMenuProps = {

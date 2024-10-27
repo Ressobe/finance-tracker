@@ -10,7 +10,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { HandCoins } from "lucide-react";
 import { SavingGoalDropdownMenu } from "./saving-goal-dropdown-menu";
-import { SavingTransactionDialog } from "@/features/saving-transaction/components/saving-transaction-dialog";
+import { SavingTransactionDialog } from "@/modules/saving-transaction/components/saving-transaction-dialog";
 import { SavingGoalModel } from "@/types/saving-goal";
 
 type SavingGoalCardProps = {
