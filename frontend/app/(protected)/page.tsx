@@ -1,6 +1,5 @@
 import { getOverview } from "@/api/user";
 import { Balance } from "@/components/balance";
-import { CounterStoreExample } from "@/components/counter-store-example";
 import { ExampleChart } from "@/components/example-chart";
 import { Expense } from "@/components/expense";
 import { ExpenseByCategories } from "@/components/expense-by-categories";

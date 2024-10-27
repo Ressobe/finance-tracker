@@ -13,7 +13,7 @@ export async function loginAction(values: Login) {
   }
 
   if (data.token) {
-    cookies().set("token", data.token, {
+    (await cookies()).set("token", data.token, {
       httpOnly: true,
       path: "/",
     });

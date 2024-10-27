@@ -1,5 +1,4 @@
 import { getSavingGoals } from "@/api/saving-goal";
-import { CounterStoreExample } from "@/components/counter-store-example";
 import { Button } from "@/components/ui/button";
 import { SavingGoalCard } from "@/features/saving-goal/components/saving-goal-card";
 import { SavingGoalDialog } from "@/features/saving-goal/components/saving-goal-dialog";

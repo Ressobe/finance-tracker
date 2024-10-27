@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 
 export const authMiddleware: Middleware = {
   async onRequest({ request }) {
-    const token = cookies().get("token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
 
     if (token) {
       request.headers.set("Authorization", `Bearer ${token.value}`);

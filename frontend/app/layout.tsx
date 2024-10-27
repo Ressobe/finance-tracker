@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from "nextjs-toploader";
-import { CounterStoreProvider } from "@/providers/counter-store-provider";
 
 export const metadata: Metadata = {
   title: "Finance tracker",
@@ -18,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NextTopLoader color="#00FF00" showSpinner={false} />
-        <CounterStoreProvider>{children}</CounterStoreProvider>
+        {children}
         <Toaster />
       </body>
     </html>

@@ -1,6 +1,5 @@
 import { getAccount } from "@/api/account";
 import { Balance } from "@/components/balance";
-import { ExampleTable } from "@/components/example-table";
 import { Expense } from "@/components/expense";
 import { Income } from "@/components/income";
 import { Button } from "@/components/ui/button";
@@ -10,12 +9,13 @@ import { ArrowRightLeft, BadgeDollarSign, TrendingDown } from "lucide-react";
 import { notFound } from "next/navigation";
 
 type AccountPageProps = {
-  params: {
+  params: Promise<{
     accountId: number;
-  };
+  }>;
 };
 
-export default async function AccountPage({ params }: AccountPageProps) {
+export default async function AccountPage(props: AccountPageProps) {
+  const params = await props.params;
   const { data, error } = await getAccount(params.accountId);
   if (error) {
     notFound();
