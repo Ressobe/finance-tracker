@@ -3,8 +3,8 @@ import { Balance } from "@/components/balance";
 import { Expense } from "@/components/expense";
 import { Income } from "@/components/income";
 import { Button } from "@/components/ui/button";
-import { CreateTransactionDialog } from "@/features/transaction/components/create-transaction-dialog";
-import { TransactionTable } from "@/features/transaction/components/transaction-table";
+import { CreateTransactionDialog } from "@/modules/transaction/components/create-transaction-dialog";
+import { TransactionTable } from "@/modules/transaction/components/transaction-table";
 import { ArrowRightLeft, BadgeDollarSign, TrendingDown } from "lucide-react";
 import { notFound } from "next/navigation";
 

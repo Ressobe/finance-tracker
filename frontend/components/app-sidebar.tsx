@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { AccountModel } from "@/types/account";
-import { AccountsMenu } from "@/features/account/components/accounts-menu";
+import { AccountsMenu } from "@/modules/account/components/accounts-menu";
 
 const items = [
   {

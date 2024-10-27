@@ -1,8 +1,8 @@
 import { getSavingGoals } from "@/api/saving-goal";
 import { Button } from "@/components/ui/button";
-import { SavingGoalCard } from "@/features/saving-goal/components/saving-goal-card";
-import { SavingGoalDialog } from "@/features/saving-goal/components/saving-goal-dialog";
-import { TotalSavingsSummaryCard } from "@/features/saving-goal/components/total-savings-summary-card";
+import { SavingGoalCard } from "@/modules/saving-goal/components/saving-goal-card";
+import { SavingGoalDialog } from "@/modules/saving-goal/components/saving-goal-dialog";
+import { TotalSavingsSummaryCard } from "@/modules/saving-goal/components/total-savings-summary-card";
 import { PiggyBank } from "lucide-react";
 
 export default async function SavingGoalsPage() {
