@@ -52,17 +52,15 @@ export function AccountsMenu({ accounts }: AccountsMenuProps) {
               <CreateAccountMenuSubItem />
               {accounts.map((item) => {
                 return (
-                  <Link key={item.id} href={`/accounts/${item.id}`}>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton>
-                        {item.name}
-                        <AccountDropdownMenu
-                          closeCollapse={closeCollapse}
-                          account={item}
-                        />
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </Link>
+                  <SidebarMenuSubItem key={item.id}>
+                    <SidebarMenuSubButton href={`/accounts/${item.id}`}>
+                      {item.name}
+                      <AccountDropdownMenu
+                        closeCollapse={closeCollapse}
+                        account={item}
+                      />
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
                 );
               })}
             </SidebarMenuSub>

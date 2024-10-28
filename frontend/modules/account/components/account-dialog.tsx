@@ -36,6 +36,7 @@ export function AccountDialog({
       <DialogTrigger
         onClick={(e) => e.stopPropagation()}
         className="text-left w-full"
+        asChild
       >
         {children}
       </DialogTrigger>

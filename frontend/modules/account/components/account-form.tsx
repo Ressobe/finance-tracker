@@ -34,8 +34,8 @@ export function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
   const form = useForm<AccountModel>({
     resolver: zodResolver(accountSchema),
     defaultValues: {
-      name: defaultValues?.name,
-      currentBalance: defaultValues?.currentBalance,
+      name: defaultValues?.name ?? "",
+      currentBalance: defaultValues?.currentBalance ?? 0,
     },
   });
 

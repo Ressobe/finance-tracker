@@ -67,7 +67,6 @@ export default async function Dashboard() {
         <ExpenseByCategories categories={expenseByCategories} />
       </div>
       <h2 className="text-2xl font-bold">History</h2>
-      <ExampleChart />
     </section>
   );
 }
