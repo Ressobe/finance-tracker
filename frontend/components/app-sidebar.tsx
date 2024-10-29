@@ -56,6 +56,7 @@ type AppSidebarProps = {
 
 export function AppSidebar({ accounts }: AppSidebarProps) {
   const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader className="p-4">

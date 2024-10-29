@@ -2,6 +2,8 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useAccountsStore } from "@/stores/accounts-store";
+import { useStore } from "zustand";
 
 type TotalSavingsSummaryCardProps = {
   totalSavings: number;
@@ -15,12 +17,18 @@ export function TotalSavingsSummaryCard({
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
+  const accountsStore = useStore(useAccountsStore, (state) => state);
+  if (!accountsStore) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Total Savings Summary</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        <button onClick={accountsStore.inc}>inc</button>
         <div>
           <div className="flex justify-between mb-2">
             <span>Total Saved:</span>

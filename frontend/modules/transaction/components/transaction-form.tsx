@@ -35,13 +35,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "../../../components/ui/calendar";
+import { AccountsLocalStorage } from "@/types/account";
 
 type TransactionFormProps = {
   type: TransactionType;
+  accounts: AccountsLocalStorage;
+  onCancel?: () => void;
 };
 
-export function TransactionForm({ type }: TransactionFormProps) {
-  console.log(type);
+export function TransactionForm({
+  type,
+  accounts,
+  onCancel,
+}: TransactionFormProps) {
+  console.log(accounts, type);
 
   const form = useForm<NewTransaction>({
     resolver: zodResolver(newTransacitonSchema),
@@ -165,7 +172,11 @@ export function TransactionForm({ type }: TransactionFormProps) {
             </div>
           </div>
           <div className="w-full flex justify-end gap-2">
-            <Button type="button" variant="secondary">
+            <Button
+              onClick={() => onCancel?.()}
+              type="button"
+              variant="secondary"
+            >
               Cancel
             </Button>
             <Button type="submit">New transaction</Button>
