@@ -40,19 +40,19 @@ export function AccountDropdownMenu({
           closeDropdownMenu={closeDropdownMenu}
           defaultValues={account}
         >
-          <button className="w-full flex items-center gap-2 text-left text-sm p-1 hover:bg-secondary transition-all">
+          <span className="w-full flex items-center gap-2 text-left text-sm p-1 hover:bg-secondary transition-all cursor-pointer">
             <Pencil className="w-4 h-4" />
             Edit Account
-          </button>
+          </span>
         </AccountDialog>
         <DeleteAccountAlertDialog
           closeDropdownMenu={closeDropdownMenu}
           account={account}
         >
-          <button className="w-full flex items-center gap-2 text-left text-sm p-1 hover:bg-secondary transition-all">
+          <span className="w-full flex items-center gap-2 text-left text-sm p-1 hover:bg-secondary transition-all cursor-pointer">
             <Trash className="w-4 h-4" />
             Delete Account
-          </button>
+          </span>
         </DeleteAccountAlertDialog>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -23,9 +23,10 @@ import { LogoutButton } from "./logout-button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { ForwardRefExoticComponent, RefAttributes, useEffect } from "react";
 import { AccountModel } from "@/types/account";
-import { AccountsMenu } from "@/features/account/components/accounts-menu";
+import { AccountsMenu } from "@/modules/account/components/accounts-menu";
+import { useAccountsStore } from "@/stores/use-accounts-store";
 
 const items = [
   {
@@ -55,7 +56,14 @@ type AppSidebarProps = {
 };
 
 export function AppSidebar({ accounts }: AppSidebarProps) {
+  const setAccounts = useAccountsStore((state) => state.setAccounts);
+
+  useEffect(() => {
+    setAccounts(accounts ?? []);
+  });
+
   const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader className="p-4">

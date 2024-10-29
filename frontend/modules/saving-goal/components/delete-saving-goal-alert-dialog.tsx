@@ -33,7 +33,7 @@ export function DeleteSavingGoalAlertDialog({
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
 
-  const handleCancel = () => {
+  const closeAlertDialog = () => {
     if (closeDropdownMenu) closeDropdownMenu();
     setOpen(false);
   };
@@ -41,6 +41,7 @@ export function DeleteSavingGoalAlertDialog({
   const handleContinue = () => {
     startTransition(async () => {
       const response = await deleteSavingGoalAction(savingGoal.id);
+
       if (response.sucess) {
         toast({
           description: <SucessToastMessage message="Saving goal updated!" />,
@@ -56,6 +57,8 @@ export function DeleteSavingGoalAlertDialog({
           duration: 2000,
         });
       }
+
+      closeAlertDialog();
     });
   };
 
@@ -74,7 +77,7 @@ export function DeleteSavingGoalAlertDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleCancel} disabled={isPending}>
+          <AlertDialogCancel onClick={closeAlertDialog} disabled={isPending}>
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction onClick={handleContinue} disabled={isPending}>

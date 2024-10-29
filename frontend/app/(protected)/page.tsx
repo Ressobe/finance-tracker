@@ -1,6 +1,5 @@
 import { getOverview } from "@/api/user";
 import { Balance } from "@/components/balance";
-import { ExampleChart } from "@/components/example-chart";
 import { Expense } from "@/components/expense";
 import { ExpenseByCategories } from "@/components/expense-by-categories";
 import { Income } from "@/components/income";
@@ -67,7 +66,6 @@ export default async function Dashboard() {
         <ExpenseByCategories categories={expenseByCategories} />
       </div>
       <h2 className="text-2xl font-bold">History</h2>
-      <ExampleChart />
     </section>
   );
 }

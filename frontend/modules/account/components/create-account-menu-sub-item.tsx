@@ -9,7 +9,7 @@ export function CreateAccountMenuSubItem() {
   return (
     <SidebarMenuSubItem className="w-full">
       <AccountDialog>
-        <SidebarMenuSubButton className="flex justify-between">
+        <SidebarMenuSubButton className="flex justify-between hover:cursor-pointer">
           Create account <CirclePlus />
         </SidebarMenuSubButton>
       </AccountDialog>

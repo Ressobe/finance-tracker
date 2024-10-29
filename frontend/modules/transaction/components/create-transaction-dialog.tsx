@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { TransactionForm } from "./transaction-form";
 import { AccountModel } from "@/types/account";
+import { useState } from "react";
 
 type CreateTransactionDialogProps = {
   children: React.ReactNode;
@@ -22,10 +23,16 @@ export function CreateTransactionDialog({
   type,
   account,
 }: CreateTransactionDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const closeDialog = () => {
+    setOpen(true);
+  };
+
   const textColor = type === "income" ? "text-green-500" : "text-red-500";
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -38,7 +45,7 @@ export function CreateTransactionDialog({
             <span className="text-violet-500 font-bold">{account.name}</span>
           </DialogDescription>
         </DialogHeader>
-        <TransactionForm type={type} />
+        <TransactionForm type={type} onCancel={closeDialog} />
       </DialogContent>
     </Dialog>
   );

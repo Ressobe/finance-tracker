@@ -33,13 +33,10 @@ export function AccountDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        onClick={(e) => e.stopPropagation()}
-        className="text-left w-full"
-      >
-        {children}
+      <DialogTrigger className="text-left w-full" asChild>
+        <button>{children}</button>
       </DialogTrigger>
-      <DialogContent onClick={(e) => e.stopPropagation()}>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>
             {formType === "create" ? (

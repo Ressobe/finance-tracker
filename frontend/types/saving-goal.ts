@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 export const newSavingGoalSchema = z.object({
-  name: z.string(),
+  name: z.string().min(2, {
+    message: "",
+  }),
   targetAmount: z
     .union([z.string(), z.number()])
     .transform((val) => (typeof val === "string" ? parseFloat(val) : val))

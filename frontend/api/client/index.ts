@@ -4,7 +4,8 @@ import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 
 export const authMiddleware: Middleware = {
   async onRequest({ request }) {
-    const token = (cookies() as unknown as UnsafeUnwrappedCookies).get("token");
+    const c = await cookies();
+    const token = c.get("token");
 
     if (token) {
       request.headers.set("Authorization", `Bearer ${token.value}`);

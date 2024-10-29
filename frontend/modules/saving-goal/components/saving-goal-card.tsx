@@ -7,25 +7,17 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-
 import { Progress } from "@/components/ui/progress";
 import { HandCoins } from "lucide-react";
 import { SavingGoalDropdownMenu } from "./saving-goal-dropdown-menu";
+import { SavingTransactionDialog } from "@/modules/saving-transaction/components/saving-transaction-dialog";
+import { SavingGoalModel } from "@/types/saving-goal";
 
 type SavingGoalCardProps = {
-  id: number;
-  name: string;
-  targetAmount: number;
-  currentSaved: number;
-  createdAt: string;
+  savingGoal: SavingGoalModel;
 };
 
-export function SavingGoalCard({
-  id,
-  name,
-  targetAmount,
-  currentSaved,
-}: SavingGoalCardProps) {
+export function SavingGoalCard({ savingGoal }: SavingGoalCardProps) {
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
@@ -33,18 +25,17 @@ export function SavingGoalCard({
     <Card>
       <CardHeader className="flex flex-row justify-between">
         <div className="space-y-2">
-          <CardTitle>{name}</CardTitle>
+          <CardTitle>{savingGoal.name}</CardTitle>
           <CardDescription>
-            ${currentSaved.toLocaleString()} of ${targetAmount.toLocaleString()}
+            ${savingGoal.currentSaved.toLocaleString()} of $
+            {savingGoal.targetAmount.toLocaleString()}
           </CardDescription>
         </div>
-        <SavingGoalDropdownMenu
-          savingGoal={{ id, name, targetAmount, currentSaved }}
-        />
+        <SavingGoalDropdownMenu savingGoal={savingGoal} />
       </CardHeader>
       <CardContent>
         <Progress
-          value={(currentSaved / targetAmount) * 100}
+          value={(savingGoal.currentSaved / savingGoal.targetAmount) * 100}
           className="w-full h-2"
           indicatorColor={indicatorColor}
           trackColor={trackColor}
@@ -52,11 +43,16 @@ export function SavingGoalCard({
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="text-sm text-muted-foreground">
-          {((currentSaved / targetAmount) * 100).toFixed(1)}% Complete
+          {((savingGoal.currentSaved / savingGoal.targetAmount) * 100).toFixed(
+            1,
+          )}
+          % Complete
         </p>
-        <Button size="icon" variant="ghost">
-          <HandCoins />
-        </Button>
+        <SavingTransactionDialog savingGoal={savingGoal}>
+          <Button size="icon" variant="ghost">
+            <HandCoins />
+          </Button>
+        </SavingTransactionDialog>
       </CardFooter>
     </Card>
   );

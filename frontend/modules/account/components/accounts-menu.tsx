@@ -14,10 +14,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { CreateAccountMenuSubItem } from "@/features/account/components/create-account-menu-sub-item";
+import { CreateAccountMenuSubItem } from "@/modules/account/components/create-account-menu-sub-item";
 import { AccountModel } from "@/types/account";
-import Link from "next/link";
-import { AccountDropdownMenu } from "@/features/account/components/account-dropdown-menu";
+import { AccountDropdownMenu } from "@/modules/account/components/account-dropdown-menu";
 import { useState } from "react";
 
 type AccountsMenuProps = {
@@ -26,11 +25,9 @@ type AccountsMenuProps = {
 
 export function AccountsMenu({ accounts }: AccountsMenuProps) {
   const [open, setOpen] = useState(false);
-
   const closeCollapse = () => {
     setOpen(false);
   };
-
   if (accounts === undefined) return null;
 
   return (
@@ -52,17 +49,15 @@ export function AccountsMenu({ accounts }: AccountsMenuProps) {
               <CreateAccountMenuSubItem />
               {accounts.map((item) => {
                 return (
-                  <Link key={item.id} href={`/accounts/${item.id}`}>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton>
-                        {item.name}
-                        <AccountDropdownMenu
-                          closeCollapse={closeCollapse}
-                          account={item}
-                        />
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </Link>
+                  <SidebarMenuSubItem key={item.id}>
+                    <SidebarMenuSubButton href={`/accounts/${item.id}`}>
+                      {item.name}
+                      <AccountDropdownMenu
+                        closeCollapse={closeCollapse}
+                        account={item}
+                      />
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
                 );
               })}
             </SidebarMenuSub>

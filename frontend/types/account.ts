@@ -14,6 +14,17 @@ export const accountModelSchema = z.object({
   currentBalance: z.number(),
 });
 
+export const accountsLocalStorageSchema = z.object({
+  accounts: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+    }),
+  ),
+});
+
+export type AccountsLocalStorage = z.infer<typeof accountsLocalStorageSchema>;
+
 export type AccountModel = z.infer<typeof accountModelSchema>;
 
 export type Account = z.infer<typeof accountSchema>;
