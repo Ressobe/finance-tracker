@@ -1,11 +1,11 @@
 import createClient, { Middleware } from "openapi-fetch";
 import type { paths } from "./v1";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 
 export const authMiddleware: Middleware = {
   async onRequest({ request }) {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token");
+    const c = await cookies();
+    const token = c.get("token");
 
     if (token) {
       request.headers.set("Authorization", `Bearer ${token.value}`);
