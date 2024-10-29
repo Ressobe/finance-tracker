@@ -5,6 +5,7 @@ import { Income } from "@/components/income";
 import { Button } from "@/components/ui/button";
 import { CreateTransactionDialog } from "@/modules/transaction/components/create-transaction-dialog";
 import { TransactionTable } from "@/modules/transaction/components/transaction-table";
+import { TransferDialog } from "@/modules/transfer/components/transfer-dialog";
 import { ArrowRightLeft, BadgeDollarSign, TrendingDown } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -40,7 +41,7 @@ export default async function AccountPage(props: AccountPageProps) {
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Transactions</h2>
         <div className="flex justify-between">
-          <CreateTransactionDialog account={data} type="income">
+          <TransferDialog account={data}>
             <Button
               variant="outline"
               className="space-x-2 bg-violet-500/10 hover:bg-violet-500/30 border-violet-500"
@@ -48,7 +49,7 @@ export default async function AccountPage(props: AccountPageProps) {
               <ArrowRightLeft className="text-violet-500" />
               <span>Create a new transfer</span>
             </Button>
-          </CreateTransactionDialog>
+          </TransferDialog>
           <div className="space-x-4">
             <CreateTransactionDialog account={data} type="income">
               <Button

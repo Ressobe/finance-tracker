@@ -17,9 +17,7 @@ import {
 import { CreateAccountMenuSubItem } from "@/modules/account/components/create-account-menu-sub-item";
 import { AccountModel } from "@/types/account";
 import { AccountDropdownMenu } from "@/modules/account/components/account-dropdown-menu";
-import { useEffect, useState } from "react";
-import useStore from "@/stores/useStore";
-import accountsStore, { useAccountsStore } from "@/stores/accounts-store";
+import { useState } from "react";
 
 type AccountsMenuProps = {
   accounts: AccountModel[] | undefined;
@@ -30,11 +28,6 @@ export function AccountsMenu({ accounts }: AccountsMenuProps) {
   const closeCollapse = () => {
     setOpen(false);
   };
-  const accountsStore = useStore(useAccountsStore, (state) => state);
-  if (!accountsStore) {
-    return null;
-  }
-
   if (accounts === undefined) return null;
 
   return (
@@ -48,7 +41,6 @@ export function AccountsMenu({ accounts }: AccountsMenuProps) {
           <CollapsibleTrigger asChild>
             <SidebarMenuButton>
               <Wallet />
-              {accountsStore.count}
               <span>Accounts</span>
             </SidebarMenuButton>
           </CollapsibleTrigger>
