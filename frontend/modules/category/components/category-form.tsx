@@ -13,17 +13,77 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { NewCategory, newCategorySchema } from "@/types/category";
+import { Category, NewCategory, newCategorySchema } from "@/types/category";
+import { createCategoryAction } from "../actions/create-category";
+import { useToast } from "@/hooks/use-toast";
+import { ErrorToastMessage } from "@/components/error-toast-message";
+import { SucessToastMessage } from "@/components/sucess-toast-message";
+import { SubmitButton } from "@/components/submit-button";
+import { updateCategoryAction } from "../actions/update-category";
 
-export function CategoryForm() {
+type CategoryFormProps = {
+  defaultValues?: Category;
+  close?: () => void;
+};
+
+export function CategoryForm({ close, defaultValues }: CategoryFormProps) {
+  const type = defaultValues === undefined ? "create" : "update";
   const form = useForm<NewCategory>({
     resolver: zodResolver(newCategorySchema),
     defaultValues: {
-      name: "",
+      name: defaultValues?.name ?? "",
     },
   });
 
-  const onSubmit = async () => {};
+  const { toast } = useToast();
+
+  const onSubmit = async (values: NewCategory) => {
+    if (type === "create") {
+      const response = await createCategoryAction(values);
+      if (response.error) {
+        toast({
+          description: <ErrorToastMessage message="Something went wrong!" />,
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+      if (response.sucess) {
+        toast({
+          description: <SucessToastMessage message="New category created!" />,
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+    }
+
+    if (type === "update") {
+      if (!defaultValues) {
+        toast({
+          description: <ErrorToastMessage message="Something went wrong!" />,
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+
+        return;
+      }
+      const response = await updateCategoryAction(defaultValues.id, values);
+      if (response.error) {
+        toast({
+          description: <ErrorToastMessage message="Something went wrong!" />,
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+      if (response.sucess) {
+        toast({
+          description: <SucessToastMessage message="Category updated!" />,
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+    }
+    close?.();
+  };
 
   return (
     <div>
@@ -39,17 +99,19 @@ export function CategoryForm() {
                   <FormControl>
                     <Input {...field} type="text" />
                   </FormControl>
-                  <FormMessage />
                   <FormDescription>Category name (required)</FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
           <div className="w-full flex justify-end gap-2">
-            <Button type="button" variant="secondary">
+            <Button onClick={() => close?.()} type="button" variant="secondary">
               Cancel
             </Button>
-            <Button type="submit">New category</Button>
+            <SubmitButton>
+              {type === "create" ? "New" : "Update"} category
+            </SubmitButton>
           </div>
         </form>
       </Form>
