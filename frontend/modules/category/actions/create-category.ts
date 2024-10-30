@@ -2,6 +2,7 @@
 
 import apiClient from "@/api/client";
 import { NewCategory } from "@/types/category";
+import { revalidatePath } from "next/cache";
 
 export async function createCategoryAction(values: NewCategory) {
   const { error } = await apiClient.POST("/api/category", {
@@ -11,7 +12,10 @@ export async function createCategoryAction(values: NewCategory) {
   });
 
   if (error) {
-    return { error: "dkdk" };
+    return { error: "Something went wrong!" };
   }
-  return { sucess: "dkdk" };
+
+  revalidatePath("/settings");
+
+  return { sucess: "New category created!" };
 }

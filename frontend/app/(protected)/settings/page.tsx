@@ -1,3 +1,4 @@
+import { getCategories } from "@/api/category";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,8 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CategoryDropdownMenu } from "@/modules/category/components/category-dropdown-menu";
+import { CategoryDialog } from "@/modules/category/components/category-dialog";
+import { Category } from "@/types/category";
+import { CirclePlus } from "lucide-react";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const { data, error } = await getCategories();
+  if (error) return null;
+
   return (
     <section className="space-y-12">
       <div>
@@ -25,21 +33,59 @@ export default function SettingsPage() {
         </span>
       </div>
       <CurrencyCard />
-      <CategoriesCard />
+      <CategoriesCard categories={data} />
     </section>
   );
 }
 
-function CategoriesCard() {
+type CategoriesCardProps = {
+  categories: Category[];
+};
+
+function CategoriesCard({ categories }: CategoriesCardProps) {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Categories</CardTitle>
-        <CardDescription>
-          Add, edit or remove your categories for transactions
-        </CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div className="space-y-2">
+          <CardTitle>Categories</CardTitle>
+          <CardDescription>
+            Add, edit or remove your categories for transactions
+          </CardDescription>
+        </div>
+        <CategoryDialog>
+          <Button
+            variant="outline"
+            className="space-x-2 bg-orange-500/10 hover:bg-orange-500/30 border-orange-500"
+          >
+            <CirclePlus className="text-orange-500" />
+            <span>Create a new category</span>
+          </Button>
+        </CategoryDialog>
       </CardHeader>
-      <CardContent></CardContent>
+      <CardContent>
+        <ul className="w-full flex gap-4">
+          {categories.map((item) => (
+            <CategoryItem key={item.id} category={item} />
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+}
+
+type CategoryItemProps = {
+  category: Category;
+};
+
+function CategoryItem({ category }: CategoryItemProps) {
+  return (
+    <Card className="p-8">
+      <CardContent>
+        <div className="flex justify-between items-center">
+          <div>{category.name}</div>
+          <CategoryDropdownMenu category={category} />
+        </div>
+      </CardContent>
     </Card>
   );
 }
