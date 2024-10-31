@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Account;
+using api.Dtos.Transaction;
 using api.Interfaces;
 using api.Mappers;
 using api.Helpers;
+using api.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
@@ -31,23 +33,40 @@ namespace api.Controllers
 
     [HttpGet("{accountId:int}")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
-    [ProducesResponseType(typeof(AccountDto), 200)]
+    [ProducesResponseType(typeof(AccountOverviewDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int accountId)
     {
       var account = await _accountRepository.GetAsync(accountId);
-
       if (account == null)
       {
         return NotFound();
       }
 
-      return Ok(account.ToAccountModel());
+      var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
+
+      long expenseSum = 0;
+      long incomeSum = 0;
+
+      foreach (var t in transactions)
+      {
+        if (t.TransactionType == TransactionType.Earning)
+        {
+          incomeSum += t.Amount;
+        }
+        if (t.TransactionType == TransactionType.Expense)
+        {
+          expenseSum += t.Amount;
+        }
+      }
+
+      return Ok(account.ToAccountOverview(incomeSum, expenseSum));
     }
 
 
     [HttpGet("{accountId:int}/transactions")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
+    [ProducesResponseType(typeof(List<TransactionDto>), 200)]
     public async Task<IActionResult> GetAccountTransactions([FromRoute] int accountId)
     {
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
@@ -57,7 +76,9 @@ namespace api.Controllers
       }
 
       var transactions = await _transactionRepository.GetAllByAccountId(accountId);
-      return Ok(transactions);
+      var transactionsDtos = transactions.Select(item => item.ToTransactionModel()).ToList();
+
+      return Ok(transactionsDtos);
     }
 
     [HttpPost]

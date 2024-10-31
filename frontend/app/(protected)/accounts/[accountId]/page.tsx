@@ -1,4 +1,4 @@
-import { getAccount } from "@/api/account";
+import { getAccount, getAccountTransactions } from "@/api/account";
 import { Balance } from "@/components/balance";
 import { Expense } from "@/components/expense";
 import { Income } from "@/components/income";
@@ -17,11 +17,14 @@ type AccountPageProps = {
 
 export default async function AccountPage(props: AccountPageProps) {
   const params = await props.params;
+
   const { data, error } = await getAccount(params.accountId);
   if (error) {
     notFound();
   }
-  const { name, currentBalance } = data;
+
+  const { data: transactions } = await getAccountTransactions(params.accountId);
+  const { name, currentBalance, income, expense } = data;
 
   return (
     <section className="space-y-12">
@@ -34,9 +37,9 @@ export default async function AccountPage(props: AccountPageProps) {
         </span>
       </div>
       <div className="flex flex-col xl:flex-row gap-4">
-        <Income amount={currentBalance} currencySymbol="PLN" />
-        <Expense amount={currentBalance} currencySymbol="PLN" />
-        <Balance amount={currentBalance} currencySymbol="PLN" />
+        <Income amount={income} />
+        <Expense amount={expense} />
+        <Balance amount={currentBalance} />
       </div>
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Transactions</h2>
@@ -73,7 +76,7 @@ export default async function AccountPage(props: AccountPageProps) {
           </div>
         </div>
       </div>
-      <TransactionTable />
+      <TransactionTable transactions={transactions ?? []} />
     </section>
   );
 }

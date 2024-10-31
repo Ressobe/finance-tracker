@@ -1,3 +1,4 @@
+using api.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos.Transaction

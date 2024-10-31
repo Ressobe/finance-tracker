@@ -35,6 +35,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "../../../components/ui/calendar";
+import { useCategoriesStore } from "@/stores/use-categories-store";
 
 type TransactionFormProps = {
   type: TransactionType;
@@ -43,6 +44,8 @@ type TransactionFormProps = {
 
 export function TransactionForm({ type, onCancel }: TransactionFormProps) {
   console.log(type);
+
+  const categories = useCategoriesStore((state) => state.categories);
 
   const form = useForm<NewTransaction>({
     resolver: zodResolver(newTransacitonSchema),
@@ -97,16 +100,21 @@ export function TransactionForm({ type, onCancel }: TransactionFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={"0"}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={`${categories[0].id}`}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="0">House</SelectItem>
-                      <SelectItem value="1">Transport</SelectItem>
-                      <SelectItem value="2">Food</SelectItem>
+                      {categories.map((item) => (
+                        <SelectItem key={item.id} value={`${item.id}`}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormDescription>

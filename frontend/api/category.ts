@@ -13,3 +13,7 @@ export async function getCategory(categoryId: number) {
 export async function getCategories() {
   return await apiClient.GET("/api/user/categories");
 }
+
+export async function getUserCategories() {
+  return await apiClient.GET("/api/user/categories");
+}

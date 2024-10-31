@@ -1,3 +1,4 @@
+using api.Models;
 namespace api.Dtos.Transaction
 {
   public class UpdateTransactionDto

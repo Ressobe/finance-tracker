@@ -27,6 +27,8 @@ import { ForwardRefExoticComponent, RefAttributes, useEffect } from "react";
 import { AccountModel } from "@/types/account";
 import { AccountsMenu } from "@/modules/account/components/accounts-menu";
 import { useAccountsStore } from "@/stores/use-accounts-store";
+import { useCategoriesStore } from "@/stores/use-categories-store";
+import { Category } from "@/types/category";
 
 const items = [
   {
@@ -51,17 +53,7 @@ const items = [
   },
 ];
 
-type AppSidebarProps = {
-  accounts: AccountModel[] | undefined;
-};
-
-export function AppSidebar({ accounts }: AppSidebarProps) {
-  const setAccounts = useAccountsStore((state) => state.setAccounts);
-
-  useEffect(() => {
-    setAccounts(accounts ?? []);
-  });
-
+export function AppSidebar() {
   const pathname = usePathname();
 
   return (
@@ -76,7 +68,7 @@ export function AppSidebar({ accounts }: AppSidebarProps) {
         <SidebarGroup>
           <SidebarGroupContent>
             <AppSidebarMenuItem item={items[0]} pathname={pathname} />
-            <AccountsMenu accounts={accounts} />
+            <AccountsMenu />
             <SidebarMenu>
               {items.slice(1).map((item) => (
                 <AppSidebarMenuItem

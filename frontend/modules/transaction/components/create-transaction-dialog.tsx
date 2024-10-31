@@ -26,7 +26,7 @@ export function CreateTransactionDialog({
   const [open, setOpen] = useState(false);
 
   const closeDialog = () => {
-    setOpen(true);
+    setOpen(false);
   };
 
   const textColor = type === "income" ? "text-green-500" : "text-red-500";
