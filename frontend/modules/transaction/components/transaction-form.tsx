@@ -36,28 +36,59 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "../../../components/ui/calendar";
 import { useCategoriesStore } from "@/stores/use-categories-store";
+import { useCurrencyStore } from "@/stores/use-currency-store";
+import { createTransactionAction } from "../actions/create-transaction";
+import { useToast } from "@/hooks/use-toast";
+import { SucessToastMessage } from "@/components/sucess-toast-message";
+import { ErrorToastMessage } from "@/components/error-toast-message";
 
 type TransactionFormProps = {
   type: TransactionType;
-  onCancel?: () => void;
+  accountId: number;
+  closeDialog?: () => void;
 };
 
-export function TransactionForm({ type, onCancel }: TransactionFormProps) {
-  console.log(type);
+export function TransactionForm({
+  type,
+  accountId,
+  closeDialog,
+}: TransactionFormProps) {
+  const typeNum = type === "income" ? 0 : 1;
 
   const categories = useCategoriesStore((state) => state.categories);
+  const currency = useCurrencyStore((state) => state.currency);
 
   const form = useForm<NewTransaction>({
     resolver: zodResolver(newTransacitonSchema),
     defaultValues: {
       amount: 0,
-      categoryId: 0,
+      categoryId: categories[0].id,
       description: "",
       transactionDate: new Date(),
     },
   });
 
-  const onSubmit = async () => {};
+  const { toast } = useToast();
+
+  const onSubmit = async (values: NewTransaction) => {
+    const response = await createTransactionAction(values, typeNum, accountId);
+    if (response.sucess) {
+      toast({
+        description: <SucessToastMessage message="New transaction created!" />,
+        className: "bg-secondary opacity-90",
+        duration: 2000,
+      });
+    }
+    if (response.error) {
+      toast({
+        description: <ErrorToastMessage message="Something went wrong!" />,
+        className: "bg-secondary opacity-90",
+        duration: 2000,
+      });
+    }
+
+    closeDialog?.();
+  };
 
   return (
     <Form {...form}>
@@ -85,9 +116,12 @@ export function TransactionForm({ type, onCancel }: TransactionFormProps) {
             render={({ field }) => (
               <FormItem className="text-sm md:text-lg">
                 <FormLabel>Amount</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" />
-                </FormControl>
+                <div className="flex items-center gap-4">
+                  <FormControl>
+                    <Input {...field} type="number" />
+                  </FormControl>
+                  {currency}
+                </div>
                 <FormMessage />
                 <FormDescription>Transaction amount (required)</FormDescription>
               </FormItem>
@@ -172,7 +206,7 @@ export function TransactionForm({ type, onCancel }: TransactionFormProps) {
         </div>
         <div className="w-full flex justify-end gap-2">
           <Button
-            onClick={() => onCancel?.()}
+            onClick={() => closeDialog?.()}
             type="button"
             variant="secondary"
           >

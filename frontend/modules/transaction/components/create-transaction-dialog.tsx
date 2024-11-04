@@ -45,7 +45,11 @@ export function CreateTransactionDialog({
             <span className="text-violet-500 font-bold">{account.name}</span>
           </DialogDescription>
         </DialogHeader>
-        <TransactionForm type={type} onCancel={closeDialog} />
+        <TransactionForm
+          accountId={account.id}
+          type={type}
+          closeDialog={closeDialog}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -14,7 +14,11 @@ export default async function ProtectedLayout({
 
   return (
     <SidebarProvider>
-      <StoresProvider accounts={accounts} categories={categories}>
+      <StoresProvider
+        accounts={accounts}
+        categories={categories}
+        currency="PLN"
+      >
         <AppSidebar />
         <main className="w-full">
           <SidebarTrigger />
