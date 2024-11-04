@@ -49,7 +49,11 @@ namespace api.Repositories
 
     public async Task<List<Transaction>> GetAllByAccountId(int accountId)
     {
-      var transactions = await _context.Transactions.Where(item => item.AccountId == accountId).ToListAsync();
+      var transactions = await _context.Transactions
+        .Where(item => item.AccountId == accountId)
+        .Include(t => t.Category)
+        .ToListAsync();
+
       return transactions;
     }
 

@@ -123,9 +123,9 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["TransactionDto"][];
-                        "application/json": components["schemas"]["TransactionDto"][];
-                        "text/json": components["schemas"]["TransactionDto"][];
+                        "text/plain": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "application/json": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "text/json": components["schemas"]["TransactionWithCategoryNameDto"][];
                     };
                 };
             };
@@ -1286,6 +1286,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/user/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "application/json": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "text/json": components["schemas"]["TransactionWithCategoryNameDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/user/overview": {
         parameters: {
             query?: never;
@@ -1341,11 +1378,11 @@ export interface components {
             /** Format: int32 */
             id: number;
             name: string;
-            /** Format: int64 */
+            /** Format: double */
             currentBalance: number;
-            /** Format: int64 */
+            /** Format: double */
             income: number;
-            /** Format: int64 */
+            /** Format: double */
             expense: number;
             /** Format: date-time */
             createdAt: string;
@@ -1416,12 +1453,14 @@ export interface components {
             date?: string;
         };
         CreateTransactionDto: {
-            /** Format: int32 */
+            /** Format: double */
             amount: number;
             transactionType: components["schemas"]["TransactionType"];
             /** Format: int32 */
             categoryId: number;
             description?: string | null;
+            /** Format: date-time */
+            createdAt: string;
         };
         /**
          * Format: int32
@@ -1511,7 +1550,7 @@ export interface components {
             id: number;
             /** Format: int32 */
             accountId: number;
-            /** Format: int32 */
+            /** Format: double */
             amount: number;
             transactionType: components["schemas"]["TransactionType"];
             /** Format: int32 */
@@ -1525,6 +1564,21 @@ export interface components {
          * @enum {integer}
          */
         TransactionType: 0 | 1;
+        TransactionWithCategoryNameDto: {
+            /** Format: int32 */
+            id: number;
+            /** Format: int32 */
+            accountId: number;
+            /** Format: double */
+            amount: number;
+            transactionType: components["schemas"]["TransactionType"];
+            /** Format: int32 */
+            categoryId: number;
+            categoryName: string;
+            description: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
         UpdateAccountDto: {
             name?: string | null;
             /** Format: int64 */

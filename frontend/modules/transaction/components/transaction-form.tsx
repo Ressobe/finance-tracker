@@ -58,13 +58,17 @@ export function TransactionForm({
   const categories = useCategoriesStore((state) => state.categories);
   const currency = useCurrencyStore((state) => state.currency);
 
+  const now = new Date();
+
   const form = useForm<NewTransaction>({
     resolver: zodResolver(newTransacitonSchema),
     defaultValues: {
       amount: 0,
       categoryId: categories[0].id,
       description: "",
-      transactionDate: new Date(),
+      transactionDate: new Date(
+        Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()),
+      ),
     },
   });
 
@@ -188,7 +192,18 @@ export function TransactionForm({
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          if (date) {
+                            const utcDate = new Date(
+                              Date.UTC(
+                                date.getFullYear(),
+                                date.getMonth(),
+                                date.getDate(),
+                              ),
+                            );
+                            field.onChange(utcDate);
+                          }
+                        }}
                         className="flex flex-col"
                         disabled={(date) =>
                           date > new Date() || date < new Date("1900-01-01")

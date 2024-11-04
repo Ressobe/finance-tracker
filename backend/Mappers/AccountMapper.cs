@@ -28,7 +28,7 @@ namespace api.Mappers
       };
     }
 
-    public static AccountOverviewDto ToAccountOverview(this Account accountDto, long income, long expense)
+    public static AccountOverviewDto ToAccountOverview(this Account accountDto, decimal income, decimal expense)
     {
       return new AccountOverviewDto
       {

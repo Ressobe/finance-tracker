@@ -11,6 +11,7 @@ import {
 import { AccountModel } from "@/types/account";
 import { useState } from "react";
 import { TransferForm } from "./form/transfer-form";
+import { useAccountsStore } from "@/stores/use-accounts-store";
 
 type CreateTransactionDialogProps = {
   children: React.ReactNode;
@@ -27,9 +28,13 @@ export function TransferDialog({
     setOpen(false);
   };
 
+  const accounts = useAccountsStore((state) => state.accounts);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild disabled={accounts.length <= 1}>
+        {children}
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a new transfer</DialogTitle>

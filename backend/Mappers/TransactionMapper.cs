@@ -14,13 +14,13 @@ namespace api.Mappers
         CategoryId = createTransactionDto.CategoryId,
         Description = createTransactionDto.Description,
         TransactionType = createTransactionDto.TransactionType,
-        CreatedAt = DateTime.UtcNow,
+        CreatedAt = createTransactionDto.CreatedAt,
       };
     }
 
-    public static Transaction ToTransactionModel(this Transaction transactionDto)
+    public static TransactionDto ToTransactionModel(this Transaction transactionDto)
     {
-      return new Transaction
+      return new TransactionDto
       {
         Id = transactionDto.Id,
         Amount = transactionDto.Amount,
@@ -31,5 +31,22 @@ namespace api.Mappers
         CreatedAt = transactionDto.CreatedAt,
       };
     }
+
+    public static TransactionWithCategoryNameDto ToTransactionWithCategoryName(this Transaction transactionDto)
+    {
+      return new TransactionWithCategoryNameDto
+      {
+        Id = transactionDto.Id,
+        Amount = transactionDto.Amount,
+        TransactionType = transactionDto.TransactionType,
+        AccountId = transactionDto.AccountId,
+        CategoryId = transactionDto.CategoryId,
+        Description = transactionDto.Description,
+        CreatedAt = transactionDto.CreatedAt,
+        CategoryName = transactionDto.Category?.Name ?? ""
+      };
+    }
+
+
   }
 }

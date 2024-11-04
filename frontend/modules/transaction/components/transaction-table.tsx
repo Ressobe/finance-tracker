@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDate } from "@/lib/utils";
 import { useCurrencyStore } from "@/stores/use-currency-store";
 import { BadgeDollarSign, TrendingDown } from "lucide-react";
 
@@ -20,6 +21,7 @@ type TransactionTableProps = {
     amount: number;
     transactionType: components["schemas"]["TransactionType"];
     categoryId: number;
+    categoryName: string;
     description: string;
     createdAt: string;
   }[];
@@ -43,9 +45,9 @@ export function TransactionTable({ transactions }: TransactionTableProps) {
       <TableBody>
         {transactions.map((item) => (
           <TableRow key={item.id}>
-            <TableCell className="font-medium">{item.categoryId}</TableCell>
+            <TableCell className="font-medium">{item.categoryName}</TableCell>
             <TableCell>{item.description}</TableCell>
-            <TableCell>{item.createdAt}</TableCell>
+            <TableCell>{formatDate(new Date(item.createdAt))}</TableCell>
             <TableCell>
               {item.transactionType === 0 && (
                 <BadgeDollarSign className="text-green-500" />
