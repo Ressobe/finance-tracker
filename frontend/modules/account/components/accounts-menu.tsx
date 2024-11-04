@@ -15,20 +15,17 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { CreateAccountMenuSubItem } from "@/modules/account/components/create-account-menu-sub-item";
-import { AccountModel } from "@/types/account";
 import { AccountDropdownMenu } from "@/modules/account/components/account-dropdown-menu";
 import { useState } from "react";
+import { useAccountsStore } from "@/stores/use-accounts-store";
 
-type AccountsMenuProps = {
-  accounts: AccountModel[] | undefined;
-};
-
-export function AccountsMenu({ accounts }: AccountsMenuProps) {
+export function AccountsMenu() {
+  const accounts = useAccountsStore((state) => state.accounts);
   const [open, setOpen] = useState(false);
+
   const closeCollapse = () => {
     setOpen(false);
   };
-  if (accounts === undefined) return null;
 
   return (
     <SidebarMenu>

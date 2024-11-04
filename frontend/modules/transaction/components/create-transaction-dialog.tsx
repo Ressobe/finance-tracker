@@ -26,7 +26,7 @@ export function CreateTransactionDialog({
   const [open, setOpen] = useState(false);
 
   const closeDialog = () => {
-    setOpen(true);
+    setOpen(false);
   };
 
   const textColor = type === "income" ? "text-green-500" : "text-red-500";
@@ -45,7 +45,11 @@ export function CreateTransactionDialog({
             <span className="text-violet-500 font-bold">{account.name}</span>
           </DialogDescription>
         </DialogHeader>
-        <TransactionForm type={type} onCancel={closeDialog} />
+        <TransactionForm
+          accountId={account.id}
+          type={type}
+          closeDialog={closeDialog}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -11,5 +11,7 @@ namespace api.Interfaces
     Task<bool> IsAccountExist(int accountId);
     Task<List<Account>> GetAllByUserId(string userId);
     Task<Account?> UpdateAsync(int accountId, UpdateAccountDto updateAccountDto);
+    Task<Account?> AddIncomeAsync(int accountId, long income);
+    Task<Account?> AddExpenseAsync(int accountId, long expense);
   }
 }

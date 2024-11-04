@@ -1,13 +1,15 @@
 "use client";
 
+import { useCurrencyStore } from "@/stores/use-currency-store";
 import { TrendingUp } from "lucide-react";
 
 type IncomeProps = {
   amount: number;
-  currencySymbol: string;
 };
 
-export function Income({ amount, currencySymbol }: IncomeProps) {
+export function Income({ amount }: IncomeProps) {
+  const currency = useCurrencyStore((state) => state.currency);
+
   return (
     <div className="flex gap-8 items-center text-xl w-full bg-secondary p-4 rounded">
       <div className="bg-green-500/20 p-6 rounded">
@@ -16,7 +18,7 @@ export function Income({ amount, currencySymbol }: IncomeProps) {
       <div className="flex flex-col">
         <span className="text-lg text-muted-foreground">Income</span>
         <span className="font-bold text-2xl">
-          {amount.toLocaleString()} {currencySymbol}
+          {amount.toLocaleString()} {currency}
         </span>
       </div>
     </div>

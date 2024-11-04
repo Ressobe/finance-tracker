@@ -1,6 +1,6 @@
 import createClient, { Middleware } from "openapi-fetch";
 import type { paths } from "./v1";
-import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
+import { cookies } from "next/headers";
 
 export const authMiddleware: Middleware = {
   async onRequest({ request }) {

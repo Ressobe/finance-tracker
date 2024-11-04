@@ -1,11 +1,12 @@
-public enum TransactionType
-{
-  Earning,
-  Expense
-}
 
 namespace api.Models
 {
+  public enum TransactionType
+  {
+    Earning,
+    Expense
+  }
+
   public class Transaction
   {
     public int Id { get; set; }

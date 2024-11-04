@@ -9,3 +9,13 @@ export async function getAccount(accountId: number) {
     },
   });
 }
+
+export async function getAccountTransactions(accountId: number) {
+  return await apiClient.GET("/api/account/{accountId}/transactions", {
+    params: {
+      path: {
+        accountId,
+      },
+    },
+  });
+}

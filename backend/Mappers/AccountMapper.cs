@@ -27,5 +27,18 @@ namespace api.Mappers
         UserId = accountDto.UserId
       };
     }
+
+    public static AccountOverviewDto ToAccountOverview(this Account accountDto, long income, long expense)
+    {
+      return new AccountOverviewDto
+      {
+        Id = accountDto.Id,
+        Name = accountDto.Name,
+        CurrentBalance = accountDto.CurrentBalance,
+        Income = income,
+        Expense = expense,
+        CreatedAt = accountDto.CreatedAt,
+      };
+    }
   }
 }

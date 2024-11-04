@@ -64,6 +64,17 @@ namespace api.Controllers
         return BadRequest("Transaction was not created");
       }
 
+      if (transaction.TransactionType == Models.TransactionType.Earning)
+      {
+        await _accountRepository.AddIncomeAsync(accountId, transaction.Amount);
+      }
+
+      if (transaction.TransactionType == Models.TransactionType.Expense)
+      {
+        await _accountRepository.AddExpenseAsync(accountId, transaction.Amount);
+      }
+
+
       return Ok(transaction.ToTransactionModel());
     }
 

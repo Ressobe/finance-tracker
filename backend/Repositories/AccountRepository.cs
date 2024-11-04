@@ -71,5 +71,31 @@ namespace api.Repositories
       await _context.SaveChangesAsync();
       return existingAccount;
     }
+
+    public async Task<Account?> AddIncomeAsync(int accountId, long income)
+    {
+      var existingAccount = await this.GetAsync(accountId);
+      if (existingAccount == null)
+      {
+        return null;
+      }
+
+      existingAccount.CurrentBalance = existingAccount.CurrentBalance + income;
+      await _context.SaveChangesAsync();
+      return existingAccount;
+    }
+
+    public async Task<Account?> AddExpenseAsync(int accountId, long expense)
+    {
+      var existingAccount = await this.GetAsync(accountId);
+      if (existingAccount == null)
+      {
+        return null;
+      }
+
+      existingAccount.CurrentBalance = existingAccount.CurrentBalance - expense;
+      await _context.SaveChangesAsync();
+      return existingAccount;
+    }
   }
 }

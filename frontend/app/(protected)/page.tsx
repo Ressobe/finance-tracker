@@ -57,9 +57,9 @@ export default async function Dashboard() {
         </span>
       </div>
       <div className="flex flex-col xl:flex-row gap-4">
-        <Income amount={totalIncome} currencySymbol="PLN" />
-        <Expense amount={totalExpense} currencySymbol="PLN" />
-        <Balance amount={totalBalance} currencySymbol="PLN" />
+        <Income amount={totalIncome} />
+        <Expense amount={totalExpense} />
+        <Balance amount={totalBalance} />
       </div>
       <div className="grid grid-cols-2 gap-8 pt-6">
         <IncomeByCategories categories={incomeByCategories} />

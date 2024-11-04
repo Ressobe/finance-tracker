@@ -28,9 +28,9 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["AccountDto"];
-                        "application/json": components["schemas"]["AccountDto"];
-                        "text/json": components["schemas"]["AccountDto"];
+                        "text/plain": components["schemas"]["AccountOverviewDto"];
+                        "application/json": components["schemas"]["AccountOverviewDto"];
+                        "text/json": components["schemas"]["AccountOverviewDto"];
                     };
                 };
                 /** @description Not Found */
@@ -122,7 +122,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["TransactionDto"][];
+                        "application/json": components["schemas"]["TransactionDto"][];
+                        "text/json": components["schemas"]["TransactionDto"][];
+                    };
                 };
             };
         };
@@ -1330,6 +1334,19 @@ export interface components {
             /** Format: int64 */
             currentBalance: number;
             userId: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        AccountOverviewDto: {
+            /** Format: int32 */
+            id: number;
+            name: string;
+            /** Format: int64 */
+            currentBalance: number;
+            /** Format: int64 */
+            income: number;
+            /** Format: int64 */
+            expense: number;
             /** Format: date-time */
             createdAt: string;
         };
