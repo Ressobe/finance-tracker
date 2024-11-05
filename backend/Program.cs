@@ -119,7 +119,6 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ISavingGoalRepository, SavingGoalRepository>();
-builder.Services.AddScoped<IRecurringTransactionRepository, RecurringTransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();

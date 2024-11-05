@@ -18,7 +18,6 @@ namespace api.Data
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<SavingGoal> SavingGoals { get; set; }
-    public DbSet<RecurringTransaction> RecurringTransactions { get; set; }
     public DbSet<SavingTransaction> SavingTransactions { get; set; }
 
 
