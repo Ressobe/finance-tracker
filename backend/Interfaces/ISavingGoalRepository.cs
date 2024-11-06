@@ -11,6 +11,5 @@ namespace api.Interfaces
     Task<SavingGoal?> DeleteAsync(int savingGoalId);
     Task<bool> IsSavingGoalExist(int savingGoalId);
     Task<SavingGoal?> UpdateAsync(int savingGoalId, UpdateSavingGoalDto updateSavingGoalDto);
-    Task<bool> IsOwnerAsync(int resourceId, string userId);
   }
 }

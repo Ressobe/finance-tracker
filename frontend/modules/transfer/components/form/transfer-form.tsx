@@ -22,6 +22,10 @@ import { AccountModel } from "@/types/account";
 import { NewTransfer } from "@/types/transfer";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { createTransferAction } from "../../actions/create-transfer";
+import { useToast } from "@/hooks/use-toast";
+import { SucessToastMessage } from "@/components/sucess-toast-message";
+import { ErrorToastMessage } from "@/components/error-toast-message";
 
 type TransferFormProps = {
   account: AccountModel;
@@ -36,12 +40,32 @@ export function TransferForm({ account, close }: TransferFormProps) {
     defaultValues: {
       amount: 0,
       description: "",
-      sourceAccountId: 0,
-      destinationAccountId: 0,
+      sourceAccountId: account.id,
+      destinationAccountId: filteredAccounts[0].id,
     },
   });
 
-  const onSubmit = async () => {};
+  const { toast } = useToast();
+
+  const onSubmit = async (values: NewTransfer) => {
+    const response = await createTransferAction(values);
+
+    if (response.sucess) {
+      toast({
+        description: <SucessToastMessage message="New transfer created!" />,
+        className: "bg-secondary opacity-90",
+        duration: 2000,
+      });
+    }
+    if (response.error) {
+      toast({
+        description: <ErrorToastMessage message="Something went wrong!" />,
+        className: "bg-secondary opacity-90",
+        duration: 2000,
+      });
+    }
+    close?.();
+  };
 
   return (
     <Form {...form}>
