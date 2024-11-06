@@ -10,11 +10,11 @@ namespace api.Dtos.Account
     [Required]
     public string Name { get; set; } = String.Empty;
     [Required]
-    public long CurrentBalance { get; set; }
+    public decimal CurrentBalance { get; set; }
     [Required]
-    public long Income { get; set; }
+    public decimal Income { get; set; }
     [Required]
-    public long Expense { get; set; }
+    public decimal Expense { get; set; }
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
   }

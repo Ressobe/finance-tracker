@@ -5,6 +5,7 @@ using api.Dtos.User;
 using api.Dtos.Account;
 using api.Dtos.Category;
 using api.Dtos.SavingGoal;
+using api.Dtos.Transaction;
 using api.Mappers;
 using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -186,6 +187,39 @@ namespace api.Controllers
       return Ok(savingGoals);
     }
 
+    [HttpGet("transactions")]
+    [ProducesResponseType(typeof(List<TransactionWithCategoryNameDto>), 200)]
+    [Authorize]
+    public async Task<IActionResult> GetUserTransactions()
+    {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var accounts = await _accountRepository.GetAllByUserId(userId);
+      var allTransactions = new List<TransactionWithCategoryNameDto>();
+
+      foreach (var account in accounts)
+      {
+        var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
+        foreach (var transaction in transactions)
+        {
+          allTransactions.Add(transaction.ToTransactionWithCategoryName());
+        }
+      }
+
+      allTransactions = allTransactions.OrderByDescending(t => t.CreatedAt).ToList();
+      return Ok(allTransactions);
+    }
+
     [Authorize]
     [HttpGet("overview")]
     [ProducesResponseType(typeof(OverviewDto), 200)]
@@ -205,9 +239,9 @@ namespace api.Controllers
 
       var accounts = await _accountRepository.GetAllByUserId(userId);
 
-      long totalBalance = 0;
-      long totalIncome = 0;
-      long totalExpense = 0;
+      decimal totalBalance = 0;
+      decimal totalIncome = 0;
+      decimal totalExpense = 0;
 
       foreach (var account in accounts)
       {

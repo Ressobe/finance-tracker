@@ -45,8 +45,8 @@ namespace api.Controllers
 
       var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
 
-      long expenseSum = 0;
-      long incomeSum = 0;
+      decimal expenseSum = 0;
+      decimal incomeSum = 0;
 
       foreach (var t in transactions)
       {
@@ -66,7 +66,7 @@ namespace api.Controllers
 
     [HttpGet("{accountId:int}/transactions")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
-    [ProducesResponseType(typeof(List<TransactionDto>), 200)]
+    [ProducesResponseType(typeof(List<TransactionWithCategoryNameDto>), 200)]
     public async Task<IActionResult> GetAccountTransactions([FromRoute] int accountId)
     {
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
@@ -76,7 +76,7 @@ namespace api.Controllers
       }
 
       var transactions = await _transactionRepository.GetAllByAccountId(accountId);
-      var transactionsDtos = transactions.Select(item => item.ToTransactionModel()).ToList();
+      var transactionsDtos = transactions.Select(item => item.ToTransactionWithCategoryName()).ToList();
 
       return Ok(transactionsDtos);
     }

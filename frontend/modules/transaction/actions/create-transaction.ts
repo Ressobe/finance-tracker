@@ -15,6 +15,7 @@ export async function createTransactionAction(
       amount: newTransaction.amount,
       description: newTransaction.description,
       transactionType: type,
+      createdAt: newTransaction.transactionDate.toISOString(),
     },
     params: {
       path: {

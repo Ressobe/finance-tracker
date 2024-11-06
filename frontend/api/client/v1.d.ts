@@ -123,9 +123,9 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["TransactionDto"][];
-                        "application/json": components["schemas"]["TransactionDto"][];
-                        "text/json": components["schemas"]["TransactionDto"][];
+                        "text/plain": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "application/json": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "text/json": components["schemas"]["TransactionWithCategoryNameDto"][];
                     };
                 };
             };
@@ -463,158 +463,6 @@ export interface paths {
                     "application/json": components["schemas"]["CreateCategoryDto"];
                     "text/json": components["schemas"]["CreateCategoryDto"];
                     "application/*+json": components["schemas"]["CreateCategoryDto"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/recurring-transaction/{recurringTransactionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    recurringTransactionId: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["RecurringTransactionDto"];
-                        "application/json": components["schemas"]["RecurringTransactionDto"];
-                        "text/json": components["schemas"]["RecurringTransactionDto"];
-                    };
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ProblemDetails"];
-                        "application/json": components["schemas"]["ProblemDetails"];
-                        "text/json": components["schemas"]["ProblemDetails"];
-                    };
-                };
-            };
-        };
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    recurringTransactionId: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json-patch+json": components["schemas"]["UpdateRecurringTransactionDto"];
-                    "application/json": components["schemas"]["UpdateRecurringTransactionDto"];
-                    "text/json": components["schemas"]["UpdateRecurringTransactionDto"];
-                    "application/*+json": components["schemas"]["UpdateRecurringTransactionDto"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["RecurringTransactionDto"];
-                        "application/json": components["schemas"]["RecurringTransactionDto"];
-                        "text/json": components["schemas"]["RecurringTransactionDto"];
-                    };
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ProblemDetails"];
-                        "application/json": components["schemas"]["ProblemDetails"];
-                        "text/json": components["schemas"]["ProblemDetails"];
-                    };
-                };
-            };
-        };
-        post?: never;
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    recurringTransactionId: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/recurring-transaction/{accountId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    accountId: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json-patch+json": components["schemas"]["CreateRecurringTransactionDto"];
-                    "application/json": components["schemas"]["CreateRecurringTransactionDto"];
-                    "text/json": components["schemas"]["CreateRecurringTransactionDto"];
-                    "application/*+json": components["schemas"]["CreateRecurringTransactionDto"];
                 };
             };
             responses: {
@@ -1091,6 +939,100 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/transfer": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json-patch+json": components["schemas"]["CreateTransferDto"];
+                    "application/json": components["schemas"]["CreateTransferDto"];
+                    "text/json": components["schemas"]["CreateTransferDto"];
+                    "application/*+json": components["schemas"]["CreateTransferDto"];
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TransferDto"];
+                        "application/json": components["schemas"]["TransferDto"];
+                        "text/json": components["schemas"]["TransferDto"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/transfer/{transferId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    transferId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TransferDto"];
+                        "application/json": components["schemas"]["TransferDto"];
+                        "text/json": components["schemas"]["TransferDto"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ProblemDetails"];
+                        "application/json": components["schemas"]["ProblemDetails"];
+                        "text/json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/user/login": {
         parameters: {
             query?: never;
@@ -1286,6 +1228,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/user/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "application/json": components["schemas"]["TransactionWithCategoryNameDto"][];
+                        "text/json": components["schemas"]["TransactionWithCategoryNameDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/user/overview": {
         parameters: {
             query?: never;
@@ -1341,11 +1320,11 @@ export interface components {
             /** Format: int32 */
             id: number;
             name: string;
-            /** Format: int64 */
+            /** Format: double */
             currentBalance: number;
-            /** Format: int64 */
+            /** Format: double */
             income: number;
-            /** Format: int64 */
+            /** Format: double */
             expense: number;
             /** Format: date-time */
             createdAt: string;
@@ -1388,22 +1367,6 @@ export interface components {
         CreateCategoryDto: {
             name?: string | null;
         };
-        CreateRecurringTransactionDto: {
-            /** Format: int32 */
-            categoryId?: number;
-            /** Format: int32 */
-            amount?: number;
-            /** Format: date-time */
-            startDate?: string;
-            /** Format: date-time */
-            endDate?: string;
-            description?: string | null;
-            /** Format: date-time */
-            lastOccurrence?: string;
-            /** Format: date-time */
-            nextOccurrence?: string;
-            isActive?: boolean;
-        };
         CreateSavingGoalDto: {
             name: string;
             /** Format: int32 */
@@ -1416,12 +1379,25 @@ export interface components {
             date?: string;
         };
         CreateTransactionDto: {
-            /** Format: int32 */
+            /** Format: double */
             amount: number;
             transactionType: components["schemas"]["TransactionType"];
             /** Format: int32 */
             categoryId: number;
             description?: string | null;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        CreateTransferDto: {
+            /** Format: double */
+            amount: number;
+            description?: string | null;
+            /** Format: int32 */
+            sourceAccountId: number;
+            /** Format: int32 */
+            destinationAccountId: number;
+            /** Format: date-time */
+            createdAt: string;
         };
         /**
          * Format: int32
@@ -1455,26 +1431,6 @@ export interface components {
             instance?: string | null;
         } & {
             [key: string]: unknown;
-        };
-        RecurringTransactionDto: {
-            /** Format: int32 */
-            id: number;
-            /** Format: int32 */
-            accountId: number;
-            /** Format: int32 */
-            categoryId: number;
-            /** Format: int32 */
-            amount: number;
-            /** Format: date-time */
-            startDate: string;
-            /** Format: date-time */
-            endDate: string;
-            description: string;
-            /** Format: date-time */
-            lastOccurrence: string;
-            /** Format: date-time */
-            nextOccurrence: string;
-            isActive: boolean;
         };
         RegisterDto: {
             username: string;
@@ -1511,7 +1467,7 @@ export interface components {
             id: number;
             /** Format: int32 */
             accountId: number;
-            /** Format: int32 */
+            /** Format: double */
             amount: number;
             transactionType: components["schemas"]["TransactionType"];
             /** Format: int32 */
@@ -1525,6 +1481,34 @@ export interface components {
          * @enum {integer}
          */
         TransactionType: 0 | 1;
+        TransactionWithCategoryNameDto: {
+            /** Format: int32 */
+            id: number;
+            /** Format: int32 */
+            accountId: number;
+            /** Format: double */
+            amount: number;
+            transactionType: components["schemas"]["TransactionType"];
+            /** Format: int32 */
+            categoryId: number;
+            categoryName: string;
+            description: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        TransferDto: {
+            /** Format: int32 */
+            id: number;
+            /** Format: double */
+            amount: number;
+            description: string;
+            /** Format: int32 */
+            sourceAccountId: number;
+            /** Format: int32 */
+            destinationAccountId: number;
+            /** Format: date-time */
+            createdAt: string;
+        };
         UpdateAccountDto: {
             name?: string | null;
             /** Format: int64 */
@@ -1543,24 +1527,6 @@ export interface components {
         };
         UpdateCategoryDto: {
             name?: string | null;
-        };
-        UpdateRecurringTransactionDto: {
-            /** Format: int32 */
-            accountId?: number;
-            /** Format: int32 */
-            categoryId?: number;
-            /** Format: int32 */
-            amount?: number;
-            /** Format: date-time */
-            startDate?: string;
-            /** Format: date-time */
-            endDate?: string;
-            description?: string | null;
-            /** Format: date-time */
-            lastOccurrence?: string;
-            /** Format: date-time */
-            nextOccurrence?: string;
-            isActive?: boolean;
         };
         UpdateSavingGoalDto: {
             name?: string | null;

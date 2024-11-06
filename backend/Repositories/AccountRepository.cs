@@ -72,7 +72,7 @@ namespace api.Repositories
       return existingAccount;
     }
 
-    public async Task<Account?> AddIncomeAsync(int accountId, long income)
+    public async Task<Account?> AddIncomeAsync(int accountId, decimal income)
     {
       var existingAccount = await this.GetAsync(accountId);
       if (existingAccount == null)
@@ -80,12 +80,13 @@ namespace api.Repositories
         return null;
       }
 
+
       existingAccount.CurrentBalance = existingAccount.CurrentBalance + income;
       await _context.SaveChangesAsync();
       return existingAccount;
     }
 
-    public async Task<Account?> AddExpenseAsync(int accountId, long expense)
+    public async Task<Account?> AddExpenseAsync(int accountId, decimal expense)
     {
       var existingAccount = await this.GetAsync(accountId);
       if (existingAccount == null)

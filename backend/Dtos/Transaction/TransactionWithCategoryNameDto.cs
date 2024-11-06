@@ -1,9 +1,10 @@
+
 using api.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos.Transaction
 {
-  public class TransactionDto
+  public class TransactionWithCategoryNameDto
   {
     [Required]
     public int Id { get; set; }
@@ -18,6 +19,9 @@ namespace api.Dtos.Transaction
 
     [Required]
     public int CategoryId { get; set; }
+
+    [Required]
+    public string CategoryName { get; set; } = string.Empty;
 
     [Required]
     public String Description { get; set; } = String.Empty;
