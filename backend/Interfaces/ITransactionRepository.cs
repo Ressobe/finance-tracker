@@ -10,6 +10,7 @@ namespace api.Interfaces
     Task<Transaction?> DeleteAsync(int transactionId);
     Task<bool> IsTransactionExist(int transactionId);
     Task<List<Transaction>> GetAllByAccountId(int accountId);
+    Task<List<Transaction>> GetAllByCategoryId(int categoryId);
     Task<Transaction?> UpdateAsync(int transactionId, UpdateTransactionDto updateTransactionDto);
   }
 }
