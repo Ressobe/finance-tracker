@@ -27,3 +27,11 @@ export async function getOverview() {
 export async function getUserAccounts() {
   return await apiClient.GET("/api/user/accounts");
 }
+
+export async function getIncomeByCategories() {
+  return await apiClient.GET("/api/user/income-by-categories");
+}
+
+export async function getExpenseByCategories() {
+  return await apiClient.GET("/api/user/expense-by-categories");
+}
