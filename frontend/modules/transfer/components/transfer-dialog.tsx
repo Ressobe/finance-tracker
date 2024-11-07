@@ -12,20 +12,26 @@ import { AccountModel } from "@/types/account";
 import { useState } from "react";
 import { TransferForm } from "./form/transfer-form";
 import { useAccountsStore } from "@/stores/use-accounts-store";
+import { Transfer } from "@/types/transfer";
 
 type CreateTransactionDialogProps = {
   children: React.ReactNode;
   account: AccountModel;
+  defaultValue?: Transfer;
+  closeDropdownMenu?: () => void;
 };
 
 export function TransferDialog({
   children,
   account,
+  defaultValue,
+  closeDropdownMenu,
 }: CreateTransactionDialogProps) {
   const [open, setOpen] = useState(false);
 
   const closeDialog = () => {
     setOpen(false);
+    closeDropdownMenu?.();
   };
 
   const accounts = useAccountsStore((state) => state.accounts);
@@ -40,10 +46,14 @@ export function TransferDialog({
           <DialogTitle>Create a new transfer</DialogTitle>
           <DialogDescription>
             New transfer for{" "}
-            <span className="text-violet-500 font-bold">{account.name}</span>
+            <span className="font-bold text-violet-500">{account.name}</span>
           </DialogDescription>
         </DialogHeader>
-        <TransferForm account={account} close={closeDialog} />
+        <TransferForm
+          account={account}
+          close={closeDialog}
+          defaultValue={defaultValue}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -1025,9 +1025,69 @@ export interface paths {
                 };
             };
         };
-        put?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    transferId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json-patch+json": components["schemas"]["UpdateTransferDto"];
+                    "application/json": components["schemas"]["UpdateTransferDto"];
+                    "text/json": components["schemas"]["UpdateTransferDto"];
+                    "application/*+json": components["schemas"]["UpdateTransferDto"];
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TransferDto"];
+                        "application/json": components["schemas"]["TransferDto"];
+                        "text/json": components["schemas"]["TransferDto"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ProblemDetails"];
+                        "application/json": components["schemas"]["ProblemDetails"];
+                        "text/json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
         post?: never;
-        delete?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    transferId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -1550,6 +1610,15 @@ export interface components {
             /** Format: int32 */
             categoryId?: number;
             description?: string | null;
+        };
+        UpdateTransferDto: {
+            /** Format: double */
+            amount?: number;
+            description?: string | null;
+            /** Format: int32 */
+            sourceAccountId?: number;
+            /** Format: int32 */
+            destinationAccountId?: number;
         };
     };
     responses: never;

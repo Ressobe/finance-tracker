@@ -1,3 +1,13 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "plugins": [
+    "eslint-plugin-project-structure",
+    "eslint-plugin-unused-imports"
+  ],
+  "settings": {
+    "project-structure/independent-modules-config-path": "independentModules.jsonc"
+  },
+  "rules": {
+    "project-structure/independent-modules": "error"
+  }
 }
