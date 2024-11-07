@@ -6,7 +6,6 @@ using api.Dtos.Account;
 using api.Dtos.Category;
 using api.Dtos.SavingGoal;
 using api.Dtos.Transaction;
-using api.Dtos.Category;
 using api.Mappers;
 using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
