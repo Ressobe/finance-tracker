@@ -37,7 +37,6 @@ namespace api.Controllers
       await _accountRepository.AddExpenseAsync(transfer.SourceAccountId, transfer.Amount);
       await _accountRepository.AddIncomeAsync(transfer.DestinationAccountId, transfer.Amount);
 
-
       return Ok(transfer.ToTransferModel());
     }
 
@@ -52,6 +51,48 @@ namespace api.Controllers
         return NotFound();
       }
       return Ok(transfer.ToTransferModel());
+    }
+
+    [HttpDelete("{transferId:int}")]
+    public async Task<IActionResult> Delete([FromRoute] int transferId)
+    {
+      var deletedTransfer = await _transferRepository.DeleteAsync(transferId);
+      if (deletedTransfer == null)
+      {
+        return NotFound();
+      }
+
+      await _accountRepository.AddIncomeAsync(deletedTransfer.SourceAccountId, deletedTransfer.Amount);
+      await _accountRepository.AddExpenseAsync(deletedTransfer.DestinationAccountId, deletedTransfer.Amount);
+
+      return NoContent();
+    }
+
+    [HttpPut]
+    [Route("{transferId:int}")]
+    [ProducesResponseType(typeof(TransferDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Update([FromRoute] int transferId, [FromBody] UpdateTransferDto updateTransferDto)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      var existingTransfer = await _transferRepository.GetAsync(transferId);
+      if (existingTransfer == null)
+      {
+        return NotFound();
+      }
+
+      await _accountRepository.AddIncomeAsync(existingTransfer.SourceAccountId, existingTransfer.Amount);
+      await _accountRepository.AddExpenseAsync(existingTransfer.DestinationAccountId, existingTransfer.Amount);
+
+      var updatedTransfer = await _transferRepository.UpdateAsync(transferId, updateTransferDto);
+      if (updatedTransfer == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(updatedTransfer.ToTransferModel());
     }
   }
 }

@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAccountsStore } from "@/stores/use-accounts-store";
 import { AccountModel } from "@/types/account";
-import { NewTransfer } from "@/types/transfer";
+import { NewTransfer, Transfer } from "@/types/transfer";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { createTransferAction } from "../../actions/create-transfer";
@@ -29,19 +29,27 @@ import { ErrorToastMessage } from "@/components/error-toast-message";
 
 type TransferFormProps = {
   account: AccountModel;
+  defaultValue?: Transfer;
   close?: () => void;
 };
 
-export function TransferForm({ account, close }: TransferFormProps) {
+export function TransferForm({
+  account,
+  defaultValue,
+  close,
+}: TransferFormProps) {
   const accounts = useAccountsStore((state) => state.accounts);
   const filteredAccounts = accounts.filter((item) => item.id !== account.id);
 
+  const defaultDestinationAccountId =
+    defaultValue?.destinationAccountId ?? filteredAccounts[0].id;
+
   const form = useForm<NewTransfer>({
     defaultValues: {
-      amount: 0,
-      description: "",
-      sourceAccountId: account.id,
-      destinationAccountId: filteredAccounts[0].id,
+      amount: defaultValue?.amount ?? 0,
+      description: defaultValue?.description ?? "",
+      sourceAccountId: defaultValue?.sourceAccountId ?? account.id,
+      destinationAccountId: defaultDestinationAccountId,
     },
   });
 
@@ -109,7 +117,7 @@ export function TransferForm({ account, close }: TransferFormProps) {
                 <FormLabel>Destination</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={`${filteredAccounts[0].id}`}
+                  defaultValue={`${defaultDestinationAccountId}`}
                 >
                   <FormControl>
                     <SelectTrigger>

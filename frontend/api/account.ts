@@ -19,3 +19,14 @@ export async function getAccountTransactions(accountId: number) {
     },
   });
 }
+
+// TODO: Add endpoint on backend to return all transfers for account
+export async function getAccountTransfers(accountId: number) {
+  return await apiClient.GET("/api/account/{accountId}/transactions", {
+    params: {
+      path: {
+        accountId,
+      },
+    },
+  });
+}
