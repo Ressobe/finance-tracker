@@ -57,6 +57,15 @@ namespace api.Repositories
       return transactions;
     }
 
+    public async Task<List<Transaction>> GetAllByCategoryId(int categoryId)
+    {
+      var transactions = await _context.Transactions
+        .Where(item => item.CategoryId == categoryId)
+        .ToListAsync();
+
+      return transactions;
+    }
+
     public async Task<Transaction?> UpdateAsync(int transactionId, UpdateTransactionDto updateTransactionDto)
     {
       var existingTransaction = await this.GetAsync(transactionId);

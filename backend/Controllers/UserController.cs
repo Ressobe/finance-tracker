@@ -270,5 +270,115 @@ namespace api.Controllers
 
       return Ok(overview);
     }
+
+    [Authorize]
+    [HttpGet("income-by-categories")]
+    [ProducesResponseType(typeof(List<CategoryOverviewDto>), 200)]
+    public async Task<IActionResult> GetIncomeByCategories()
+    {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var categories = await _categoryRepository.GetAllByUserId(userId);
+      var incomeResults = new List<CategoryOverviewDto>();
+
+      decimal totalIncome = 0;
+      foreach (var category in categories)
+      {
+        var transactions = await _transactionRepository.GetAllByCategoryId(category.Id);
+        decimal incomeSum = transactions
+            .Where(t => t.TransactionType == TransactionType.Earning)
+            .Sum(t => t.Amount);
+
+        totalIncome += incomeSum;
+
+        if (incomeSum > 0)
+        {
+          incomeResults.Add(new CategoryOverviewDto
+          {
+            CategoryId = category.Id,
+            CategoryName = category.Name,
+            Amount = incomeSum
+          });
+        }
+      }
+
+      var topIncomeCategories = incomeResults
+      .OrderByDescending(c => c.Amount)
+      .Take(3)
+      .Select(c => new CategoryOverviewDto
+      {
+        CategoryId = c.CategoryId,
+        CategoryName = c.CategoryName,
+        Amount = c.Amount,
+        Percentage = totalIncome > 0 ? Math.Round((c.Amount / totalIncome) * 100, 2) : 0
+      })
+      .ToList();
+      return Ok(topIncomeCategories);
+    }
+
+    [Authorize]
+    [HttpGet("expense-by-categories")]
+    [ProducesResponseType(typeof(List<CategoryOverviewDto>), 200)]
+    public async Task<IActionResult> GetExpenseByCategories()
+    {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest("User does not exist!");
+      }
+
+      var categories = await _categoryRepository.GetAllByUserId(userId);
+      var expenseResults = new List<CategoryOverviewDto>();
+
+      decimal totalExpense = 0;
+      foreach (var category in categories)
+      {
+        var transactions = await _transactionRepository.GetAllByCategoryId(category.Id);
+        decimal expenseSum = transactions
+            .Where(t => t.TransactionType == TransactionType.Expense)
+            .Sum(t => t.Amount);
+
+        totalExpense += expenseSum;
+
+        if (expenseSum > 0)
+        {
+          expenseResults.Add(new CategoryOverviewDto
+          {
+            CategoryId = category.Id,
+            CategoryName = category.Name,
+            Amount = expenseSum
+          });
+        }
+      }
+
+      var topExpenseCategories = expenseResults
+          .OrderByDescending(c => c.Amount)
+          .Take(3)
+          .Select(c => new CategoryOverviewDto
+          {
+            CategoryId = c.CategoryId,
+            CategoryName = c.CategoryName,
+            Amount = c.Amount,
+            Percentage = totalExpense > 0 ? Math.Round((c.Amount / totalExpense) * 100, 2) : 0
+          })
+          .ToList();
+
+      return Ok(topExpenseCategories);
+    }
   }
 }

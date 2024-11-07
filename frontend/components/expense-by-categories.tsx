@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 
 type ExpenseByCategoriesProps = {
   categories: {
-    name: string;
-    percentageShare: number;
+    categoryId: number;
+    categoryName: string;
     amount: number;
+    percentage: number;
   }[];
 };
 
@@ -19,7 +20,7 @@ export function ExpenseByCategories({ categories }: ExpenseByCategoriesProps) {
       <CardContent>
         <ul className="space-y-4">
           {categories.map((item) => (
-            <CategoryItem key={item.name} type="expense" {...item} />
+            <CategoryItem key={item.categoryId} type="expense" {...item} />
           ))}
         </ul>
       </CardContent>

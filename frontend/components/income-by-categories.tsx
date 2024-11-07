@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 
 type IncomeByCategoriesProps = {
   categories: {
-    name: string;
-    percentageShare: number;
+    categoryId: number;
+    categoryName: string;
     amount: number;
+    percentage: number;
   }[];
 };
 
@@ -19,7 +20,7 @@ export function IncomeByCategories({ categories }: IncomeByCategoriesProps) {
       <CardContent>
         <ul className="space-y-4">
           {categories.map((item) => (
-            <CategoryItem key={item.name} type="income" {...item} />
+            <CategoryItem key={item.categoryId} type="income" {...item} />
           ))}
         </ul>
       </CardContent>

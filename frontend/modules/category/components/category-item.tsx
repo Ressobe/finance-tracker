@@ -2,15 +2,15 @@ import { Progress } from "@/components/ui/progress";
 
 type CategoryItemProps = {
   type: "income" | "expense";
-  name: string;
-  percentageShare: number;
+  categoryName: string;
+  percentage: number;
   amount: number;
 };
 
 export function CategoryItem({
   type,
-  name,
-  percentageShare,
+  categoryName,
+  percentage,
   amount,
 }: CategoryItemProps) {
   const indicatorColor = type === "income" ? "#22c55e" : "#ef4444";
@@ -20,15 +20,13 @@ export function CategoryItem({
     <li className="space-y-1">
       <div className="w-full flex justify-between">
         <div className="text-lg space-x-2">
-          <span>{name} </span>
-          <span className="text-muted-foreground text-sm">
-            ({percentageShare}%)
-          </span>
+          <span>{categoryName} </span>
+          <span className="text-muted-foreground text-sm">({percentage}%)</span>
         </div>
         <span className="text-lg">{amount.toLocaleString()} PLN</span>
       </div>
       <Progress
-        value={percentageShare}
+        value={percentage}
         className="w-full h-2"
         indicatorColor={indicatorColor}
         trackColor={trackColor}
