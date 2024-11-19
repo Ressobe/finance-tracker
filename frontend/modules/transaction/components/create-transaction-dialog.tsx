@@ -11,21 +11,27 @@ import {
 import { TransactionForm } from "./transaction-form";
 import { AccountModel } from "@/types/account";
 import { useState } from "react";
+import { Transaction } from "@/types/transaction";
 
-type CreateTransactionDialogProps = {
+type TransactionDialogProps = {
   children: React.ReactNode;
   type: "income" | "expense";
   account: AccountModel;
+  defaultValue?: Transaction;
+  closeDropdownMenu?: () => void;
 };
 
-export function CreateTransactionDialog({
+export function TransactionDialog({
   children,
   type,
   account,
-}: CreateTransactionDialogProps) {
+  defaultValue,
+  closeDropdownMenu,
+}: TransactionDialogProps) {
   const [open, setOpen] = useState(false);
 
   const closeDialog = () => {
+    closeDropdownMenu?.();
     setOpen(false);
   };
 
@@ -37,11 +43,12 @@ export function CreateTransactionDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Create a new <span className={textColor}>{type} </span>
+            {defaultValue ? "Update " : "Create a new "}
+            <span className={textColor}>{type} </span>
             transaction
           </DialogTitle>
           <DialogDescription>
-            New transaction for{" "}
+            {defaultValue ? "Update " : "New "} transaction for{" "}
             <span className="text-violet-500 font-bold">{account.name}</span>
           </DialogDescription>
         </DialogHeader>
@@ -49,6 +56,7 @@ export function CreateTransactionDialog({
           accountId={account.id}
           type={type}
           closeDialog={closeDialog}
+          defaultValue={defaultValue}
         />
       </DialogContent>
     </Dialog>

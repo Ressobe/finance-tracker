@@ -13,8 +13,11 @@ import {
 import { formatDate } from "@/lib/utils";
 import { useCurrencyStore } from "@/stores/use-currency-store";
 import { BadgeDollarSign, TrendingDown } from "lucide-react";
+import { TransactionDropdownMenu } from "./transaction-dropdown-menu";
+import { AccountModel } from "@/types/account";
 
 type TransactionTableProps = {
+  currentAccount: AccountModel;
   transactions: {
     id: number;
     accountId: number;
@@ -27,19 +30,24 @@ type TransactionTableProps = {
   }[];
 };
 
-export function TransactionTable({ transactions }: TransactionTableProps) {
+export function TransactionTable({
+  transactions,
+  currentAccount,
+}: TransactionTableProps) {
   const currency = useCurrencyStore((state) => state.currency);
 
   return (
     <Table className="w-full">
-      <TableCaption>A list of your transactions on {}.</TableCaption>
+      <TableCaption>
+        A list of your transactions on {currentAccount.name}.
+      </TableCaption>
       <TableHeader>
         <TableRow className="w-full">
           <TableHead className="w-1/5">Category</TableHead>
           <TableHead className="w-1/6">Description</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Type</TableHead>
-          <TableHead>Amount</TableHead>
+          <TableHead className="w-14">Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -55,12 +63,19 @@ export function TransactionTable({ transactions }: TransactionTableProps) {
               {item.transactionType === 1 && (
                 <TrendingDown className="text-red-500" />
               )}
-              {/* {item.transactionType === "transfer" && ( */}
+              {/* {item.transactionType === 2 && ( */}
               {/*   <ArrowRightLeft className="text-violet-500" /> */}
               {/* )} */}
             </TableCell>
-            <TableCell className="text-left">
-              {item.amount} {currency}
+
+            <TableCell className="relative flex items-center gap-2">
+              <span>
+                {item.amount} {currency}
+              </span>
+              <TransactionDropdownMenu
+                account={currentAccount}
+                transaction={item}
+              />
             </TableCell>
           </TableRow>
         ))}
