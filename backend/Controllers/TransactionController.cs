@@ -42,6 +42,16 @@ namespace api.Controllers
         return NotFound();
       }
 
+      if (deletedTransaction.TransactionType == Models.TransactionType.Earning)
+      {
+        await _accountRepository.AddExpenseAsync(deletedTransaction.AccountId, deletedTransaction.Amount);
+      }
+
+      if (deletedTransaction.TransactionType == Models.TransactionType.Expense)
+      {
+        await _accountRepository.AddIncomeAsync(deletedTransaction.AccountId, deletedTransaction.Amount);
+      }
+
       return NoContent();
     }
 
@@ -87,6 +97,41 @@ namespace api.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
+      var existingTransaction = await _transactionRepository.GetAsync(transactionId);
+      if (existingTransaction == null)
+      {
+        return NotFound();
+      }
+
+      var difference = updateTransactionDto.Amount - existingTransaction.Amount;
+
+      if (existingTransaction.TransactionType == Models.TransactionType.Earning)
+      {
+
+        if (difference > 0)
+        {
+          await _accountRepository.AddIncomeAsync(existingTransaction.AccountId, difference);
+        }
+
+        if (difference < 0)
+        {
+          await _accountRepository.AddExpenseAsync(existingTransaction.AccountId, Math.Abs(difference));
+        }
+      }
+
+      if (existingTransaction.TransactionType == Models.TransactionType.Expense)
+      {
+        if (difference > 0)
+        {
+          await _accountRepository.AddExpenseAsync(existingTransaction.AccountId, difference);
+        }
+        if (difference < 0)
+        {
+          await _accountRepository.AddIncomeAsync(existingTransaction.AccountId, Math.Abs(difference));
+        }
+      }
+
+
       var updatedTransaction = await _transactionRepository.UpdateAsync(transactionId, updateTransactionDto);
       if (updatedTransaction == null)
       {
@@ -95,6 +140,5 @@ namespace api.Controllers
 
       return Ok(updatedTransaction.ToTransactionModel());
     }
-
   }
 }

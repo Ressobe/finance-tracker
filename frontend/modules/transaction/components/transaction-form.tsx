@@ -3,6 +3,7 @@
 import {
   newTransacitonSchema,
   NewTransaction,
+  Transaction,
   TransactionType,
 } from "@/types/transaction";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,20 +38,23 @@ import {
 import { Calendar } from "../../../components/ui/calendar";
 import { useCategoriesStore } from "@/stores/use-categories-store";
 import { useCurrencyStore } from "@/stores/use-currency-store";
-import { createTransactionAction } from "../actions/create-transaction";
+import { createTransactionAction } from "@/modules/transaction/actions/create-transaction";
 import { useToast } from "@/hooks/use-toast";
 import { SucessToastMessage } from "@/components/sucess-toast-message";
 import { ErrorToastMessage } from "@/components/error-toast-message";
+import { updateTransactionAction } from "@/modules/transaction/actions/update-transaction";
 
 type TransactionFormProps = {
   type: TransactionType;
   accountId: number;
+  defaultValue?: Transaction;
   closeDialog?: () => void;
 };
 
 export function TransactionForm({
   type,
   accountId,
+  defaultValue,
   closeDialog,
 }: TransactionFormProps) {
   const typeNum = type === "income" ? 0 : 1;
@@ -60,30 +64,53 @@ export function TransactionForm({
 
   const now = new Date();
 
+  const defaultDate = defaultValue?.createdAt
+    ? new Date(defaultValue.createdAt)
+    : undefined;
+
+  const defaultCategory = defaultValue?.categoryId ?? categories[0].id;
+
   const form = useForm<NewTransaction>({
     resolver: zodResolver(newTransacitonSchema),
     defaultValues: {
-      amount: 0,
-      categoryId: categories[0].id,
-      description: "",
-      transactionDate: new Date(
-        Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()),
-      ),
+      amount: defaultValue?.amount ?? 0,
+      categoryId: defaultCategory,
+      description: defaultValue?.description ?? "",
+      transactionDate:
+        defaultDate ??
+        new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())),
     },
   });
 
   const { toast } = useToast();
 
   const onSubmit = async (values: NewTransaction) => {
-    const response = await createTransactionAction(values, typeNum, accountId);
-    if (response.sucess) {
+    let response = null;
+    const typeOfForm = defaultValue ? "update" : "create";
+    if (typeOfForm == "create") {
+      response = await createTransactionAction(values, typeNum, accountId);
+    }
+
+    if (typeOfForm == "update" && defaultValue) {
+      response = await updateTransactionAction(
+        accountId,
+        defaultValue.id,
+        values,
+      );
+    }
+
+    if (response?.sucess) {
+      const sucessMessage =
+        typeOfForm === "create"
+          ? "New transaction created!"
+          : "Transaction updated!";
       toast({
-        description: <SucessToastMessage message="New transaction created!" />,
+        description: <SucessToastMessage message={sucessMessage} />,
         className: "bg-secondary opacity-90",
         duration: 2000,
       });
     }
-    if (response.error) {
+    if (response?.error) {
       toast({
         description: <ErrorToastMessage message="Something went wrong!" />,
         className: "bg-secondary opacity-90",
@@ -140,7 +167,7 @@ export function TransactionForm({
                   <FormLabel>Category</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={`${categories[0].id}`}
+                    defaultValue={`${defaultCategory}`}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -227,7 +254,9 @@ export function TransactionForm({
           >
             Cancel
           </Button>
-          <Button type="submit">New transaction</Button>
+          <Button type="submit">
+            {defaultValue ? "Update " : "New "} transaction
+          </Button>
         </div>
       </form>
     </Form>

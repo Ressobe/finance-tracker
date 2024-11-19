@@ -1497,13 +1497,14 @@ export interface components {
         };
         UpdateTransactionDto: {
             /** Format: int32 */
-            amount?: number;
-            transactionType?: components["schemas"]["TransactionType"];
+            amount: number;
             /** Format: int32 */
-            accountId?: number;
+            accountId: number;
             /** Format: int32 */
-            categoryId?: number;
-            description?: string | null;
+            categoryId: number;
+            description: string;
+            /** Format: date-time */
+            createdAt: string;
         };
         UpdateTransferDto: {
             /** Format: double */

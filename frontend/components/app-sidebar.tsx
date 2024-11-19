@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ArrowRightLeft,
   CircleDollarSign,
   LucideProps,
   PiggyBank,
@@ -23,23 +22,14 @@ import { LogoutButton } from "./logout-button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ForwardRefExoticComponent, RefAttributes, useEffect } from "react";
-import { AccountModel } from "@/types/account";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { AccountsMenu } from "@/modules/account/components/accounts-menu";
-import { useAccountsStore } from "@/stores/use-accounts-store";
-import { useCategoriesStore } from "@/stores/use-categories-store";
-import { Category } from "@/types/category";
 
 const items = [
   {
     title: "Dashboard",
     url: "/",
     icon: SquareKanban,
-  },
-  {
-    title: "Transactions",
-    url: "/transactions",
-    icon: ArrowRightLeft,
   },
   {
     title: "Saving goals",
