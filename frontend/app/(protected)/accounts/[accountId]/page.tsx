@@ -3,7 +3,7 @@ import { Balance } from "@/components/balance";
 import { Expense } from "@/components/expense";
 import { Income } from "@/components/income";
 import { Button } from "@/components/ui/button";
-import { CreateTransactionDialog } from "@/modules/transaction/components/create-transaction-dialog";
+import { TransactionDialog } from "@/modules/transaction/components/create-transaction-dialog";
 import { TransactionTable } from "@/modules/transaction/components/transaction-table";
 import { TransferDialog } from "@/modules/transfer/components/transfer-dialog";
 import { ArrowRightLeft, BadgeDollarSign, TrendingDown } from "lucide-react";
@@ -54,7 +54,7 @@ export default async function AccountPage(props: AccountPageProps) {
             </Button>
           </TransferDialog>
           <div className="space-x-4">
-            <CreateTransactionDialog account={data} type="income">
+            <TransactionDialog account={data} type="income">
               <Button
                 variant="outline"
                 className="space-x-2 bg-green-500/10 hover:bg-green-500/30 border-green-500"
@@ -62,9 +62,9 @@ export default async function AccountPage(props: AccountPageProps) {
                 <BadgeDollarSign className="text-green-500" />
                 <span>Create a new income</span>
               </Button>
-            </CreateTransactionDialog>
+            </TransactionDialog>
 
-            <CreateTransactionDialog account={data} type="expense">
+            <TransactionDialog account={data} type="expense">
               <Button
                 variant="outline"
                 className="space-x-2 bg-red-500/10 hover:bg-red-500/30 border-red-500"
@@ -72,11 +72,14 @@ export default async function AccountPage(props: AccountPageProps) {
                 <TrendingDown className="text-red-500" />
                 <span>Create a new expense</span>
               </Button>
-            </CreateTransactionDialog>
+            </TransactionDialog>
           </div>
         </div>
       </div>
-      <TransactionTable transactions={transactions ?? []} />
+      <TransactionTable
+        currentAccount={data}
+        transactions={transactions ?? []}
+      />
     </section>
   );
 }

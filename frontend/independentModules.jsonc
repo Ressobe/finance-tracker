@@ -7,22 +7,23 @@
       "allowImportsFrom": [
         "app/globals.css",
         "{sharedImports}",
-        "modules/**"
-      ]
+        "modules/**",
+        "api/**",
+      ],
     },
 
     {
       "name": "Modules",
       "pattern": "modules/**",
-      "allowImportsFrom": ["{family_3}/**", "{sharedImports}"],
-      "errorMessage": "🔥 A module may only import items from shared folders and its own family. Importing items from another model is prohibited. 🔥"
+      "allowImportsFrom": ["{family_3}/**", "{sharedImports}", "api/**"],
+      "errorMessage": "🔥 A module may only import items from shared folders and its own family. Importing items from another model is prohibited. 🔥",
     },
 
     {
       "name": "Permissions file",
       "pattern": "lib/permissions.ts",
       "allowImportsFrom": ["modules/**/db/**"],
-      "errorMessage": "🔥 The permission file may only import items from `modules/**/db/**` 🔥"
+      "errorMessage": "🔥 The permission file may only import items from `modules/**/db/**` 🔥",
     },
 
     {
@@ -35,10 +36,10 @@
         "stores/**",
         "hooks/**",
         "lib/**",
-        "server/**"
+        "server/**",
       ],
       "allowImportsFrom": ["{sharedImports}"],
-      "errorMessage": "🔥 Shared folders are not allowed to import items from the `modules` and `app` folders. 🔥"
+      "errorMessage": "🔥 Shared folders are not allowed to import items from the `modules` and `app` folders. 🔥",
     },
 
     // All files not specified in the rules are not allowed to import anything.
@@ -48,8 +49,8 @@
       "pattern": [["/**", "!src/tasks/*", "!src/*"]],
       "allowImportsFrom": [],
       "allowExternalImports": false,
-      "errorMessage": "🔥 This file is not specified as an independent module in `independentModules.jsonc`. 🔥"
-    }
+      "errorMessage": "🔥 This file is not specified as an independent module in `independentModules.jsonc`. 🔥",
+    },
   ],
   "reusableImportPatterns": {
     "sharedImports": [
@@ -60,8 +61,7 @@
       "stores/**",
       "hooks/**",
       "lib/**",
-      "server/**"
-    ]
-  }
+      "server/**",
+    ],
+  },
 }
-

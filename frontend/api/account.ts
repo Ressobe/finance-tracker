@@ -17,6 +17,9 @@ export async function getAccountTransactions(accountId: number) {
         accountId,
       },
     },
+    next: {
+      tags: ["transactions"],
+    },
   });
 }
 
