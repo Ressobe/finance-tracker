@@ -78,7 +78,7 @@ namespace api.Repositories
       existingTransaction.Amount = updateTransactionDto.Amount;
       existingTransaction.CategoryId = updateTransactionDto.CategoryId;
       existingTransaction.Description = updateTransactionDto.Description;
-      existingTransaction.TransactionType = updateTransactionDto.TransactionType;
+      existingTransaction.CreatedAt = updateTransactionDto.CreatedAt;
 
       await _context.SaveChangesAsync();
       return existingTransaction;
