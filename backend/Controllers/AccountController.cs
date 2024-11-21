@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Account;
 using api.Dtos.Transaction;
+using api.Dtos.Transfer;
 using api.Interfaces;
 using api.Mappers;
 using api.Helpers;
@@ -18,19 +19,27 @@ namespace api.Controllers
 
     private readonly IAccountRepository _accountRepository;
     private readonly ITransactionRepository _transactionRepository;
+    private readonly ITransferRepository _transferRepository;
     private readonly IUserRepository _userRepository;
 
     public AccountController(
         IAccountRepository accountRepository,
         IUserRepository userRepository,
-        ITransactionRepository transactionRepository
+        ITransactionRepository transactionRepository,
+        ITransferRepository transferRepository
     )
     {
       _accountRepository = accountRepository;
       _userRepository = userRepository;
       _transactionRepository = transactionRepository;
+      _transferRepository = transferRepository;
     }
 
+
+    /// <summary>
+    /// Get account by id
+    /// </summary>
+    /// <param name="accountId"></param>
     [HttpGet("{accountId:int}")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
     [ProducesResponseType(typeof(AccountOverviewDto), 200)]
@@ -72,13 +81,32 @@ namespace api.Controllers
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
       if (!isAccountExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest("Account does not exist!");
       }
 
       var transactions = await _transactionRepository.GetAllByAccountId(accountId);
       var transactionsDtos = transactions.Select(item => item.ToTransactionWithCategoryName()).ToList();
 
       return Ok(transactionsDtos);
+    }
+
+
+    [HttpGet("{accountId:int}/transfers")]
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
+    [ProducesResponseType(typeof(List<TransferDto>), 200)]
+    public async Task<IActionResult> GetAccountTransfers([FromRoute] int accountId)
+    {
+
+      var isAccountExist = await _accountRepository.IsAccountExist(accountId);
+      if (!isAccountExist)
+      {
+        return BadRequest("Account does not exist!");
+      }
+
+      var transfers = await _transferRepository.GetAllByAccountId(accountId);
+      var transfersDtos = transfers.Select(item => item.ToTransferModel()).ToList();
+
+      return Ok(transfersDtos);
     }
 
     [HttpPost]

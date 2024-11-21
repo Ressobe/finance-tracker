@@ -1,4 +1,8 @@
-import { getAccount, getAccountTransactions } from "@/api/account";
+import {
+  getAccount,
+  getAccountTransactions,
+  getAccountTransfers,
+} from "@/api/account";
 import { Balance } from "@/components/balance";
 import { Expense } from "@/components/expense";
 import { Income } from "@/components/income";
@@ -6,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { TransactionDialog } from "@/modules/transaction/components/create-transaction-dialog";
 import { TransactionTable } from "@/modules/transaction/components/transaction-table";
 import { TransferDialog } from "@/modules/transfer/components/transfer-dialog";
+import { TransfersTable } from "@/modules/transfer/components/transfers-table";
 import { ArrowRightLeft, BadgeDollarSign, TrendingDown } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -24,6 +29,7 @@ export default async function AccountPage(props: AccountPageProps) {
   }
 
   const { data: transactions } = await getAccountTransactions(params.accountId);
+  const { data: transfers } = await getAccountTransfers(params.accountId);
   const { name, currentBalance, income, expense } = data;
 
   return (
@@ -80,6 +86,7 @@ export default async function AccountPage(props: AccountPageProps) {
         currentAccount={data}
         transactions={transactions ?? []}
       />
+      <TransfersTable currentAccount={data} transfers={transfers ?? []} />
     </section>
   );
 }

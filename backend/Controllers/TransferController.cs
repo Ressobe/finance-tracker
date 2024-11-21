@@ -56,14 +56,20 @@ namespace api.Controllers
     [HttpDelete("{transferId:int}")]
     public async Task<IActionResult> Delete([FromRoute] int transferId)
     {
+      var existingTransfer = await _transferRepository.GetAsync(transferId);
+      if (existingTransfer == null)
+      {
+        return NotFound();
+      }
+
+      await _accountRepository.AddIncomeAsync(existingTransfer.SourceAccountId, existingTransfer.Amount);
+      await _accountRepository.AddExpenseAsync(existingTransfer.DestinationAccountId, existingTransfer.Amount);
+
       var deletedTransfer = await _transferRepository.DeleteAsync(transferId);
       if (deletedTransfer == null)
       {
         return NotFound();
       }
-
-      await _accountRepository.AddIncomeAsync(deletedTransfer.SourceAccountId, deletedTransfer.Amount);
-      await _accountRepository.AddExpenseAsync(deletedTransfer.DestinationAccountId, deletedTransfer.Amount);
 
       return NoContent();
     }
