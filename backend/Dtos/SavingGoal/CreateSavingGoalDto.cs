@@ -8,6 +8,6 @@ namespace api.Dtos.SavingGoal
     public String Name { get; set; } = String.Empty;
 
     [Required]
-    public int TargetAmount { get; set; }
+    public decimal TargetAmount { get; set; }
   }
 }

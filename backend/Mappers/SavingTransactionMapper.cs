@@ -11,8 +11,9 @@ namespace api.Mappers
       return new SavingTransaction
       {
         SavingGoalId = savingGoalId,
+        AccountId = savingTransactionDto.AccountId,
         Amount = savingTransactionDto.Amount,
-        Date = savingTransactionDto.Date,
+        CreatedAt = DateTime.UtcNow,
       };
     }
 
@@ -22,7 +23,7 @@ namespace api.Mappers
       {
         SavingGoalId = savingTransaction.Id,
         Amount = savingTransaction.Amount,
-        Date = savingTransaction.Date,
+        CreatedAt = DateTime.UtcNow,
       };
     }
   }

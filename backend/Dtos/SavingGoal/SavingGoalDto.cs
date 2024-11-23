@@ -14,9 +14,9 @@ namespace api.Dtos.SavingGoal
 
 
     [Required]
-    public int TargetAmount { get; set; }
+    public decimal TargetAmount { get; set; }
     [Required]
-    public int CurrentSaved { get; set; }
+    public decimal CurrentSaved { get; set; }
 
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;

@@ -10,8 +10,12 @@ namespace api.Models
     public int SavingGoalId { get; set; }
     public SavingGoal? SavingGoal { get; set; }
 
-    public int Amount { get; set; }
-    public DateTime Date { get; set; }
+    public Account? Account { get; set; }
+    public int AccountId { get; set; }
+
+    public String Description { get; set; } = String.Empty;
+
+    public decimal Amount { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
   }
 }

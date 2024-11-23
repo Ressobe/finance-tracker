@@ -68,7 +68,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.AddNpgsqlDbContext<ApplicationDBContext>("postgresdb");
 
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
   options.Password.RequireDigit = false;
@@ -117,12 +116,14 @@ builder.Services.AddAuthentication(options =>
   };
 });
 
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 builder.Services.AddScoped<ISavingGoalRepository, SavingGoalRepository>();
+builder.Services.AddScoped<ISavingTransactionRepository, SavingTransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
