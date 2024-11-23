@@ -39,7 +39,7 @@ export default async function AccountPage(props: AccountPageProps) {
           Account - <span className="font-medium">{name}</span>
         </h1>
         <span className="text-muted-foreground">
-          Information about you {name} account
+          Information about your {name} account
         </span>
       </div>
       <div className="flex flex-col xl:flex-row gap-4">

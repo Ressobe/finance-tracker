@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api.Data;
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241121145909_SavingGoal")]
+    partial class SavingGoal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f200f0a8-1083-4a44-a424-e7d60908a87b",
+                            Id = "0a1fc1e7-9bb8-4393-8ce6-30b696999c9a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "348435ce-b8d8-4cf5-a98e-2a6343969d44",
+                            Id = "ac020a2c-af45-4745-9ed2-d82af37087b1",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -269,9 +272,8 @@ namespace api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SavingGoalId")
                         .HasColumnType("integer");

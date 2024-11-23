@@ -11,14 +11,17 @@ namespace api.Controllers
   {
     private readonly ISavingTransactionRepository _savingTransactionRepository;
     private readonly ISavingGoalRepository _savingGoalRepository;
+    private readonly IAccountRepository _accountRepository;
 
     public SavingTransactionController(
         ISavingTransactionRepository savingTransactionRepository,
-        ISavingGoalRepository savingGoalRepository
+        ISavingGoalRepository savingGoalRepository,
+        IAccountRepository accountRepository
     )
     {
       _savingTransactionRepository = savingTransactionRepository;
       _savingGoalRepository = savingGoalRepository;
+      _accountRepository = accountRepository;
     }
 
     [HttpGet("{savingTransactionId:int}")]
@@ -46,6 +49,7 @@ namespace api.Controllers
     }
 
     [HttpPost("{savingGoalId:int}")]
+    [ProducesResponseType(typeof(SavingTransactionDto), 200)]
     public async Task<IActionResult> Create([FromRoute] int savingGoalId, [FromBody] CreateSavingTransactionDto createSavingTransactionDto)
     {
       if (!ModelState.IsValid)
@@ -58,11 +62,21 @@ namespace api.Controllers
       }
 
       var savingTransactionModel = createSavingTransactionDto.CreateSavingTransactionDtoToSavingTransactionModel(savingGoalId);
+
+      var isAccountExisting = await _accountRepository.IsAccountExist(savingTransactionModel.AccountId);
+      if (!isAccountExisting)
+      {
+        return BadRequest("Account does not exist!");
+      }
+
       var savingTransaction = await _savingTransactionRepository.CreateAsync(savingTransactionModel);
       if (savingTransaction == null)
       {
-        return BadRequest("Account was not created");
+        return BadRequest("Saving transaction was not created");
       }
+
+      await _savingGoalRepository.PutAsync(savingGoalId, createSavingTransactionDto.Amount);
+      await _accountRepository.AddExpenseAsync(createSavingTransactionDto.AccountId, createSavingTransactionDto.Amount);
 
       return Ok(savingTransaction.ToSavingTransactionModel());
     }

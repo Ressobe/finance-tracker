@@ -11,6 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get account by id */
         get: {
             parameters: {
                 query?: never;
@@ -667,7 +668,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SavingTransactionDto"];
+                        "application/json": components["schemas"]["SavingTransactionDto"];
+                        "text/json": components["schemas"]["SavingTransactionDto"];
+                    };
                 };
             };
         };
@@ -1383,9 +1388,10 @@ export interface components {
         };
         CreateSavingTransactionDto: {
             /** Format: int32 */
-            amount?: number;
-            /** Format: date-time */
-            date?: string;
+            amount: number;
+            /** Format: int32 */
+            accountId: number;
+            description?: string | null;
         };
         CreateTransactionDto: {
             /** Format: double */

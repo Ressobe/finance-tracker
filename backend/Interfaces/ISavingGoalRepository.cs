@@ -11,5 +11,7 @@ namespace api.Interfaces
     Task<SavingGoal?> DeleteAsync(int savingGoalId);
     Task<bool> IsSavingGoalExist(int savingGoalId);
     Task<SavingGoal?> UpdateAsync(int savingGoalId, UpdateSavingGoalDto updateSavingGoalDto);
+    Task<SavingGoal?> PutAsync(int savingGoalId, decimal Amount);
+    Task<SavingGoal?> TakeAsync(int savingGoalId, decimal Amount);
   }
 }

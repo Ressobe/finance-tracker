@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,12 +14,15 @@ import { HandCoins } from "lucide-react";
 import { SavingGoalDropdownMenu } from "./saving-goal-dropdown-menu";
 import { SavingTransactionDialog } from "@/modules/saving-transaction/components/saving-transaction-dialog";
 import { SavingGoalModel } from "@/types/saving-goal";
+import { useCurrencyStore } from "@/stores/use-currency-store";
 
 type SavingGoalCardProps = {
   savingGoal: SavingGoalModel;
 };
 
 export function SavingGoalCard({ savingGoal }: SavingGoalCardProps) {
+  const currency = useCurrencyStore((state) => state.currency);
+
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
@@ -27,8 +32,8 @@ export function SavingGoalCard({ savingGoal }: SavingGoalCardProps) {
         <div className="space-y-2">
           <CardTitle>{savingGoal.name}</CardTitle>
           <CardDescription>
-            ${savingGoal.currentSaved.toLocaleString()} of $
-            {savingGoal.targetAmount.toLocaleString()}
+            {savingGoal.currentSaved.toLocaleString()} {currency} of{" "}
+            {savingGoal.targetAmount.toLocaleString()} {currency}
           </CardDescription>
         </div>
         <SavingGoalDropdownMenu savingGoal={savingGoal} />

@@ -72,5 +72,34 @@ namespace api.Repositories
       await _context.SaveChangesAsync();
       return existingSavingGoal;
     }
+
+
+    public async Task<SavingGoal?> PutAsync(int savingGoalId, decimal Amount)
+    {
+      var existingSavingGoal = await this.GetAsync(savingGoalId);
+      if (existingSavingGoal == null)
+      {
+        return null;
+      }
+
+      existingSavingGoal.CurrentSaved += Amount;
+
+      await _context.SaveChangesAsync();
+      return existingSavingGoal;
+    }
+
+    public async Task<SavingGoal?> TakeAsync(int savingGoalId, decimal Amount)
+    {
+      var existingSavingGoal = await this.GetAsync(savingGoalId);
+      if (existingSavingGoal == null)
+      {
+        return null;
+      }
+
+      existingSavingGoal.CurrentSaved -= Amount;
+
+      await _context.SaveChangesAsync();
+      return existingSavingGoal;
+    }
   }
 }

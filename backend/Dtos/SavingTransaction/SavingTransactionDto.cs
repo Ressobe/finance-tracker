@@ -11,7 +11,7 @@ namespace api.Dtos.SavingTransaction
     public int SavingGoalId { get; set; }
 
     [Required]
-    public int Amount { get; set; }
+    public decimal Amount { get; set; }
     [Required]
     public DateTime Date { get; set; }
     [Required]
