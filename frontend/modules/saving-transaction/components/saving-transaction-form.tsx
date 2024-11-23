@@ -11,7 +11,14 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AccountModel } from "@/types/account";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAccountsStore } from "@/stores/use-accounts-store";
 import {
   NewSavingTransaction,
   newSavingTransactionSchema,
@@ -19,27 +26,62 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { createSavingTransaction } from "../actions/create-saving-transaction";
+import { useToast } from "@/hooks/use-toast";
+import { SucessToastMessage } from "@/components/sucess-toast-message";
+import { ErrorToastMessage } from "@/components/error-toast-message";
 
-// type SavingTransactionFormProps = {
-//   savingGoalId: number;
-//   accounts: AccountModel[];
-// };
+type SavingTransactionFormProps = {
+  savingGoalId: number;
+  closeDialog?: () => void;
+};
 
-export function SavingTransactionForm() {
+export function SavingTransactionForm({
+  savingGoalId,
+  closeDialog,
+}: SavingTransactionFormProps) {
+  const accounts = useAccountsStore((state) => state.accounts);
+
   const form = useForm<NewSavingTransaction>({
     resolver: zodResolver(newSavingTransactionSchema),
     defaultValues: {
       description: "",
       amount: 0,
+      accountId: accounts[0].id,
     },
   });
 
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = (values: NewSavingTransaction) => {
     startTransition(async () => {
-      console.log(values);
+      const response = await createSavingTransaction(savingGoalId, values);
+
+      if (response.sucess) {
+        toast({
+          description: (
+            <SucessToastMessage message="Saving transaction created!" />
+          ),
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+
+      if (response.error) {
+        toast({
+          description: <ErrorToastMessage message="Something went wrong" />,
+          className: "bg-secondary opacity-90",
+          duration: 2000,
+        });
+      }
+
+      closeDialog?.();
     });
+  };
+
+  const handleCancel = () => {
+    closeDialog?.();
   };
 
   return (
@@ -62,6 +104,38 @@ export function SavingTransactionForm() {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="accountId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Account</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={`${field.value}`}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select destination account" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {accounts.map((item) => {
+                      return (
+                        <SelectItem key={item.id} value={`${item.id}`}>
+                          {item.name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                <FormDescription>Select an account</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="amount"
@@ -80,7 +154,12 @@ export function SavingTransactionForm() {
           />
         </div>
         <div className="w-full flex justify-end gap-x-2 text-right">
-          <Button type="button" variant="secondary" disabled={isPending}>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleCancel}
+            disabled={isPending}
+          >
             Cancel
           </Button>
           <Button type="submit" disabled={isPending}>

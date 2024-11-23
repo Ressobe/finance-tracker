@@ -1,5 +1,8 @@
+"use client";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useCurrencyStore } from "@/stores/use-currency-store";
 
 type TotalSavingsSummaryCardProps = {
   totalSavings: number;
@@ -10,6 +13,8 @@ export function TotalSavingsSummaryCard({
   totalSavings,
   totalTarget,
 }: TotalSavingsSummaryCardProps) {
+  const currency = useCurrencyStore((state) => state.currency);
+
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
@@ -22,11 +27,15 @@ export function TotalSavingsSummaryCard({
         <div>
           <div className="flex justify-between mb-2">
             <span>Total Saved:</span>
-            <span className="font-bold">${totalSavings.toLocaleString()}</span>
+            <span className="font-bold">
+              {totalSavings.toLocaleString()} {currency}
+            </span>
           </div>
           <div className="flex justify-between mb-4">
             <span>Total Target:</span>
-            <span className="font-bold">${totalTarget.toLocaleString()}</span>
+            <span className="font-bold">
+              {totalTarget.toLocaleString()} {currency}
+            </span>
           </div>
         </div>
         <div>
