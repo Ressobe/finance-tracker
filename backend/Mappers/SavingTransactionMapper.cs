@@ -26,5 +26,18 @@ namespace api.Mappers
         CreatedAt = DateTime.UtcNow,
       };
     }
+
+
+    public static SavingTransactionWithSavingGoalDto ToSavingTransactionWithSavingGoalName(this SavingTransaction savingTransaction)
+    {
+      return new SavingTransactionWithSavingGoalDto
+      {
+        Id = savingTransaction.Id,
+        Amount = savingTransaction.Amount,
+        AccountId = savingTransaction.AccountId,
+        SavingGoalName = savingTransaction.SavingGoal?.Name ?? "",
+        CreatedAt = savingTransaction.CreatedAt,
+      };
+    }
   }
 }
