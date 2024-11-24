@@ -35,3 +35,16 @@ export async function getAccountTransfers(accountId: number) {
     },
   });
 }
+
+export async function getAccountSavingTransactions(accountId: number) {
+  return await apiClient.GET("/api/account/{accountId}/saving-transactions", {
+    params: {
+      path: {
+        accountId,
+      },
+    },
+    next: {
+      tags: ["saving-transactions"],
+    },
+  });
+}
