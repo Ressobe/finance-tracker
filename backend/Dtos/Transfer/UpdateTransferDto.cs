@@ -1,4 +1,4 @@
-namespace api.Dtos.Transfer
+namespace api.Dtos.TransferDto
 {
   public class UpdateTransferDto
   {

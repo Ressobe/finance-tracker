@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using api.Dtos.Transfer;
+using api.Dtos.TransferDto;
 using api.Interfaces;
 using api.Mappers;
 

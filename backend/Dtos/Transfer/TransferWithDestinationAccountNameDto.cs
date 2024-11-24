@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos.TransferDto
 {
-  public class TransferDto
+  public class TransferWithDestinationAccountNameDto
   {
     [Required]
     public int Id { get; set; }
@@ -18,6 +18,9 @@ namespace api.Dtos.TransferDto
 
     [Required]
     public int DestinationAccountId { get; set; }
+
+    [Required]
+    public String DestinationAccountName { get; set; } = String.Empty;
 
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;

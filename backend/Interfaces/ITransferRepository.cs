@@ -1,5 +1,5 @@
 using api.Models;
-using api.Dtos.Transfer;
+using api.Dtos.TransferDto;
 
 namespace api.Interfaces
 {

@@ -1,4 +1,4 @@
-using api.Dtos.Transfer;
+using api.Dtos.TransferDto;
 using api.Models;
 
 namespace api.Mappers
@@ -23,6 +23,19 @@ namespace api.Mappers
       return new Transfer
       {
         DestinationAccountId = transfer.DestinationAccountId,
+        SourceAccountId = transfer.SourceAccountId,
+        CreatedAt = transfer.CreatedAt,
+        Description = transfer.Description,
+        Amount = transfer.Amount,
+      };
+    }
+
+    public static TransferWithDestinationAccountNameDto ToTransferWithDestinationAccountName(this Transfer transfer)
+    {
+      return new TransferWithDestinationAccountNameDto
+      {
+        DestinationAccountId = transfer.DestinationAccountId,
+        DestinationAccountName = transfer.DestinationAccount?.Name ?? "",
         SourceAccountId = transfer.SourceAccountId,
         CreatedAt = transfer.CreatedAt,
         Description = transfer.Description,
