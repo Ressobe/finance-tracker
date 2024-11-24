@@ -1,5 +1,5 @@
 using api.Models;
-using api.Dtos.Transfer;
+using api.Dtos.TransferDto;
 using api.Interfaces;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +32,7 @@ namespace api.Repositories
     {
       var transfers = await _context.Transfers
         .Where(item => item.SourceAccountId == accountId)
+        .Include(t => t.DestinationAccount)
         .ToListAsync();
       return transfers;
     }

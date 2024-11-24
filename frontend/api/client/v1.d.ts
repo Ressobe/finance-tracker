@@ -107,6 +107,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all account transactions */
         get: {
             parameters: {
                 query?: never;
@@ -146,6 +147,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all account transfers */
         get: {
             parameters: {
                 query?: never;
@@ -166,6 +168,46 @@ export interface paths {
                         "text/plain": components["schemas"]["TransferDto"][];
                         "application/json": components["schemas"]["TransferDto"][];
                         "text/json": components["schemas"]["TransferDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/account/{accountId}/saving-transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all account saving transactions */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    accountId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["SavingTransactionWithSavingGoalDto"][];
+                        "application/json": components["schemas"]["SavingTransactionWithSavingGoalDto"][];
+                        "text/json": components["schemas"]["SavingTransactionWithSavingGoalDto"][];
                     };
                 };
             };
@@ -1383,11 +1425,11 @@ export interface components {
         };
         CreateSavingGoalDto: {
             name: string;
-            /** Format: int32 */
+            /** Format: double */
             targetAmount: number;
         };
         CreateSavingTransactionDto: {
-            /** Format: int32 */
+            /** Format: double */
             amount: number;
             /** Format: int32 */
             accountId: number;
@@ -1453,9 +1495,9 @@ export interface components {
             id: number;
             name: string;
             userId: string;
-            /** Format: int32 */
+            /** Format: double */
             targetAmount: number;
-            /** Format: int32 */
+            /** Format: double */
             currentSaved: number;
             /** Format: date-time */
             createdAt: string;
@@ -1466,9 +1508,22 @@ export interface components {
             /** Format: int32 */
             savingGoalId: number;
             /** Format: int32 */
+            accountId: number;
+            /** Format: double */
             amount: number;
             /** Format: date-time */
-            date: string;
+            createdAt: string;
+        };
+        SavingTransactionWithSavingGoalDto: {
+            /** Format: int32 */
+            id: number;
+            /** Format: int32 */
+            savingGoalId: number;
+            savingGoalName: string;
+            /** Format: int32 */
+            accountId: number;
+            /** Format: double */
+            amount: number;
             /** Format: date-time */
             createdAt: string;
         };
@@ -1529,11 +1584,11 @@ export interface components {
         };
         UpdateSavingGoalDto: {
             name?: string | null;
-            /** Format: int32 */
+            /** Format: double */
             targetAmount?: number;
         };
         UpdateSavingTransactionDto: {
-            /** Format: int32 */
+            /** Format: double */
             amount?: number;
             /** Format: int32 */
             savingGoalId?: number;

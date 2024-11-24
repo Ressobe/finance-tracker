@@ -10,5 +10,6 @@ namespace api.Interfaces
     Task<SavingTransaction?> DeleteAsync(int savingTransactionId);
     Task<bool> IsSavingTransactionExist(int savingTransactionId);
     Task<SavingTransaction?> UpdateAsync(int savingTransactionId, UpdateSavingTransactionDto updateSavingTransactionDto);
+    Task<List<SavingTransaction>> GetAllByAccountId(int accountId);
   }
 }

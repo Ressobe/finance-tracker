@@ -60,6 +60,14 @@ namespace api.Repositories
       return existingSavingTransaction;
     }
 
+    public async Task<List<SavingTransaction>> GetAllByAccountId(int accountId)
+    {
+      var savingTransactions = await _context.SavingTransactions
+        .Where(item => item.AccountId == accountId)
+        .Include(t => t.SavingGoal)
+        .ToListAsync();
+      return savingTransactions;
+    }
 
   }
 }

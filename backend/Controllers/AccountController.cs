@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Account;
 using api.Dtos.Transaction;
-using api.Dtos.Transfer;
+using api.Dtos.TransferDto;
+using api.Dtos.SavingTransaction;
 using api.Interfaces;
 using api.Mappers;
 using api.Helpers;
@@ -21,18 +22,21 @@ namespace api.Controllers
     private readonly ITransactionRepository _transactionRepository;
     private readonly ITransferRepository _transferRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ISavingTransactionRepository _savingTransactionRepository;
 
     public AccountController(
         IAccountRepository accountRepository,
         IUserRepository userRepository,
         ITransactionRepository transactionRepository,
-        ITransferRepository transferRepository
+        ITransferRepository transferRepository,
+        ISavingTransactionRepository savingTransactionRepository
     )
     {
       _accountRepository = accountRepository;
       _userRepository = userRepository;
       _transactionRepository = transactionRepository;
       _transferRepository = transferRepository;
+      _savingTransactionRepository = savingTransactionRepository;
     }
 
 
@@ -72,7 +76,10 @@ namespace api.Controllers
       return Ok(account.ToAccountOverview(incomeSum, expenseSum));
     }
 
-
+    /// <summary>
+    /// Get all account transactions
+    /// </summary>
+    /// <param name="accountId"></param>
     [HttpGet("{accountId:int}/transactions")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
     [ProducesResponseType(typeof(List<TransactionWithCategoryNameDto>), 200)]
@@ -91,9 +98,13 @@ namespace api.Controllers
     }
 
 
+    /// <summary>
+    /// Get all account transfers
+    /// </summary>
+    /// <param name="accountId"></param>
     [HttpGet("{accountId:int}/transfers")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
-    [ProducesResponseType(typeof(List<TransferDto>), 200)]
+    [ProducesResponseType(typeof(List<TransferWithDestinationAccountNameDto>), 200)]
     public async Task<IActionResult> GetAccountTransfers([FromRoute] int accountId)
     {
 
@@ -104,9 +115,30 @@ namespace api.Controllers
       }
 
       var transfers = await _transferRepository.GetAllByAccountId(accountId);
-      var transfersDtos = transfers.Select(item => item.ToTransferModel()).ToList();
+      var transfersDtos = transfers.Select(item => item.ToTransferWithDestinationAccountName()).ToList();
 
       return Ok(transfersDtos);
+    }
+
+    /// <summary>
+    /// Get all account saving transactions
+    /// </summary>
+    /// <param name="accountId"></param>
+    [HttpGet("{accountId:int}/saving-transactions")]
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
+    [ProducesResponseType(typeof(List<SavingTransactionWithSavingGoalDto>), 200)]
+    public async Task<IActionResult> GetAccountSavingTransactions([FromRoute] int accountId)
+    {
+      var isAccountExist = await _accountRepository.IsAccountExist(accountId);
+      if (!isAccountExist)
+      {
+        return BadRequest("Account does not exist!");
+      }
+
+      var savingTransactions = await _savingTransactionRepository.GetAllByAccountId(accountId);
+      var savingTransactionsDtos = savingTransactions.Select(item => item.ToSavingTransactionWithSavingGoalName()).ToList();
+
+      return Ok(savingTransactionsDtos);
     }
 
     [HttpPost]
