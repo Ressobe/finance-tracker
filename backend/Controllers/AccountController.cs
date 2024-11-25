@@ -136,7 +136,7 @@ namespace api.Controllers
       }
 
       var savingTransactions = await _savingTransactionRepository.GetAllByAccountId(accountId);
-      var savingTransactionsDtos = savingTransactions.Select(item => item.ToSavingTransactionWithSavingGoalName()).ToList();
+      var savingTransactionsDtos = savingTransactions.Select(item => item.ToSavingTransactionWithSavingGoal()).ToList();
 
       return Ok(savingTransactionsDtos);
     }

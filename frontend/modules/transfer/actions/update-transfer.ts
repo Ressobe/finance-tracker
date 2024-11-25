@@ -1,13 +1,17 @@
 "use server";
 
 import apiClient from "@/api/client";
-import { Transfer } from "@/types/transfer";
+import { NewTransfer } from "@/types/transfer";
+import { revalidateTag } from "next/cache";
 
-export async function updateTransferAction(values: Transfer) {
+export async function updateTransferAction(
+  transferId: number,
+  values: NewTransfer,
+) {
   const { error } = await apiClient.PUT("/api/transfer/{transferId}", {
     params: {
       path: {
-        transferId: values.id,
+        transferId,
       },
     },
     body: {
@@ -19,10 +23,12 @@ export async function updateTransferAction(values: Transfer) {
   });
 
   if (error) {
+    console.log(transferId);
+    console.log(error);
     return { error: "Something went wrong!" };
   }
 
-  // revalidatePath("")
+  revalidateTag("transfers");
 
   return { sucess: "Transfer updated!" };
 }
