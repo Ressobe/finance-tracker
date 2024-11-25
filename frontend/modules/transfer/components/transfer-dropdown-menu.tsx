@@ -5,8 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { EllipsisVertical, MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import { Transfer } from "@/types/transfer";
 import { DeleteTransferAlertDialog } from "./delete-transfer-alert-dialog";
@@ -44,7 +43,7 @@ export function TransferDropdownMenu({
         >
           <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Pencil className="w-4 h-4" />
-            Edit Transfer
+            Edit
           </button>
         </TransferDialog>
 
@@ -54,7 +53,7 @@ export function TransferDropdownMenu({
         >
           <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Trash className="w-4 h-4" />
-            Delete Transfer
+            Delete
           </button>
         </DeleteTransferAlertDialog>
       </DropdownMenuContent>

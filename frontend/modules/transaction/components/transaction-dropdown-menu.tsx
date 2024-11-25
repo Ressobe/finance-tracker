@@ -1,4 +1,5 @@
 "use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,7 +47,7 @@ export function TransactionDropdownMenu({
         >
           <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Pencil className="w-4 h-4" />
-            Edit Transaction
+            Edit
           </button>
         </TransactionDialog>
 
@@ -56,7 +57,7 @@ export function TransactionDropdownMenu({
         >
           <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Trash className="w-4 h-4" />
-            Delete Transaction
+            Delete
           </button>
         </DeleteTransactionAlertDialog>
       </DropdownMenuContent>
