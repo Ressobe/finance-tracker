@@ -36,7 +36,6 @@ export function SavingGoalForm({
   defaultValues,
 }: SavingGoalFormProps) {
   const type = defaultValues === undefined ? "create" : "update";
-
   const [isPending, startTransition] = useTransition();
 
   const { toast } = useToast();
@@ -65,15 +64,7 @@ export function SavingGoalForm({
 
       if (response?.sucess) {
         toast({
-          description: (
-            <SucessToastMessage
-              message={
-                type === "create"
-                  ? "New saving goal created!"
-                  : "Saving goal upated!"
-              }
-            />
-          ),
+          description: <SucessToastMessage message={response.sucess} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
@@ -82,7 +73,7 @@ export function SavingGoalForm({
 
       if (response?.error) {
         toast({
-          description: <ErrorToastMessage message="Someting went wrong!" />,
+          description: <ErrorToastMessage message={response.error} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
