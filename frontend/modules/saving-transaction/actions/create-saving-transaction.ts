@@ -25,6 +25,7 @@ export async function createSavingTransaction(
   );
 
   if (error) {
+    console.log(error);
     return { error: "Something went wrong!" };
   }
 

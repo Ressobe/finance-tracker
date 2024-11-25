@@ -81,16 +81,17 @@ namespace api.Controllers
       return Ok(savingTransaction.ToSavingTransactionModel());
     }
 
+    // TODO: add logic to update account balance and saving goal current saved amount
     [HttpPut]
-    [Route("{savingGoalId:int}")]
+    [Route("{savingTransactionId:int}")]
     [ProducesResponseType(typeof(SavingTransactionDto), 200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> Update([FromRoute] int savingGoalId, [FromBody] UpdateSavingTransactionDto updateSavingTransactionDto)
+    public async Task<IActionResult> Update([FromRoute] int savingTransactionId, [FromBody] UpdateSavingTransactionDto updateSavingTransactionDto)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var updatedSavingTransaction = await _savingTransactionRepository.UpdateAsync(savingGoalId, updateSavingTransactionDto);
+      var updatedSavingTransaction = await _savingTransactionRepository.UpdateAsync(savingTransactionId, updateSavingTransactionDto);
       if (updatedSavingTransaction == null)
       {
         return NotFound();
