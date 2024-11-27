@@ -31,7 +31,7 @@ namespace api.Controllers
       var transfer = await _transferRepository.CreateAsync(transferModel);
       if (transfer == null)
       {
-        return BadRequest("Transaction was not created!");
+        return BadRequest(new { message = "Transaction was not created!" });
       }
 
       await _accountRepository.AddExpenseAsync(transfer.SourceAccountId, transfer.Amount);
@@ -48,7 +48,7 @@ namespace api.Controllers
       var transfer = await _transferRepository.GetAsync(transferId);
       if (transfer == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Transfer not found!" });
       }
       return Ok(transfer.ToTransferModel());
     }
@@ -59,7 +59,7 @@ namespace api.Controllers
       var existingTransfer = await _transferRepository.GetAsync(transferId);
       if (existingTransfer == null)
       {
-        return NotFound("Transfer not found!");
+        return NotFound(new { message = "Transfer not found!" });
       }
 
       await _accountRepository.AddIncomeAsync(existingTransfer.SourceAccountId, existingTransfer.Amount);
@@ -68,7 +68,7 @@ namespace api.Controllers
       var deletedTransfer = await _transferRepository.DeleteAsync(transferId);
       if (deletedTransfer == null)
       {
-        return NotFound("Transfer not found!");
+        return NotFound(new { message = "Transfer not found!" });
       }
 
       return NoContent();
@@ -86,7 +86,7 @@ namespace api.Controllers
       var existingTransfer = await _transferRepository.GetAsync(transferId);
       if (existingTransfer == null)
       {
-        return NotFound("Transfer not found!");
+        return NotFound(new { message = "Transfer not found!" });
       }
 
       await _accountRepository.AddExpenseAsync(existingTransfer.DestinationAccountId, existingTransfer.Amount);
@@ -98,7 +98,7 @@ namespace api.Controllers
       var updatedTransfer = await _transferRepository.UpdateAsync(transferId, updateTransferDto);
       if (updatedTransfer == null)
       {
-        return NotFound("Transfer not found!");
+        return NotFound(new { message = "Transfer not found!" });
       }
 
       return Ok(updatedTransfer.ToTransferModel());

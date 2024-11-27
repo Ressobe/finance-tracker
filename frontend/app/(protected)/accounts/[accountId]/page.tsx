@@ -24,6 +24,7 @@ export default async function AccountPage(props: AccountPageProps) {
   const params = await props.params;
 
   const { data, error } = await getAccount(params.accountId);
+  console.log(error);
   if (error) {
     notFound();
   }

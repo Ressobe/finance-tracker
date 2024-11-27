@@ -1,6 +1,7 @@
 "use server";
 
 import apiClient from "@/api/client";
+import { ApiError, isApiError } from "@/types/api-error";
 import { revalidateTag } from "next/cache";
 
 export async function deleteTransactionAction(transactionId: number) {
@@ -13,7 +14,11 @@ export async function deleteTransactionAction(transactionId: number) {
   });
 
   if (error) {
-    return { error: "Something went wrong!" };
+    if (isApiError(error)) {
+      const apiError = error as ApiError;
+      return { error: apiError.message };
+    }
+    return { error: "Unknown error occurred" };
   }
 
   revalidateTag("transactions");
