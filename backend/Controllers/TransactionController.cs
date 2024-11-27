@@ -18,6 +18,10 @@ namespace api.Controllers
       _accountRepository = accountRepository;
     }
 
+    /// <summary>
+    /// Get transaction by id
+    /// </summary>
+    /// <param name="transactionId"></param>
     [HttpGet("{transactionId:int}")]
     [ProducesResponseType(typeof(TransactionDto), 200)]
     [ProducesResponseType(404)]
@@ -33,6 +37,10 @@ namespace api.Controllers
       return Ok(transaction.ToTransactionModel());
     }
 
+    /// <summary>
+    /// Delete transaction by id
+    /// </summary>
+    /// <param name="transactionId"></param>
     [HttpDelete("{transactionId:int}")]
     public async Task<IActionResult> Delete([FromRoute] int transactionId)
     {
@@ -55,6 +63,11 @@ namespace api.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// Create transaction
+    /// </summary>
+    /// <param name="accountId"></param>
+    /// <param name="createTransactionDto"></param>
     [HttpPost("{accountId:int}")]
     public async Task<IActionResult> Create([FromRoute] int accountId, [FromBody] CreateTransactionDto createTransactionDto)
     {
@@ -88,6 +101,11 @@ namespace api.Controllers
       return Ok(transaction.ToTransactionModel());
     }
 
+    /// <summary>
+    /// Update transaction
+    /// </summary>
+    /// <param name="transactionId"></param>
+    /// <param name="updateTransactionDto"></param>
     [HttpPut]
     [Route("{transactionId:int}")]
     [ProducesResponseType(typeof(TransactionDto), 200)]
@@ -135,9 +153,8 @@ namespace api.Controllers
       var updatedTransaction = await _transactionRepository.UpdateAsync(transactionId, updateTransactionDto);
       if (updatedTransaction == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Transaction not found!" });
       }
-
       return Ok(updatedTransaction.ToTransactionModel());
     }
   }

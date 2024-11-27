@@ -20,6 +20,10 @@ namespace api.Controllers
       _accountRepository = accountRepository;
     }
 
+    /// <summary>
+    /// Create transfer
+    /// </summary>
+    /// <param name="createTransferDto"></param>
     [HttpPost()]
     [ProducesResponseType(typeof(TransferDto), 200)]
     public async Task<IActionResult> Create([FromBody] CreateTransferDto createTransferDto)
@@ -40,6 +44,10 @@ namespace api.Controllers
       return Ok(transfer.ToTransferModel());
     }
 
+    /// <summary>
+    /// Get transfer by id
+    /// </summary>
+    /// <param name="transferId"></param>
     [HttpGet("{transferId:int}")]
     [ProducesResponseType(typeof(TransferDto), 200)]
     [ProducesResponseType(404)]
@@ -53,6 +61,10 @@ namespace api.Controllers
       return Ok(transfer.ToTransferModel());
     }
 
+    /// <summary>
+    /// Delete transfer by id
+    /// </summary>
+    /// <param name="transferId"></param>
     [HttpDelete("{transferId:int}")]
     public async Task<IActionResult> Delete([FromRoute] int transferId)
     {
@@ -74,6 +86,11 @@ namespace api.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// Update transfer
+    /// </summary>
+    /// <param name="transferId"></param>
+    /// <param name="updateTransferDto"></param>
     [HttpPut]
     [Route("{transferId:int}")]
     [ProducesResponseType(typeof(TransferDto), 200)]

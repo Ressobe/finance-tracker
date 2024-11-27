@@ -52,6 +52,10 @@ namespace api.Controllers
     }
 
 
+    /// <summary>
+    /// Login 
+    /// </summary>
+    /// <param name="loginDto"></param>
     [HttpPost("login")]
     [ProducesResponseType(typeof(NewUserDto), 200)]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
@@ -86,6 +90,10 @@ namespace api.Controllers
       }
     }
 
+    /// <summary>
+    /// Register 
+    /// </summary>
+    /// <param name="registerDto"></param>
     [HttpPost("register")]
     public async Task<IActionResult> Create([FromBody] RegisterDto registerDto)
     {
@@ -128,6 +136,9 @@ namespace api.Controllers
       }
     }
 
+    /// <summary>
+    /// Get all accounts for current user
+    /// </summary>
     [HttpGet("accounts")]
     [ProducesResponseType(typeof(List<AccountDto>), 200)]
     [Authorize]
@@ -145,6 +156,9 @@ namespace api.Controllers
       return Ok(accounts);
     }
 
+    /// <summary>
+    /// Get all categories for current user
+    /// </summary>
     [HttpGet("categories")]
     [ProducesResponseType(typeof(List<CategoryDto>), 200)]
     [Authorize]
@@ -166,6 +180,9 @@ namespace api.Controllers
       return Ok(categories);
     }
 
+    /// <summary>
+    /// Get all saving goals for current user
+    /// </summary>
     [HttpGet("saving-goals")]
     [ProducesResponseType(typeof(List<SavingGoalDto>), 200)]
     [Authorize]
@@ -187,6 +204,9 @@ namespace api.Controllers
       return Ok(savingGoals);
     }
 
+    /// <summary>
+    /// Get all transactions for current user
+    /// </summary>
     [HttpGet("transactions")]
     [ProducesResponseType(typeof(List<TransactionWithCategoryNameDto>), 200)]
     [Authorize]
@@ -220,6 +240,9 @@ namespace api.Controllers
       return Ok(allTransactions);
     }
 
+    /// <summary>
+    /// Get overview of account for current user
+    /// </summary>
     [Authorize]
     [HttpGet("overview")]
     [ProducesResponseType(typeof(OverviewDto), 200)]
@@ -271,6 +294,9 @@ namespace api.Controllers
       return Ok(overview);
     }
 
+    /// <summary>
+    /// Get income by categories for current user
+    /// </summary>
     [Authorize]
     [HttpGet("income-by-categories")]
     [ProducesResponseType(typeof(List<CategoryOverviewDto>), 200)]
@@ -325,6 +351,9 @@ namespace api.Controllers
       return Ok(topIncomeCategories);
     }
 
+    /// <summary>
+    /// Get expense by categories for current user
+    /// </summary>
     [Authorize]
     [HttpGet("expense-by-categories")]
     [ProducesResponseType(typeof(List<CategoryOverviewDto>), 200)]

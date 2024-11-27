@@ -24,6 +24,10 @@ namespace api.Controllers
       _accountRepository = accountRepository;
     }
 
+    /// <summary>
+    /// Get saving transaction by id
+    /// </summary>
+    /// <param name="savingTransactionId"></param>
     [HttpGet("{savingTransactionId:int}")]
     [ProducesResponseType(typeof(SavingTransactionDto), 200)]
     [ProducesResponseType(404)]
@@ -37,6 +41,10 @@ namespace api.Controllers
       return Ok(savingTransaction.ToSavingTransactionModel());
     }
 
+    /// <summary>
+    /// Delete saving transaction by id
+    /// </summary>
+    /// <param name="savingTransactionId"></param>
     [HttpDelete("{savingTransactionId:int}")]
     public async Task<IActionResult> Delete([FromRoute] int savingTransactionId)
     {
@@ -48,6 +56,11 @@ namespace api.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// Create saving transaction
+    /// </summary>
+    /// <param name="savingGoalId"></param>
+    /// <param name="createSavingTransactionDto"></param>
     [HttpPost("{savingGoalId:int}")]
     [ProducesResponseType(typeof(SavingTransactionDto), 200)]
     public async Task<IActionResult> Create([FromRoute] int savingGoalId, [FromBody] CreateSavingTransactionDto createSavingTransactionDto)
@@ -81,6 +94,11 @@ namespace api.Controllers
       return Ok(savingTransaction.ToSavingTransactionModel());
     }
 
+    /// <summary>
+    /// Update saving transaction
+    /// </summary>
+    /// <param name="savingGoalId"></param>
+    /// <param name="updateSavingTransactionDto"></param>
     [HttpPut]
     [Route("{savingGoalId:int}")]
     [ProducesResponseType(typeof(SavingTransactionDto), 200)]

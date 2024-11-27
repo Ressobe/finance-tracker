@@ -141,6 +141,9 @@ namespace api.Controllers
       return Ok(savingTransactionsDtos);
     }
 
+    /// <summary>
+    /// Create account
+    /// </summary>
     [HttpPost]
     [ProducesResponseType(typeof(AccountDto), 200)]
     public async Task<IActionResult> Create([FromBody] CreateAccountDto createAccountDto)
@@ -170,6 +173,9 @@ namespace api.Controllers
       return Ok(account.ToAccountModel());
     }
 
+    /// <summary>
+    /// Delete account
+    /// </summary>
     [HttpDelete("{accountId:int}")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]
     public async Task<IActionResult> Delete([FromRoute] int accountId)
@@ -183,6 +189,9 @@ namespace api.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// Update account
+    /// </summary>
     [HttpPut]
     [Route("{accountId:int}")]
     [ResourceOwner(typeof(IAccountRepository), "accountId")]

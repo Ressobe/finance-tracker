@@ -22,6 +22,10 @@ namespace api.Controllers
       _userRepository = userRepository;
     }
 
+    /// <summary>
+    /// Get category by id
+    /// </summary>
+    /// <param name="categoryId"></param>
     [HttpGet("{categoryId:int}")]
     [ProducesResponseType(typeof(CategoryDto), 200)]
     [ResourceOwner(typeof(ICategoryRepository), "categoryId")]
@@ -38,7 +42,10 @@ namespace api.Controllers
       return Ok(category.ToCategoryModel());
     }
 
-
+    /// <summary>
+    /// Create category
+    /// </summary>
+    /// <param name="createCategoryDto"></param>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCategoryDto createCategoryDto)
     {
@@ -67,6 +74,10 @@ namespace api.Controllers
       return Ok(category.ToCategoryModel());
     }
 
+    /// <summary>
+    /// Delete category by id
+    /// </summary>
+    /// <param name="categoryId"></param>
     [HttpDelete("{categoryId:int}")]
     [ResourceOwner(typeof(ICategoryRepository), "categoryId")]
     public async Task<IActionResult> Delete([FromRoute] int categoryId)
@@ -80,6 +91,11 @@ namespace api.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// Update category
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <param name="updateCategoryDto"></param>
     [HttpPut]
     [Route("{categoryId:int}")]
     [ResourceOwner(typeof(ICategoryRepository), "categoryId")]

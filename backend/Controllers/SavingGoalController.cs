@@ -21,7 +21,10 @@ namespace api.Controllers
       _userRepository = userRepository;
     }
 
-
+    /// <summary>
+    /// Get saving goal by id
+    /// </summary>
+    /// <param name="savingGoalId"></param>
     [HttpGet("{savingGoalId:int}")]
     [ProducesResponseType(typeof(SavingGoalDto), 200)]
     [ProducesResponseType(404)]
@@ -35,6 +38,10 @@ namespace api.Controllers
       return Ok(savingGoal.ToSavingGoalModel());
     }
 
+    /// <summary>
+    /// Delete saving goal by id
+    /// </summary>
+    /// <param name="savingGoalId"></param>
     [HttpDelete("{savingGoalId:int}")]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete([FromRoute] int savingGoalId)
@@ -48,6 +55,10 @@ namespace api.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// Create saving goal
+    /// </summary>
+    /// <param name="createSavingGoalDto"></param>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateSavingGoalDto createSavingGoalDto)
     {
@@ -76,6 +87,11 @@ namespace api.Controllers
       return Ok(savingGoal.ToSavingGoalModel());
     }
 
+    /// <summary>
+    /// Update saving goal
+    /// </summary>
+    /// <param name="savingGoalId"></param>
+    /// <param name="updateSavingGoalDto"></param>
     [HttpPut]
     [Route("{savingGoalId:int}")]
     [ProducesResponseType(typeof(SavingGoalDto), 200)]
