@@ -81,7 +81,6 @@ namespace api.Controllers
       return Ok(savingTransaction.ToSavingTransactionModel());
     }
 
-    // TODO: add logic to update account balance and saving goal current saved amount
     [HttpPut]
     [Route("{savingTransactionId:int}")]
     [ProducesResponseType(typeof(SavingTransactionDto), 200)]
@@ -91,10 +90,22 @@ namespace api.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
+      var existingSavingTransaction = await _savingTransactionRepository.GetAsync(savingTransactionId);
+      if (existingSavingTransaction == null)
+      {
+        return NotFound("Saving transaction not found!");
+      }
+
+      await _accountRepository.AddIncomeAsync(existingSavingTransaction.AccountId, existingSavingTransaction.Amount);
+      await _savingGoalRepository.TakeAsync(existingSavingTransaction.SavingGoalId, existingSavingTransaction.Amount);
+
+      await _accountRepository.AddExpenseAsync(updateSavingTransactionDto.AccountId, updateSavingTransactionDto.Amount);
+      await _savingGoalRepository.PutAsync(existingSavingTransaction.SavingGoalId, updateSavingTransactionDto.Amount);
+
       var updatedSavingTransaction = await _savingTransactionRepository.UpdateAsync(savingTransactionId, updateSavingTransactionDto);
       if (updatedSavingTransaction == null)
       {
-        return NotFound();
+        return NotFound("Saving transaction not found!");
       }
 
       return Ok(updatedSavingTransaction.ToSavingTransactionModel());
