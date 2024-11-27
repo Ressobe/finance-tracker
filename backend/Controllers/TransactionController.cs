@@ -27,7 +27,7 @@ namespace api.Controllers
 
       if (transaction == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Transaction not found!" });
       }
 
       return Ok(transaction.ToTransactionModel());
@@ -39,7 +39,7 @@ namespace api.Controllers
       var deletedTransaction = await _transactionRepository.DeleteAsync(transactionId);
       if (deletedTransaction == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Transaction not found!" });
       }
 
       if (deletedTransaction.TransactionType == Models.TransactionType.Earning)
@@ -64,14 +64,14 @@ namespace api.Controllers
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
       if (!isAccountExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var transactionModel = createTransactionDto.CreateTransactionDtoToTransactionModel(accountId);
       var transaction = await _transactionRepository.CreateAsync(transactionModel);
       if (transaction == null)
       {
-        return BadRequest("Transaction was not created");
+        return BadRequest(new { message = "Transaction was not created" });
       }
 
       if (transaction.TransactionType == Models.TransactionType.Earning)
@@ -100,7 +100,7 @@ namespace api.Controllers
       var existingTransaction = await _transactionRepository.GetAsync(transactionId);
       if (existingTransaction == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Transaction not found!" });
       }
 
       var difference = updateTransactionDto.Amount - existingTransaction.Amount;
@@ -135,7 +135,7 @@ namespace api.Controllers
       var updatedTransaction = await _transactionRepository.UpdateAsync(transactionId, updateTransactionDto);
       if (updatedTransaction == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Transaction not found!" });
       }
 
       return Ok(updatedTransaction.ToTransactionModel());

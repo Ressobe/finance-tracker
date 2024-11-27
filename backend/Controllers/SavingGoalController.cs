@@ -30,7 +30,7 @@ namespace api.Controllers
       var savingGoal = await _savingGoalRepository.GetAsync(savingGoalId);
       if (savingGoal == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Saving goal not found!" });
       }
       return Ok(savingGoal.ToSavingGoalModel());
     }
@@ -42,7 +42,7 @@ namespace api.Controllers
       var deletedSavingGoal = await _savingGoalRepository.DeleteAsync(savingGoalId);
       if (deletedSavingGoal == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Saving goal not found!" });
       }
 
       return NoContent();
@@ -63,14 +63,14 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var savingGoalModel = createSavingGoalDto.CreateSavingGoalDtoToSavingGoalModel(userId);
       var savingGoal = await _savingGoalRepository.CreateAsync(savingGoalModel);
       if (savingGoal == null)
       {
-        return BadRequest("Account was not created");
+        return BadRequest(new { message = "Account was not created" });
       }
 
       return Ok(savingGoal.ToSavingGoalModel());
@@ -88,7 +88,7 @@ namespace api.Controllers
       var updatedSavingGoal = await _savingGoalRepository.UpdateAsync(savingGoalId, updateSavingGoalDto);
       if (updatedSavingGoal == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Saving goal not found!" });
       }
 
       return Ok(updatedSavingGoal.ToSavingGoalModel());

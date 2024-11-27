@@ -58,7 +58,7 @@ namespace api.Controllers
       var isSavingGoalExist = await _savingGoalRepository.IsSavingGoalExist(savingGoalId);
       if (!isSavingGoalExist)
       {
-        return BadRequest("Saving goal does not exist!");
+        return BadRequest(new { message = "Saving goal does not exist!" });
       }
 
       var savingTransactionModel = createSavingTransactionDto.CreateSavingTransactionDtoToSavingTransactionModel(savingGoalId);
