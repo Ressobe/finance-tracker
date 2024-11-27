@@ -1,6 +1,7 @@
 "use server";
 
 import apiClient from "@/api/client";
+import { ApiError, isApiError } from "@/types/api-error";
 import { NewTransfer } from "@/types/transfer";
 import { revalidatePath } from "next/cache";
 
@@ -15,8 +16,11 @@ export async function createTransferAction(values: NewTransfer) {
   });
 
   if (error) {
-    console.log(error);
-    return { error: "Something went wrong!" };
+    if (isApiError(error)) {
+      const apiError = error as ApiError;
+      return { error: apiError.message };
+    }
+    return { error: "Unknown error occurred" };
   }
 
   revalidatePath(`/accounts/${values.sourceAccountId}`);

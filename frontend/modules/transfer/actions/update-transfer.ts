@@ -1,6 +1,7 @@
 "use server";
 
 import apiClient from "@/api/client";
+import { ApiError, isApiError } from "@/types/api-error";
 import { NewTransfer } from "@/types/transfer";
 import { revalidateTag } from "next/cache";
 
@@ -23,9 +24,11 @@ export async function updateTransferAction(
   });
 
   if (error) {
-    console.log(transferId);
-    console.log(error);
-    return { error: "Something went wrong!" };
+    if (isApiError(error)) {
+      const apiError = error as ApiError;
+      return { error: apiError.message };
+    }
+    return { error: "Unknown error occurred" };
   }
 
   revalidateTag("transfers");
