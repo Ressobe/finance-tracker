@@ -21,21 +21,25 @@ namespace api.Mappers
     {
       return new SavingTransaction
       {
-        SavingGoalId = savingTransaction.Id,
+        Id = savingTransaction.Id,
+        SavingGoalId = savingTransaction.SavingGoalId,
         Amount = savingTransaction.Amount,
-        CreatedAt = DateTime.UtcNow,
+        AccountId = savingTransaction.AccountId,
+        Description = savingTransaction.Description,
+        CreatedAt = savingTransaction.CreatedAt,
       };
     }
 
 
-    public static SavingTransactionWithSavingGoalDto ToSavingTransactionWithSavingGoalName(this SavingTransaction savingTransaction)
+    public static SavingTransactionWithSavingGoalDto ToSavingTransactionWithSavingGoal(this SavingTransaction savingTransaction)
     {
       return new SavingTransactionWithSavingGoalDto
       {
         Id = savingTransaction.Id,
         Amount = savingTransaction.Amount,
         AccountId = savingTransaction.AccountId,
-        SavingGoalName = savingTransaction.SavingGoal?.Name ?? "",
+        SavingGoal = savingTransaction.SavingGoal?.ToSavingGoalDto(),
+        Description = savingTransaction.Description,
         CreatedAt = savingTransaction.CreatedAt,
       };
     }

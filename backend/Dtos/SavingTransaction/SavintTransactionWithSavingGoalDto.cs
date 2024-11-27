@@ -1,3 +1,4 @@
+using api.Dtos.SavingGoal;
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos.SavingTransaction
@@ -10,15 +11,17 @@ namespace api.Dtos.SavingTransaction
     [Required]
     public int SavingGoalId { get; set; }
 
-
     [Required]
-    public String SavingGoalName { get; set; } = String.Empty;
+    public SavingGoalDto? SavingGoal { get; set; }
 
     [Required]
     public int AccountId { get; set; }
 
     [Required]
     public decimal Amount { get; set; }
+
+    [Required]
+    public String Description { get; set; } = String.Empty;
 
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;

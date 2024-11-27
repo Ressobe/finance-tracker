@@ -34,6 +34,7 @@ export function TransferDialog({
     closeDropdownMenu?.();
   };
 
+  const typeOfDialog = defaultValue ? "update" : "create";
   const accounts = useAccountsStore((state) => state.accounts);
 
   return (
@@ -43,9 +44,13 @@ export function TransferDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create a new transfer</DialogTitle>
+          <DialogTitle>
+            {typeOfDialog === "create"
+              ? "Create a new transfer"
+              : "Update a transfer"}
+          </DialogTitle>
           <DialogDescription>
-            New transfer for{" "}
+            {typeOfDialog === "create" ? "New " : "Update "} transfer for{" "}
             <span className="font-bold text-violet-500">{account.name}</span>
           </DialogDescription>
         </DialogHeader>

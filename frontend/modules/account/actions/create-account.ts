@@ -2,6 +2,7 @@
 
 import apiClient from "@/api/client";
 import { Account } from "@/types/account";
+import { ApiError, isApiError } from "@/types/api-error";
 
 export async function createAccountAction(values: Account) {
   const { data, error } = await apiClient.POST("/api/account", {
@@ -12,7 +13,11 @@ export async function createAccountAction(values: Account) {
   });
 
   if (error) {
-    return { error: "Something happend wrong!" };
+    if (isApiError(error)) {
+      const apiError = error as ApiError;
+      return { error: apiError.message };
+    }
+    return { error: "Unknown error occurred" };
   }
 
   return { sucess: "Account created!", accountId: data.id };

@@ -165,9 +165,9 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["TransferDto"][];
-                        "application/json": components["schemas"]["TransferDto"][];
-                        "text/json": components["schemas"]["TransferDto"][];
+                        "text/plain": components["schemas"]["TransferWithDestinationAccountNameDto"][];
+                        "application/json": components["schemas"]["TransferWithDestinationAccountNameDto"][];
+                        "text/json": components["schemas"]["TransferWithDestinationAccountNameDto"][];
                     };
                 };
             };
@@ -610,47 +610,12 @@ export interface paths {
                 };
             };
         };
-        put?: never;
-        post?: never;
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    savingTransactionId: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/saving-transaction/{savingGoalId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
         put: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
-                    savingGoalId: number;
+                    savingTransactionId: number;
                 };
                 cookie?: never;
             };
@@ -687,6 +652,41 @@ export interface paths {
                 };
             };
         };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    savingTransactionId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/saving-transaction/{savingGoalId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
         post: {
             parameters: {
                 query?: never;
@@ -1519,11 +1519,12 @@ export interface components {
             id: number;
             /** Format: int32 */
             savingGoalId: number;
-            savingGoalName: string;
+            savingGoal: components["schemas"]["SavingGoalDto"];
             /** Format: int32 */
             accountId: number;
             /** Format: double */
             amount: number;
+            description: string;
             /** Format: date-time */
             createdAt: string;
         };
@@ -1574,6 +1575,20 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
+        TransferWithDestinationAccountNameDto: {
+            /** Format: int32 */
+            id: number;
+            /** Format: double */
+            amount: number;
+            description: string;
+            /** Format: int32 */
+            sourceAccountId: number;
+            /** Format: int32 */
+            destinationAccountId: number;
+            destinationAccountName: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
         UpdateAccountDto: {
             name?: string | null;
             /** Format: int64 */
@@ -1592,8 +1607,9 @@ export interface components {
             amount?: number;
             /** Format: int32 */
             savingGoalId?: number;
-            /** Format: date-time */
-            date?: string;
+            /** Format: int32 */
+            accountId?: number;
+            description?: string | null;
         };
         UpdateTransactionDto: {
             /** Format: int32 */

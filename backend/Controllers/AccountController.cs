@@ -45,7 +45,7 @@ namespace api.Controllers
     /// </summary>
     /// <param name="accountId"></param>
     [HttpGet("{accountId:int}")]
-    [ResourceOwner(typeof(IAccountRepository), "accountId")]
+    /*[ResourceOwner(typeof(IAccountRepository), "accountId")]*/
     [ProducesResponseType(typeof(AccountOverviewDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int accountId)
@@ -53,7 +53,7 @@ namespace api.Controllers
       var account = await _accountRepository.GetAsync(accountId);
       if (account == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Account not found!" });
       }
 
       var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
@@ -88,7 +88,7 @@ namespace api.Controllers
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
       if (!isAccountExist)
       {
-        return BadRequest("Account does not exist!");
+        return BadRequest(new { message = "Account does not exist!" });
       }
 
       var transactions = await _transactionRepository.GetAllByAccountId(accountId);
@@ -111,7 +111,7 @@ namespace api.Controllers
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
       if (!isAccountExist)
       {
-        return BadRequest("Account does not exist!");
+        return BadRequest(new { message = "Account does not exist!" });
       }
 
       var transfers = await _transferRepository.GetAllByAccountId(accountId);
@@ -132,11 +132,11 @@ namespace api.Controllers
       var isAccountExist = await _accountRepository.IsAccountExist(accountId);
       if (!isAccountExist)
       {
-        return BadRequest("Account does not exist!");
+        return BadRequest(new { message = "Account does not exist!" });
       }
 
       var savingTransactions = await _savingTransactionRepository.GetAllByAccountId(accountId);
-      var savingTransactionsDtos = savingTransactions.Select(item => item.ToSavingTransactionWithSavingGoalName()).ToList();
+      var savingTransactionsDtos = savingTransactions.Select(item => item.ToSavingTransactionWithSavingGoal()).ToList();
 
       return Ok(savingTransactionsDtos);
     }
@@ -160,14 +160,14 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var accountModel = createAccountDto.CreateAccountDtoToAccountModel(userId);
       var account = await _accountRepository.CreateAsync(accountModel);
       if (account == null)
       {
-        return BadRequest("Account was not created");
+        return BadRequest(new { message = "Account was not created" });
       }
 
       return Ok(account.ToAccountModel());
@@ -183,7 +183,7 @@ namespace api.Controllers
       var deletedAccount = await _accountRepository.DeleteAsync(accountId);
       if (deletedAccount == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Account not founded!" });
       }
 
       return NoContent();
@@ -203,7 +203,7 @@ namespace api.Controllers
       var updatedAccount = await _accountRepository.UpdateAsync(accountId, updateAccountDto);
       if (updatedAccount == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Account not founded!" });
       }
 
       return Ok(updatedAccount.ToAccountModel());

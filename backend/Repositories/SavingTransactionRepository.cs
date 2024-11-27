@@ -54,7 +54,8 @@ namespace api.Repositories
       }
 
       existingSavingTransaction.Amount = updateSavingTransactionDto.Amount;
-      existingSavingTransaction.SavingGoalId = updateSavingTransactionDto.SavingGoalId;
+      existingSavingTransaction.AccountId = updateSavingTransactionDto.AccountId;
+      existingSavingTransaction.Description = updateSavingTransactionDto.Description;
 
       await _context.SaveChangesAsync();
       return existingSavingTransaction;

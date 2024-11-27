@@ -36,7 +36,7 @@ namespace api.Controllers
 
       if (category == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Category not found!" });
       }
 
       return Ok(category.ToCategoryModel());
@@ -61,14 +61,14 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var categoryModel = createCategoryDto.CreateCategorDtoToCategoryModel(userId);
       var category = await _categoryRepository.CreateAsync(categoryModel);
       if (category == null)
       {
-        return BadRequest("Account was not created");
+        return BadRequest(new { message = "Account was not created" });
       }
 
       return Ok(category.ToCategoryModel());
@@ -85,7 +85,7 @@ namespace api.Controllers
       var deletedCategory = await _categoryRepository.DeleteAsync(categoryId);
       if (deletedCategory == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Category not found!" });
       }
 
       return NoContent();
@@ -109,7 +109,7 @@ namespace api.Controllers
       var updatedCategory = await _categoryRepository.UpdateAsync(categoryId, updateCategoryDto);
       if (updatedCategory == null)
       {
-        return NotFound();
+        return NotFound(new { message = "Category not found!" });
       }
 
       return Ok(updatedCategory.ToCategoryModel());

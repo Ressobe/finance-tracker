@@ -4,14 +4,19 @@ import apiClient from "@/api/client";
 import { ApiError, isApiError } from "@/types/api-error";
 import { revalidateTag } from "next/cache";
 
-export async function deleteTransactionAction(transactionId: number) {
-  const { error } = await apiClient.DELETE("/api/transaction/{transactionId}", {
-    params: {
-      path: {
-        transactionId,
+export async function deleteSavingTransactionAction(
+  savingTransactionId: number,
+) {
+  const { error } = await apiClient.DELETE(
+    "/api/saving-transaction/{savingTransactionId}",
+    {
+      params: {
+        path: {
+          savingTransactionId,
+        },
       },
     },
-  });
+  );
 
   if (error) {
     if (isApiError(error)) {
@@ -21,7 +26,7 @@ export async function deleteTransactionAction(transactionId: number) {
     return { error: "Unknown error occurred" };
   }
 
-  revalidateTag("transactions");
+  revalidateTag("saving-transactions");
 
-  return { sucess: "Transaction was deleted!" };
+  return { sucess: "Saving transaction deleted!" };
 }

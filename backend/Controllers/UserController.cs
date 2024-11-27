@@ -68,13 +68,13 @@ namespace api.Controllers
         var user = await _userManager.Users.FirstOrDefaultAsync(item => item.Email == loginDto.Email);
         if (user == null)
         {
-          return Unauthorized("Invalid email!");
+          return Unauthorized(new { message = "Invalid email!" });
         }
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
         if (!result.Succeeded)
         {
-          return Unauthorized("Invalid credentials!");
+          return Unauthorized(new { message = "Invalid credentials!" });
         }
 
         return Ok(new NewUserDto
@@ -173,7 +173,7 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var categories = await _categoryRepository.GetAllByUserId(userId);
@@ -197,7 +197,7 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var savingGoals = await _savingGoalRepository.GetAllByUserId(userId);
@@ -221,7 +221,7 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var accounts = await _accountRepository.GetAllByUserId(userId);
@@ -257,7 +257,7 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var accounts = await _accountRepository.GetAllByUserId(userId);
@@ -310,7 +310,7 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var categories = await _categoryRepository.GetAllByUserId(userId);
@@ -368,7 +368,7 @@ namespace api.Controllers
       var isUserExist = await _userRepository.IsUserExistAsync(userId);
       if (!isUserExist)
       {
-        return BadRequest("User does not exist!");
+        return BadRequest(new { message = "User does not exist!" });
       }
 
       var categories = await _categoryRepository.GetAllByUserId(userId);

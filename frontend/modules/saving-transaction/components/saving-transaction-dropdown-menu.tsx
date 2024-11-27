@@ -6,24 +6,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenuAction } from "@/components/ui/sidebar";
-import { Transaction } from "@/types/transaction";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
-import { TransactionDialog } from "./create-transaction-dialog";
-import { DeleteTransactionAlertDialog } from "./delete-transaction-alert-dialog";
-import { AccountModel } from "@/types/account";
+import { SavingTransactionDialog } from "./saving-transaction-dialog";
+import { SavingGoalModel } from "@/types/saving-goal";
+import { DeleteSavingTransactionAlertDialog } from "./delete-saving-transaction-alert-dialog";
+import { SavingTransaction } from "@/types/saving-transaction";
 
-type TransactionDropdownMenuProps = {
-  account: AccountModel;
-  transaction: Transaction;
+type SavingTransactionDropdownMenuProps = {
+  savingGoal: SavingGoalModel;
+  savingTransaction: SavingTransaction;
   closeCollapse?: () => void;
 };
 
-export function TransactionDropdownMenu({
-  account,
-  transaction,
+export function SavingTransactionDropdownMenu({
+  savingGoal,
+  savingTransaction,
   closeCollapse,
-}: TransactionDropdownMenuProps) {
+}: SavingTransactionDropdownMenuProps) {
   const [open, setOpen] = useState(false);
 
   const closeDropdownMenu = () => {
@@ -39,27 +39,26 @@ export function TransactionDropdownMenu({
         </SidebarMenuAction>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start" className="p-2">
-        <TransactionDialog
-          account={account}
-          defaultValue={transaction}
-          type="income"
+        <SavingTransactionDialog
+          savingGoal={savingGoal}
+          defaultValue={savingTransaction}
           closeDropdownMenu={closeDropdownMenu}
         >
           <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Pencil className="w-4 h-4" />
             Edit
           </button>
-        </TransactionDialog>
+        </SavingTransactionDialog>
 
-        <DeleteTransactionAlertDialog
-          transaction={transaction}
+        <DeleteSavingTransactionAlertDialog
+          savingTransaction={null}
           closeDropdownMenu={closeDropdownMenu}
         >
           <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Trash className="w-4 h-4" />
             Delete
           </button>
-        </DeleteTransactionAlertDialog>
+        </DeleteSavingTransactionAlertDialog>
       </DropdownMenuContent>
     </DropdownMenu>
   );

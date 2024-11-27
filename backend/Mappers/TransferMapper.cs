@@ -34,6 +34,7 @@ namespace api.Mappers
     {
       return new TransferWithDestinationAccountNameDto
       {
+        Id = transfer.Id,
         DestinationAccountId = transfer.DestinationAccountId,
         DestinationAccountName = transfer.DestinationAccount?.Name ?? "",
         SourceAccountId = transfer.SourceAccountId,
