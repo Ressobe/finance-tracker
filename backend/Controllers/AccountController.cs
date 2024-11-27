@@ -45,7 +45,7 @@ namespace api.Controllers
     /// </summary>
     /// <param name="accountId"></param>
     [HttpGet("{accountId:int}")]
-    /*[ResourceOwner(typeof(IAccountRepository), "accountId")]*/
+    [ResourceOwner(typeof(IAccountRepository), "accountId")]
     [ProducesResponseType(typeof(AccountOverviewDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int accountId)

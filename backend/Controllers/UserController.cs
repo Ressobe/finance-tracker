@@ -29,6 +29,8 @@ namespace api.Controllers
     private readonly ICategoryRepository _categoryRepository;
     private readonly ISavingGoalRepository _savingGoalRepository;
     private readonly ITransactionRepository _transactionRepository;
+    private readonly ITransferRepository _transferRepository;
+    private readonly ISavingTransactionRepository _savingTransactionRepository;
 
     public UserController(
         UserManager<User> userManager,
@@ -38,7 +40,9 @@ namespace api.Controllers
         IUserRepository userRepository,
         ICategoryRepository categoryRepository,
         ISavingGoalRepository savingGoalRepository,
-        ITransactionRepository transactionRepository
+        ITransactionRepository transactionRepository,
+        ITransferRepository transferRepository,
+        ISavingTransactionRepository savingTransactionRepository
     )
     {
       _userManager = userManager;
@@ -49,6 +53,8 @@ namespace api.Controllers
       _categoryRepository = categoryRepository;
       _savingGoalRepository = savingGoalRepository;
       _transactionRepository = transactionRepository;
+      _transferRepository = transferRepository;
+      _savingTransactionRepository = savingTransactionRepository;
     }
 
 
@@ -408,6 +414,131 @@ namespace api.Controllers
           .ToList();
 
       return Ok(topExpenseCategories);
+    }
+
+    /// <summary>
+    /// Get user's daily expenses and incomes for a given date range
+    /// </summary>
+    /// <param name="startDate">Start date of the range</param>
+    /// <param name="endDate">End date of the range</param>
+    [Authorize]
+    [HttpGet("daily-transactions-summary")]
+    [ProducesResponseType(typeof(List<DailyTransactionsSummaryDto>), 200)]
+    public async Task<IActionResult> GetDailyTransactionsSummary([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest(new { message = "User does not exist!" });
+      }
+
+      var accounts = await _accountRepository.GetAllByUserId(userId);
+      var dailySummary = new Dictionary<DateTime, (decimal income, decimal expense)>();
+
+      var currentDate = startDate.Date;
+      while (currentDate <= endDate.Date)
+      {
+        dailySummary[currentDate] = (0, 0);
+        currentDate = currentDate.AddDays(1);
+      }
+
+      foreach (var account in accounts)
+      {
+        var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
+        var filteredTransactions = transactions
+            .Where(t => t.CreatedAt.Date >= startDate.Date && t.CreatedAt.Date <= endDate.Date);
+
+        foreach (var transaction in filteredTransactions)
+        {
+          var date = transaction.CreatedAt.Date;
+
+          if (transaction.TransactionType == TransactionType.Earning)
+          {
+            dailySummary[date] = (dailySummary[date].income + transaction.Amount, dailySummary[date].expense);
+          }
+          else if (transaction.TransactionType == TransactionType.Expense)
+          {
+            dailySummary[date] = (dailySummary[date].income, dailySummary[date].expense + transaction.Amount);
+          }
+        }
+      }
+
+      var result = dailySummary
+          .OrderBy(x => x.Key)
+          .Select(x => new DailyTransactionsSummaryDto
+          {
+            Date = x.Key,
+            Income = x.Value.income,
+            Expense = x.Value.expense
+          })
+          .ToList();
+
+      return Ok(result);
+    }
+
+
+    /// <summary>
+    /// Get total flow and percentage breakdown of each transaction type (transaction, transfer, saving)
+    /// </summary>
+    [Authorize]
+    [HttpGet("total-flow-summary")]
+    [ProducesResponseType(typeof(TotalFlowSummaryDto), 200)]
+    public async Task<IActionResult> GetTotalFlowSummary()
+    {
+      var userId = User.FindFirstValue("UserId");
+      if (userId == null)
+      {
+        return Forbid();
+      }
+
+      var isUserExist = await _userRepository.IsUserExistAsync(userId);
+      if (!isUserExist)
+      {
+        return BadRequest(new { message = "User does not exist!" });
+      }
+
+      var accounts = await _accountRepository.GetAllByUserId(userId);
+      decimal totalFlow = 0;
+      decimal transactionTotal = 0;
+      decimal transferTotal = 0;
+      decimal savingTotal = 0;
+
+      foreach (var account in accounts)
+      {
+        var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
+        var transfers = await _transferRepository.GetAllByAccountId(account.Id);
+        var savings = await _savingTransactionRepository.GetAllByAccountId(account.Id);
+
+
+        transactionTotal += transactions.Sum(t => t.Amount);
+        transferTotal += transfers.Sum(t => t.Amount);
+        savingTotal += savings.Sum(t => t.Amount);
+      }
+
+      totalFlow = transactionTotal + transferTotal + savingTotal;
+
+      decimal transactionPercentage = totalFlow == 0 ? 0 : (transactionTotal / totalFlow) * 100;
+      decimal transferPercentage = totalFlow == 0 ? 0 : (transferTotal / totalFlow) * 100;
+      decimal savingPercentage = totalFlow == 0 ? 0 : (savingTotal / totalFlow) * 100;
+
+      var summary = new TotalFlowSummaryDto
+      {
+        TotalFlow = totalFlow,
+        TransactionTotal = Math.Round(transactionTotal, 2),
+        TransferTotal = Math.Round(transferTotal, 2),
+        SavingTotal = Math.Round(savingTotal, 2),
+        TransactionPercentage = Math.Round(transactionPercentage, 2),
+        TransferPercentage = Math.Round(transferPercentage, 2),
+        SavingPercentage = Math.Round(savingPercentage, 2)
+      };
+
+      return Ok(summary);
     }
   }
 }
