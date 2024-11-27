@@ -42,14 +42,14 @@ export function CategoryForm({ close, defaultValues }: CategoryFormProps) {
       const response = await createCategoryAction(values);
       if (response.error) {
         toast({
-          description: <ErrorToastMessage message="Something went wrong!" />,
+          description: <ErrorToastMessage message={response.error} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
       }
       if (response.sucess) {
         toast({
-          description: <SucessToastMessage message="New category created!" />,
+          description: <SucessToastMessage message={response.sucess} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
@@ -69,14 +69,14 @@ export function CategoryForm({ close, defaultValues }: CategoryFormProps) {
       const response = await updateCategoryAction(defaultValues.id, values);
       if (response.error) {
         toast({
-          description: <ErrorToastMessage message="Something went wrong!" />,
+          description: <ErrorToastMessage message={response.error} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
       }
       if (response.sucess) {
         toast({
-          description: <SucessToastMessage message="Category updated!" />,
+          description: <SucessToastMessage message={response.sucess} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });

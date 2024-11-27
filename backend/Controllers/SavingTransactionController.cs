@@ -82,18 +82,30 @@ namespace api.Controllers
     }
 
     [HttpPut]
-    [Route("{savingGoalId:int}")]
+    [Route("{savingTransactionId:int}")]
     [ProducesResponseType(typeof(SavingTransactionDto), 200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> Update([FromRoute] int savingGoalId, [FromBody] UpdateSavingTransactionDto updateSavingTransactionDto)
+    public async Task<IActionResult> Update([FromRoute] int savingTransactionId, [FromBody] UpdateSavingTransactionDto updateSavingTransactionDto)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var updatedSavingTransaction = await _savingTransactionRepository.UpdateAsync(savingGoalId, updateSavingTransactionDto);
+      var existingSavingTransaction = await _savingTransactionRepository.GetAsync(savingTransactionId);
+      if (existingSavingTransaction == null)
+      {
+        return NotFound("Saving transaction not found!");
+      }
+
+      await _accountRepository.AddIncomeAsync(existingSavingTransaction.AccountId, existingSavingTransaction.Amount);
+      await _savingGoalRepository.TakeAsync(existingSavingTransaction.SavingGoalId, existingSavingTransaction.Amount);
+
+      await _accountRepository.AddExpenseAsync(updateSavingTransactionDto.AccountId, updateSavingTransactionDto.Amount);
+      await _savingGoalRepository.PutAsync(existingSavingTransaction.SavingGoalId, updateSavingTransactionDto.Amount);
+
+      var updatedSavingTransaction = await _savingTransactionRepository.UpdateAsync(savingTransactionId, updateSavingTransactionDto);
       if (updatedSavingTransaction == null)
       {
-        return NotFound();
+        return NotFound("Saving transaction not found!");
       }
 
       return Ok(updatedSavingTransaction.ToSavingTransactionModel());

@@ -16,8 +16,8 @@ import { Account, AccountModel, accountSchema } from "@/types/account";
 import { useToast } from "@/hooks/use-toast";
 import { useTransition } from "react";
 import { createAccountAction } from "../actions/create-account";
-import { CircleCheck } from "lucide-react";
 import { updateAccountAction } from "../actions/update-account";
+import { SucessToastMessage } from "@/components/sucess-toast-message";
 
 type AccountFormProps = {
   closeDialog?: () => void;
@@ -49,12 +49,7 @@ export function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
         const response = await createAccountAction(values);
         if (response.sucess) {
           toast({
-            description: (
-              <div className="flex items-center gap-4 text-lg">
-                <CircleCheck className="text-green-500 w-12 h-12" />
-                <span>Account {values.name} created!</span>
-              </div>
-            ),
+            description: <SucessToastMessage message={response.sucess} />,
             className: "bg-secondary opacity-90",
             duration: 2000,
           });
@@ -71,12 +66,7 @@ export function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
         const response = await updateAccountAction(accountId, values);
         if (response.sucess) {
           toast({
-            description: (
-              <div className="flex items-center gap-4 text-xl">
-                <CircleCheck className="text-green-500 w-12 h-12" />
-                <span>Account {values.name} updated!</span>
-              </div>
-            ),
+            description: <SucessToastMessage message={response.sucess} />,
             className: "bg-secondary opacity-90",
             duration: 2000,
           });

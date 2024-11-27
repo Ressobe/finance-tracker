@@ -13,3 +13,14 @@ export const newSavingTransactionSchema = z.object({
 });
 
 export type NewSavingTransaction = z.infer<typeof newSavingTransactionSchema>;
+
+export const savingTransactionSchema = z.object({
+  id: z.number(),
+  savingGoalId: z.number(),
+  accountId: z.number(),
+  amount: z.number(),
+  createdAt: z.string(),
+  description: z.string(),
+});
+
+export type SavingTransaction = z.infer<typeof savingTransactionSchema>;

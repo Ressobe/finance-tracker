@@ -22,6 +22,7 @@ import { useAccountsStore } from "@/stores/use-accounts-store";
 import {
   NewSavingTransaction,
   newSavingTransactionSchema,
+  SavingTransaction,
 } from "@/types/saving-transaction";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
@@ -30,24 +31,28 @@ import { createSavingTransaction } from "../actions/create-saving-transaction";
 import { useToast } from "@/hooks/use-toast";
 import { SucessToastMessage } from "@/components/sucess-toast-message";
 import { ErrorToastMessage } from "@/components/error-toast-message";
+import { updateSavingTransactionAction } from "../actions/update-saving-transaction";
 
 type SavingTransactionFormProps = {
   savingGoalId: number;
+  defaultValue?: SavingTransaction;
   closeDialog?: () => void;
 };
 
 export function SavingTransactionForm({
   savingGoalId,
+  defaultValue,
   closeDialog,
 }: SavingTransactionFormProps) {
   const accounts = useAccountsStore((state) => state.accounts);
+  const typeOfForm = defaultValue ? "update" : "create";
 
   const form = useForm<NewSavingTransaction>({
     resolver: zodResolver(newSavingTransactionSchema),
     defaultValues: {
-      description: "",
-      amount: 0,
-      accountId: accounts[0].id,
+      description: defaultValue?.description ?? "",
+      amount: defaultValue?.amount ?? 0,
+      accountId: defaultValue?.accountId ?? accounts[0].id,
     },
   });
 
@@ -56,21 +61,25 @@ export function SavingTransactionForm({
 
   const onSubmit = (values: NewSavingTransaction) => {
     startTransition(async () => {
-      const response = await createSavingTransaction(savingGoalId, values);
+      let response = null;
+      if (typeOfForm === "create") {
+        response = await createSavingTransaction(savingGoalId, values);
+      }
+      if (typeOfForm === "update" && defaultValue) {
+        response = await updateSavingTransactionAction(defaultValue.id, values);
+      }
 
-      if (response.sucess) {
+      if (response?.sucess) {
         toast({
-          description: (
-            <SucessToastMessage message="Saving transaction created!" />
-          ),
+          description: <SucessToastMessage message={response.sucess} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
       }
 
-      if (response.error) {
+      if (response?.error) {
         toast({
-          description: <ErrorToastMessage message="Something went wrong" />,
+          description: <ErrorToastMessage message={response.error} />,
           className: "bg-secondary opacity-90",
           duration: 2000,
         });
@@ -114,6 +123,7 @@ export function SavingTransactionForm({
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={`${field.value}`}
+                  disabled={!!defaultValue?.accountId}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -163,7 +173,7 @@ export function SavingTransactionForm({
             Cancel
           </Button>
           <Button type="submit" disabled={isPending}>
-            Create saving transaction
+            {typeOfForm === "create" ? "Create " : "Update "} saving transaction
           </Button>
         </div>
       </form>

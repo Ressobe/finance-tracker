@@ -26,6 +26,7 @@ import { createTransferAction } from "../../actions/create-transfer";
 import { useToast } from "@/hooks/use-toast";
 import { SucessToastMessage } from "@/components/sucess-toast-message";
 import { ErrorToastMessage } from "@/components/error-toast-message";
+import { updateTransferAction } from "../../actions/update-transfer";
 
 type TransferFormProps = {
   account: AccountModel;
@@ -40,6 +41,7 @@ export function TransferForm({
 }: TransferFormProps) {
   const accounts = useAccountsStore((state) => state.accounts);
   const filteredAccounts = accounts.filter((item) => item.id !== account.id);
+  const typeOfForm = defaultValue ? "update" : "create";
 
   const defaultDestinationAccountId =
     defaultValue?.destinationAccountId ?? filteredAccounts[0].id;
@@ -56,18 +58,25 @@ export function TransferForm({
   const { toast } = useToast();
 
   const onSubmit = async (values: NewTransfer) => {
-    const response = await createTransferAction(values);
+    let response = null;
+    if (typeOfForm === "create") {
+      response = await createTransferAction(values);
+    }
 
-    if (response.sucess) {
+    if (typeOfForm === "update" && defaultValue) {
+      response = await updateTransferAction(defaultValue.id, values);
+    }
+
+    if (response?.sucess) {
       toast({
-        description: <SucessToastMessage message="New transfer created!" />,
+        description: <SucessToastMessage message={response.sucess} />,
         className: "bg-secondary opacity-90",
         duration: 2000,
       });
     }
-    if (response.error) {
+    if (response?.error) {
       toast({
-        description: <ErrorToastMessage message="Something went wrong!" />,
+        description: <ErrorToastMessage message={response.error} />,
         className: "bg-secondary opacity-90",
         duration: 2000,
       });
@@ -145,7 +154,9 @@ export function TransferForm({
             <Button onClick={() => close?.()} type="button" variant="secondary">
               Cancel
             </Button>
-            <Button type="submit">New transfer</Button>
+            <Button type="submit">
+              {typeOfForm === "create" ? "New " : "Update "} transfer
+            </Button>
           </div>
         </div>
       </form>

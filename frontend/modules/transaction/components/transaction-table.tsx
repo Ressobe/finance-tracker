@@ -22,12 +22,9 @@ import { TransactionDropdownMenu } from "./transaction-dropdown-menu";
 import { AccountModel } from "@/types/account";
 import { Fragment } from "react";
 import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TransferDropdownMenu } from "@/modules/transfer/components/transfer-dropdown-menu";
+import { SavingTransactionDropdownMenu } from "@/modules/saving-transaction/components/saving-transaction-dropdown-menu";
+import { SavingGoalModel } from "@/types/saving-goal";
 
 type Transaction = {
   id: number;
@@ -53,7 +50,7 @@ type Transfer = {
 type SavingTransaction = {
   id: number;
   savingGoalId: number;
-  savingGoalName: string;
+  savingGoal: SavingGoalModel;
   accountId: number;
   amount: number;
   description: string;
@@ -145,6 +142,7 @@ export function TransactionTable({
             <span>
               {item.amount} {currency}
             </span>
+            <TransferDropdownMenu account={currentAccount} transfer={item} />
           </TableCell>
         </TableRow>
       );
@@ -155,7 +153,7 @@ export function TransactionTable({
         <TableRow>
           <TableCell className="font-medium">
             <Link href="/saving-goals" className="hover:underline">
-              {item.savingGoalName}
+              {item.savingGoal.name}
             </Link>
           </TableCell>
           <TableCell>{item.description}</TableCell>
@@ -167,6 +165,10 @@ export function TransactionTable({
             <span>
               {item.amount} {currency}
             </span>
+            <SavingTransactionDropdownMenu
+              savingGoal={item.savingGoal}
+              savingTransaction={item}
+            />
           </TableCell>
         </TableRow>
       );

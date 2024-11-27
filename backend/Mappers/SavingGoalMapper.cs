@@ -17,6 +17,18 @@ namespace api.Mappers
       };
     }
 
+    public static SavingGoalDto ToSavingGoalDto(this SavingGoal savingGoalModel)
+    {
+      return new SavingGoalDto
+      {
+        Id = savingGoalModel.Id,
+        Name = savingGoalModel.Name,
+        TargetAmount = savingGoalModel.TargetAmount,
+        CurrentSaved = savingGoalModel.CurrentSaved,
+        CreatedAt = savingGoalModel.CreatedAt,
+      };
+    }
+
     public static SavingGoal ToSavingGoalModel(this SavingGoal savingGoal)
     {
       return new SavingGoal
