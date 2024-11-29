@@ -48,3 +48,7 @@ export async function getAccountSavingTransactions(accountId: number) {
     },
   });
 }
+
+export async function getTotalFlowSummary() {
+  return await apiClient.GET("/api/user/total-flow-summary");
+}
