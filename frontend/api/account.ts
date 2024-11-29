@@ -52,3 +52,17 @@ export async function getAccountSavingTransactions(accountId: number) {
 export async function getTotalFlowSummary() {
   return await apiClient.GET("/api/user/total-flow-summary");
 }
+
+export async function getDailyIncomesExpenses(
+  startDate: string,
+  endDate: string,
+) {
+  return await apiClient.GET("/api/user/daily-transactions-summary", {
+    params: {
+      query: {
+        startDate,
+        endDate,
+      },
+    },
+  });
+}
