@@ -14,11 +14,11 @@ export function IncomeByCategories({ categories }: IncomeByCategoriesProps) {
   return (
     <Card>
       <CardHeader>
-        <h1 className="font-bold text-2xl">Income by categories</h1>
+        <h1 className="font-bold text-xl">Income by categories</h1>
       </CardHeader>
 
       <CardContent>
-        <ul className="space-y-4">
+        <ul className="space-y-8">
           {categories.map((item) => (
             <CategoryItem key={item.categoryId} type="income" {...item} />
           ))}

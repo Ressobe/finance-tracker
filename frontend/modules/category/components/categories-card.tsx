@@ -36,7 +36,7 @@ export function CategoriesCard({ categories }: CategoriesCardProps) {
         </CategoryDialog>
       </CardHeader>
       <CardContent>
-        <ul className="w-full flex gap-4">
+        <ul className="w-full flex flex-wrap justify-evenly gap-8">
           {categories.map((item) => (
             <CategoryItem key={item.id} category={item} />
           ))}
@@ -52,13 +52,11 @@ type CategoryItemProps = {
 
 function CategoryItem({ category }: CategoryItemProps) {
   return (
-    <Card className="p-8">
-      <CardContent>
-        <div className="flex justify-between items-center">
-          <div>{category.name}</div>
-          <CategoryDropdownMenu category={category} />
-        </div>
-      </CardContent>
+    <Card className="p-8 flex-1">
+      <div className="relative flex justify-center items-center p-6">
+        <div>{category.name}</div>
+        <CategoryDropdownMenu category={category} />
+      </div>
     </Card>
   );
 }

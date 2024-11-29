@@ -24,7 +24,6 @@ export default async function AccountPage(props: AccountPageProps) {
   const params = await props.params;
 
   const { data, error } = await getAccount(params.accountId);
-  console.log(error);
   if (error) {
     notFound();
   }
@@ -34,7 +33,6 @@ export default async function AccountPage(props: AccountPageProps) {
   const { data: savingTransactions } = await getAccountSavingTransactions(
     params.accountId,
   );
-
   const { name, currentBalance, income, expense } = data;
 
   return (
@@ -47,7 +45,7 @@ export default async function AccountPage(props: AccountPageProps) {
           Information about your {name} account
         </span>
       </div>
-      <div className="flex flex-col xl:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         <Income amount={income} />
         <Expense amount={expense} />
         <Balance amount={currentBalance} />

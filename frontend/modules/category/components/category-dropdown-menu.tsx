@@ -1,22 +1,22 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVertical, Pencil, Trash } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
-import { DeleteCategoryAlertDialog } from "./delete-category-alert-dialog";
+import { SidebarMenuAction } from "@/components/ui/sidebar";
 import { Category } from "@/types/category";
 import { CategoryDialog } from "./category-dialog";
+import { DeleteCategoryAlertDialog } from "./delete-category-alert-dialog";
 
-type CategoryDropdownMenuProps = {
+type CategoryDropdownMenu = {
   category: Category;
 };
 
-export function CategoryDropdownMenu({ category }: CategoryDropdownMenuProps) {
+export function CategoryDropdownMenu({ category }: CategoryDropdownMenu) {
   const [open, setOpen] = useState(false);
 
   const closeDropdownMenu = () => {
@@ -26,29 +26,29 @@ export function CategoryDropdownMenu({ category }: CategoryDropdownMenuProps) {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="p-0">
-          <EllipsisVertical />
-        </Button>
+        <SidebarMenuAction>
+          <MoreHorizontal />
+        </SidebarMenuAction>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="flex flex-col">
+      <DropdownMenuContent side="right" align="start" className="p-2">
         <CategoryDialog
-          closeDropdownMenu={closeDropdownMenu}
           defaultValue={category}
+          closeDropdownMenu={closeDropdownMenu}
         >
-          <Button variant="ghost" className="p-0 gap-2">
+          <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Pencil className="w-4 h-4" />
-            Edit category
-          </Button>
+            Edit
+          </button>
         </CategoryDialog>
 
         <DeleteCategoryAlertDialog
-          closeDropdownMenu={closeDropdownMenu}
           category={category}
+          closeDropdownMenu={closeDropdownMenu}
         >
-          <Button variant="ghost" className="p-0 gap-2">
+          <button className="w-full flex items-center gap-2 text-left text-sm p-2 hover:bg-secondary rounded transition-all cursor-pointer">
             <Trash className="w-4 h-4" />
             Delete
-          </Button>
+          </button>
         </DeleteCategoryAlertDialog>
       </DropdownMenuContent>
     </DropdownMenu>
