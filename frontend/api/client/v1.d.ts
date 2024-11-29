@@ -1571,11 +1571,11 @@ export interface components {
         };
         DailyTransactionsSummaryDto: {
             /** Format: date-time */
-            date?: string;
+            date: string;
             /** Format: double */
-            income?: number;
+            income: number;
             /** Format: double */
-            expense?: number;
+            expense: number;
         };
         LoginDto: {
             /** Format: email */
