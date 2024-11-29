@@ -19,11 +19,14 @@ export function CategoryItem({
   return (
     <li className="space-y-1">
       <div className="w-full flex justify-between">
-        <div className="text-lg space-x-2">
-          <span>{categoryName} </span>
-          <span className="text-muted-foreground text-sm">({percentage}%)</span>
+        <div className="text-md ">
+          <span>{categoryName}</span>
+          <span className="text-muted-foreground text-sm">
+            {" "}
+            ({percentage}%){" "}
+          </span>
         </div>
-        <span className="text-lg">{amount.toLocaleString()} PLN</span>
+        <span className="text-md">{amount.toLocaleString()} PLN</span>
       </div>
       <Progress
         value={percentage}
