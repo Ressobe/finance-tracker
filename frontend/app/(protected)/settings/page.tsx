@@ -1,5 +1,4 @@
 import { getCategories } from "@/api/category";
-import { CurrencyCard } from "@/components/currency-card";
 import { CategoriesCard } from "@/modules/category/components/categories-card";
 
 export default async function SettingsPage() {
@@ -14,7 +13,6 @@ export default async function SettingsPage() {
           Manage your account settings and categories
         </span>
       </div>
-      <CurrencyCard />
       <CategoriesCard categories={data} />
     </section>
   );
