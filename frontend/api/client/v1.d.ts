@@ -47,6 +47,7 @@ export interface paths {
                 };
             };
         };
+        /** Update account */
         put: {
             parameters: {
                 query?: never;
@@ -75,6 +76,7 @@ export interface paths {
             };
         };
         post?: never;
+        /** Delete account */
         delete: {
             parameters: {
                 query?: never;
@@ -229,6 +231,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Create account */
         post: {
             parameters: {
                 query?: never;
@@ -271,6 +274,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get category by id */
         get: {
             parameters: {
                 query?: never;
@@ -306,6 +310,7 @@ export interface paths {
                 };
             };
         };
+        /** Update category */
         put: {
             parameters: {
                 query?: never;
@@ -349,6 +354,7 @@ export interface paths {
             };
         };
         post?: never;
+        /** Delete category by id */
         delete: {
             parameters: {
                 query?: never;
@@ -383,6 +389,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Create category */
         post: {
             parameters: {
                 query?: never;
@@ -421,6 +428,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get saving goal by id */
         get: {
             parameters: {
                 query?: never;
@@ -456,6 +464,7 @@ export interface paths {
                 };
             };
         };
+        /** Update saving goal */
         put: {
             parameters: {
                 query?: never;
@@ -499,6 +508,7 @@ export interface paths {
             };
         };
         post?: never;
+        /** Delete saving goal by id */
         delete: {
             parameters: {
                 query?: never;
@@ -537,6 +547,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Create saving goal */
         post: {
             parameters: {
                 query?: never;
@@ -575,6 +586,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get saving transaction by id */
         get: {
             parameters: {
                 query?: never;
@@ -610,6 +622,7 @@ export interface paths {
                 };
             };
         };
+        /** Update saving transaction */
         put: {
             parameters: {
                 query?: never;
@@ -653,6 +666,7 @@ export interface paths {
             };
         };
         post?: never;
+        /** Delete saving transaction by id */
         delete: {
             parameters: {
                 query?: never;
@@ -687,6 +701,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Create saving transaction */
         post: {
             parameters: {
                 query?: never;
@@ -731,6 +746,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get transaction by id */
         get: {
             parameters: {
                 query?: never;
@@ -766,6 +782,7 @@ export interface paths {
                 };
             };
         };
+        /** Update transaction */
         put: {
             parameters: {
                 query?: never;
@@ -809,6 +826,7 @@ export interface paths {
             };
         };
         post?: never;
+        /** Delete transaction by id */
         delete: {
             parameters: {
                 query?: never;
@@ -843,6 +861,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Create transaction */
         post: {
             parameters: {
                 query?: never;
@@ -885,6 +904,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Create transfer */
         post: {
             parameters: {
                 query?: never;
@@ -927,6 +947,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get transfer by id */
         get: {
             parameters: {
                 query?: never;
@@ -962,6 +983,7 @@ export interface paths {
                 };
             };
         };
+        /** Update transfer */
         put: {
             parameters: {
                 query?: never;
@@ -1005,6 +1027,7 @@ export interface paths {
             };
         };
         post?: never;
+        /** Delete transfer by id */
         delete: {
             parameters: {
                 query?: never;
@@ -1039,6 +1062,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Login */
         post: {
             parameters: {
                 query?: never;
@@ -1083,6 +1107,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Register */
         post: {
             parameters: {
                 query?: never;
@@ -1121,6 +1146,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all accounts for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1158,6 +1184,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all categories for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1195,6 +1222,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all saving goals for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1232,6 +1260,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all transactions for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1269,6 +1298,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get overview of account for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1306,6 +1336,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get income by categories for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1343,6 +1374,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get expense by categories for current user */
         get: {
             parameters: {
                 query?: never;
@@ -1361,6 +1393,87 @@ export interface paths {
                         "text/plain": components["schemas"]["CategoryOverviewDto"][];
                         "application/json": components["schemas"]["CategoryOverviewDto"][];
                         "text/json": components["schemas"]["CategoryOverviewDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/user/daily-transactions-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user's daily expenses and incomes for a given date range */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Start date of the range */
+                    startDate?: string;
+                    /** @description End date of the range */
+                    endDate?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["DailyTransactionsSummaryDto"][];
+                        "application/json": components["schemas"]["DailyTransactionsSummaryDto"][];
+                        "text/json": components["schemas"]["DailyTransactionsSummaryDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/user/total-flow-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get total flow and percentage breakdown of each transaction type (transaction, transfer, saving) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TotalFlowSummaryDto"];
+                        "application/json": components["schemas"]["TotalFlowSummaryDto"];
+                        "text/json": components["schemas"]["TotalFlowSummaryDto"];
                     };
                 };
             };
@@ -1456,6 +1569,14 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
+        DailyTransactionsSummaryDto: {
+            /** Format: date-time */
+            date?: string;
+            /** Format: double */
+            income?: number;
+            /** Format: double */
+            expense?: number;
+        };
         LoginDto: {
             /** Format: email */
             email: string;
@@ -1527,6 +1648,22 @@ export interface components {
             description: string;
             /** Format: date-time */
             createdAt: string;
+        };
+        TotalFlowSummaryDto: {
+            /** Format: double */
+            totalFlow: number;
+            /** Format: double */
+            transactionTotal: number;
+            /** Format: double */
+            transferTotal: number;
+            /** Format: double */
+            savingTotal: number;
+            /** Format: double */
+            transactionPercentage: number;
+            /** Format: double */
+            transferPercentage: number;
+            /** Format: double */
+            savingPercentage: number;
         };
         TransactionDto: {
             /** Format: int32 */
@@ -1605,8 +1742,6 @@ export interface components {
         UpdateSavingTransactionDto: {
             /** Format: double */
             amount?: number;
-            /** Format: int32 */
-            savingGoalId?: number;
             /** Format: int32 */
             accountId?: number;
             description?: string | null;
