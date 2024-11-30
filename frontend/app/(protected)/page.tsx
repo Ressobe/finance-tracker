@@ -24,7 +24,7 @@ export default async function Dashboard() {
   const { data: totalFlowSummary } = await getTotalFlowSummary();
   const { data: dailyExpensesIncomes } = await getDailyIncomesExpenses(
     "2024-11-01",
-    "2024-11-29",
+    "2024-11-30",
   );
 
   return (
