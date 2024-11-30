@@ -54,7 +54,7 @@ export function DailyExpensesIncomesBarChart({
           <BarChart accessibilityLayer data={items}>
             <CartesianGrid vertical={false} />
             <YAxis
-              tickFormatter={(value) => `${value} ${currency}`}
+              tickFormatter={(value) => `${value.toLocaleString()} ${currency}`}
               tickMargin={10}
               tickLine={true}
               padding={{ top: 50 }}
