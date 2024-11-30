@@ -70,5 +70,12 @@ namespace api.Repositories
       return savingTransactions;
     }
 
+    public async Task<List<SavingTransaction>> GetAllBySavigGoalId(int savingGoalId)
+    {
+      var savingTransactions = await _context.SavingTransactions
+        .Where(item => item.SavingGoalId == savingGoalId)
+        .ToListAsync();
+      return savingTransactions;
+    }
   }
 }

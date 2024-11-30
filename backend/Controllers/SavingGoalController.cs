@@ -13,12 +13,16 @@ namespace api.Controllers
   public class SavingGoalController : ControllerBase
   {
     private readonly ISavingGoalRepository _savingGoalRepository;
+    private readonly ISavingTransactionRepository _savingTransactionsRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IAccountRepository _accountRepository;
 
-    public SavingGoalController(ISavingGoalRepository savingGoalRepository, IUserRepository userRepository)
+    public SavingGoalController(ISavingGoalRepository savingGoalRepository, IUserRepository userRepository, ISavingTransactionRepository savingTransactionsRepository, IAccountRepository accountRepository)
     {
       _savingGoalRepository = savingGoalRepository;
       _userRepository = userRepository;
+      _savingTransactionsRepository = savingTransactionsRepository;
+      _accountRepository = accountRepository;
     }
 
     /// <summary>
@@ -46,6 +50,20 @@ namespace api.Controllers
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete([FromRoute] int savingGoalId)
     {
+
+      var existingSavingGoal = await _savingGoalRepository.GetAsync(savingGoalId);
+      if (existingSavingGoal == null)
+      {
+        return NotFound(new { message = "Saving goal not found!" });
+      }
+
+      var allSavingTransactions = await _savingTransactionsRepository.GetAllBySavigGoalId(savingGoalId);
+
+      foreach (var savingTransaction in allSavingTransactions)
+      {
+        await _accountRepository.AddIncomeAsync(savingTransaction.AccountId, savingTransaction.Amount);
+      }
+
       var deletedSavingGoal = await _savingGoalRepository.DeleteAsync(savingGoalId);
       if (deletedSavingGoal == null)
       {
