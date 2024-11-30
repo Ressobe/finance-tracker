@@ -83,22 +83,6 @@ export function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
           <div className="space-y-4">
             <FormField
               control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="text-sm md:text-lg">
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" />
-                  </FormControl>
-                  <FormMessage />
-                  <FormDescription>
-                    Name of your new account (required)
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="currentBalance"
               render={({ field }) => (
                 <FormItem className="text-sm md:text-lg">
@@ -109,6 +93,22 @@ export function AccountForm({ closeDialog, defaultValues }: AccountFormProps) {
                   <FormMessage />
                   <FormDescription>
                     Your current balance on this account (required)
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="text-sm md:text-lg">
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="text" />
+                  </FormControl>
+                  <FormMessage />
+                  <FormDescription>
+                    Name of your new account (required)
                   </FormDescription>
                 </FormItem>
               )}

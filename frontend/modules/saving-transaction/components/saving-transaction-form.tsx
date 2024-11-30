@@ -99,6 +99,23 @@ export function SavingTransactionForm({
         <div className="space-y-4">
           <FormField
             control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem className="text-sm md:text-lg">
+                <FormLabel>Amount</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" />
+                </FormControl>
+                <FormMessage />
+                <FormDescription>
+                  Amount of your saving transaction (required)
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem className="text-sm md:text-lg">
@@ -142,23 +159,6 @@ export function SavingTransactionForm({
                 </Select>
                 <FormDescription>Select an account</FormDescription>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="amount"
-            render={({ field }) => (
-              <FormItem className="text-sm md:text-lg">
-                <FormLabel>Amount</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" />
-                </FormControl>
-                <FormMessage />
-                <FormDescription>
-                  Amount of your saving transaction (required)
-                </FormDescription>
               </FormItem>
             )}
           />

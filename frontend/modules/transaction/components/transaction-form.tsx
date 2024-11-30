@@ -127,22 +127,6 @@ export function TransactionForm({
         <div className="space-y-4">
           <FormField
             control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="text-sm md:text-lg">
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" />
-                </FormControl>
-                <FormMessage />
-                <FormDescription>
-                  Transaction description (optional)
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="amount"
             render={({ field }) => (
               <FormItem className="text-sm md:text-lg">
@@ -155,6 +139,22 @@ export function TransactionForm({
                 </div>
                 <FormMessage />
                 <FormDescription>Transaction amount (required)</FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="text-sm md:text-lg">
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" />
+                </FormControl>
+                <FormMessage />
+                <FormDescription>
+                  Transaction description (optional)
+                </FormDescription>
               </FormItem>
             )}
           />
