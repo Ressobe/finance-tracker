@@ -97,7 +97,7 @@ namespace api.Controllers
     /// <summary>
     /// Update saving transaction
     /// </summary>
-    /// <param name="savingGoalId"></param>
+    /// <param name="savingTransactionId"></param>
     /// <param name="updateSavingTransactionDto"></param>
     [HttpPut]
     [Route("{savingTransactionId:int}")]

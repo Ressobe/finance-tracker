@@ -8,10 +8,10 @@ using api.Dtos.SavingGoal;
 using api.Dtos.Transaction;
 using api.Mappers;
 using api.Interfaces;
+using api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
 
 namespace api.Controllers
 {
@@ -31,6 +31,7 @@ namespace api.Controllers
     private readonly ITransactionRepository _transactionRepository;
     private readonly ITransferRepository _transferRepository;
     private readonly ISavingTransactionRepository _savingTransactionRepository;
+    private readonly ApplicationDBContext _context;
 
     public UserController(
         UserManager<User> userManager,
@@ -42,7 +43,8 @@ namespace api.Controllers
         ISavingGoalRepository savingGoalRepository,
         ITransactionRepository transactionRepository,
         ITransferRepository transferRepository,
-        ISavingTransactionRepository savingTransactionRepository
+        ISavingTransactionRepository savingTransactionRepository,
+        ApplicationDBContext context
     )
     {
       _userManager = userManager;
@@ -55,6 +57,7 @@ namespace api.Controllers
       _transactionRepository = transactionRepository;
       _transferRepository = transferRepository;
       _savingTransactionRepository = savingTransactionRepository;
+      _context = context;
     }
 
 
@@ -503,42 +506,14 @@ namespace api.Controllers
         return BadRequest(new { message = "User does not exist!" });
       }
 
-      var accounts = await _accountRepository.GetAllByUserId(userId);
-      decimal totalFlow = 0;
-      decimal transactionTotal = 0;
-      decimal transferTotal = 0;
-      decimal savingTotal = 0;
+      var result = _context.TotalFlowSummary.FromSqlRaw("SELECT * FROM get_total_flow_summary({0})", userId).OrderBy(i => i.TotalFlow).FirstOrDefault();
 
-      foreach (var account in accounts)
+      if (result == null)
       {
-        var transactions = await _transactionRepository.GetAllByAccountId(account.Id);
-        var transfers = await _transferRepository.GetAllByAccountId(account.Id);
-        var savings = await _savingTransactionRepository.GetAllByAccountId(account.Id);
-
-
-        transactionTotal += transactions.Sum(t => t.Amount);
-        transferTotal += transfers.Sum(t => t.Amount);
-        savingTotal += savings.Sum(t => t.Amount);
+        return StatusCode(500, "Internal Server Error");
       }
 
-      totalFlow = transactionTotal + transferTotal + savingTotal;
-
-      decimal transactionPercentage = totalFlow == 0 ? 0 : (transactionTotal / totalFlow) * 100;
-      decimal transferPercentage = totalFlow == 0 ? 0 : (transferTotal / totalFlow) * 100;
-      decimal savingPercentage = totalFlow == 0 ? 0 : (savingTotal / totalFlow) * 100;
-
-      var summary = new TotalFlowSummaryDto
-      {
-        TotalFlow = totalFlow,
-        TransactionTotal = Math.Round(transactionTotal, 2),
-        TransferTotal = Math.Round(transferTotal, 2),
-        SavingTotal = Math.Round(savingTotal, 2),
-        TransactionPercentage = Math.Round(transactionPercentage, 2),
-        TransferPercentage = Math.Round(transferPercentage, 2),
-        SavingPercentage = Math.Round(savingPercentage, 2)
-      };
-
-      return Ok(summary);
+      return Ok(result);
     }
   }
 }
