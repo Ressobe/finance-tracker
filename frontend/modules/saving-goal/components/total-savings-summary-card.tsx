@@ -18,6 +18,8 @@ export function TotalSavingsSummaryCard({
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
+  let totalPercentage = (totalSavings / totalTarget) * 100;
+
   return (
     <Card>
       <CardHeader>
@@ -46,8 +48,8 @@ export function TotalSavingsSummaryCard({
             trackColor={trackColor}
           />
           <p className="text-center mt-2 text-sm text-muted-foreground">
-            {((totalSavings / totalTarget) * 100).toFixed(1)}% of total goals
-            achieved
+            {isNaN(totalPercentage) ? 0 : totalPercentage.toFixed(1)}% of total
+            goals achieved
           </p>
         </div>
       </CardContent>
