@@ -19,16 +19,30 @@ builder.Services.AddLogging(config =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+/*builder.Services.AddCors(options =>*/
+/*{*/
+/*  options.AddPolicy("AllowSpecificOrigins", policy =>*/
+/*  {*/
+/*    policy.WithOrigins("http://localhost")*/
+/*            .AllowAnyHeader()*/
+/*            .AllowAnyMethod()*/
+/*            .AllowCredentials();*/
+/*  });*/
+/*});*/
+
+
 builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowSpecificOrigins", policy =>
   {
-    policy.WithOrigins("http://localhost")
+    policy.WithOrigins("http://frontend-finance-tracker:3000")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
   });
 });
+
 builder.Services.AddSwaggerGen(option =>
 {
   var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -126,13 +140,17 @@ builder.Services.AddScoped<ISavingGoalRepository, SavingGoalRepository>();
 builder.Services.AddScoped<ISavingTransactionRepository, SavingTransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.WebHost.UseUrls("http://+:80");
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-  app.UseSwagger();
-  app.UseSwaggerUI();
-}
+app.UseCors("AllowSpecificOrigins");
+
+/*if (app.Environment.IsDevelopment())*/
+/*{*/
+app.UseSwagger();
+app.UseSwaggerUI();
+/*}*/
 
 app.UseHttpsRedirection();
 

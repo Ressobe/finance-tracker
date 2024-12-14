@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 export async function loginAction(values: Login) {
   const { data, error } = await login(values);
 
+  console.log("error from loginAction", error);
+
   if (error) {
     return { error: "Something went wrong!" };
   }

@@ -69,34 +69,27 @@ namespace api.Controllers
     [ProducesResponseType(typeof(NewUserDto), 200)]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-      try
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      var user = await _userManager.Users.FirstOrDefaultAsync(item => item.Email == loginDto.Email);
+      if (user == null)
       {
-        if (!ModelState.IsValid)
-          return BadRequest(ModelState);
-
-        var user = await _userManager.Users.FirstOrDefaultAsync(item => item.Email == loginDto.Email);
-        if (user == null)
-        {
-          return Unauthorized(new { message = "Invalid email!" });
-        }
-
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-        if (!result.Succeeded)
-        {
-          return Unauthorized(new { message = "Invalid credentials!" });
-        }
-
-        return Ok(new NewUserDto
-        {
-          UserName = user.UserName!,
-          Email = user.Email!,
-          Token = _tokenService.CreateToken(user)
-        });
+        return Unauthorized(new { message = "Invalid email!" });
       }
-      catch (Exception e)
+
+      var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+      if (!result.Succeeded)
       {
-        return StatusCode(500, e);
+        return Unauthorized(new { message = "Invalid credentials!" });
       }
+
+      return Ok(new NewUserDto
+      {
+        UserName = user.UserName!,
+        Email = user.Email!,
+        Token = _tokenService.CreateToken(user)
+      });
     }
 
     /// <summary>

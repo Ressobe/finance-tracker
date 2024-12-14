@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Dtos.Category;
+using api.Services;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -15,11 +16,13 @@ namespace api.Controllers
   {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IUserRepository _userRepository;
+    private readonly CategoryService _categoryService;
 
-    public CategoryController(ICategoryRepository categoryRepository, IUserRepository userRepository)
+    public CategoryController(ICategoryRepository categoryRepository, IUserRepository userRepository, CategoryService categoryService)
     {
       _categoryRepository = categoryRepository;
       _userRepository = userRepository;
+      _categoryService = categoryService;
     }
 
     /// <summary>
@@ -32,8 +35,7 @@ namespace api.Controllers
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById([FromRoute] int categoryId)
     {
-      var category = await _categoryRepository.GetAsync(categoryId);
-
+      var category = await _categoryService.Get(categoryId);
       if (category == null)
       {
         return NotFound(new { message = "Category not found!" });
@@ -106,8 +108,8 @@ namespace api.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var updatedCategory = await _categoryRepository.UpdateAsync(categoryId, updateCategoryDto);
-      if (updatedCategory == null)
+      var updatedCategory = await _categoryService.Update(categoryId, updateCategoryDto);
+      if (updatedCategory is null)
       {
         return NotFound(new { message = "Category not found!" });
       }

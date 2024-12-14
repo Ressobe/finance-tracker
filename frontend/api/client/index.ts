@@ -15,7 +15,7 @@ export const authMiddleware: Middleware = {
   },
 };
 
-const apiClient = createClient<paths>({ baseUrl: process.env.API_URL! });
+const apiClient = createClient<paths>({ baseUrl: process.env.NEXT_PUBLIC_API_URL! });
 
 apiClient.use(authMiddleware);
 

@@ -11,6 +11,41 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - finance-network
+
+  api:
+    build:
+      context: ./backend
+    container_name: api-finance-tracker
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Host=postgres-finance-tracker;Username=finance-tracker;Password=finance-tracker;Database=db;Persist Security Info=True"
+    ports:
+      - "5040:80"
+    depends_on:
+      - postgres
+    networks:
+      - finance-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend-finance-tracker
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://api:80"
+    depends_on:
+      - api
+    networks:
+      - finance-network
+
+networks:
+  finance-network:
+    driver: bridge
 
 volumes:
   postgres_data:

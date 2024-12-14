@@ -57,12 +57,14 @@ namespace api.Controllers
         return NotFound(new { message = "Saving goal not found!" });
       }
 
-      var allSavingTransactions = await _savingTransactionsRepository.GetAllBySavigGoalId(savingGoalId);
+      var allSavingTransactions = await _savingTransactionsRepository.GetAllByAccountId(savingGoalId);
 
       foreach (var savingTransaction in allSavingTransactions)
       {
         await _accountRepository.AddIncomeAsync(savingTransaction.AccountId, savingTransaction.Amount);
+
       }
+
 
       var deletedSavingGoal = await _savingGoalRepository.DeleteAsync(savingGoalId);
       if (deletedSavingGoal == null)

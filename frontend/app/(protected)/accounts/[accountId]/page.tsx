@@ -46,9 +46,9 @@ export default async function AccountPage(props: AccountPageProps) {
         </span>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">
+        <Balance amount={currentBalance} />
         <Income amount={income} />
         <Expense amount={expense} />
-        <Balance amount={currentBalance} />
       </div>
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Transactions</h2>

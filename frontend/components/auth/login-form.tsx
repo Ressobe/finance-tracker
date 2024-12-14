@@ -38,13 +38,8 @@ export function LoginForm() {
     setSucess("");
 
     startTransition(async () => {
-      try {
-        await loginAction(values);
-        setSucess("You are logged in!");
-      } catch (e) {
-        console.log(e);
-        setError("Invalid credentials!");
-      }
+      await loginAction(values);
+      setSucess("You are logged in!");
     });
   };
 

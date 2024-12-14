@@ -82,7 +82,7 @@ export function DailyExpensesIncomesBarChart({
               dataKey="income"
               stackId="a"
               fill="var(--color-income)"
-              radius={[0, 0, 4, 4]}
+              radius={[4, 4, 0, 0]}
             />
             <Bar
               dataKey="expense"

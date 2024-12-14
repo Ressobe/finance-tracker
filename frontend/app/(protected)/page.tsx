@@ -36,9 +36,9 @@ export default async function Dashboard() {
         </span>
       </div>
       <div className="flex flex-col lg:flex-row gap-4">
+        <Balance amount={totalBalance} />
         <Income amount={totalIncome} />
         <Expense amount={totalExpense} />
-        <Balance amount={totalBalance} />
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
         {incomeByCategories && (
