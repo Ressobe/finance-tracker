@@ -114,7 +114,7 @@ namespace api.Controllers
         return NotFound(new { message = "Category not found!" });
       }
 
-      return Ok(updatedCategory.ToCategoryModel());
+      return Ok(updatedCategory);
     }
   }
 }
