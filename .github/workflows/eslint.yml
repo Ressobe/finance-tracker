@@ -18,5 +18,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "latest"
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx eslint . --ext .tsx
