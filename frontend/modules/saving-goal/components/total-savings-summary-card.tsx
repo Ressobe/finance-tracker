@@ -18,7 +18,7 @@ export function TotalSavingsSummaryCard({
   const indicatorColor = "#8b5cf6";
   const trackColor = "#ddd6fe";
 
-  let totalPercentage = (totalSavings / totalTarget) * 100;
+  const totalPercentage = (totalSavings / totalTarget) * 100;
 
   return (
     <Card>
